@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="System_Pointage" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False" SettingsObjectName="System_Pointage.Properties.Settings" SettingsPropertyName="System_PointageConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Fiche_Poste" Member="Fiche_Postes">
+    <Type Name="Fiche_Poste">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MVMAgentDetails" Member="MVMAgentDetails">
+    <Type Name="MVMAgentDetail">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Statut" Type="System.String" DbType="NVarChar(2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="UserType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ScreenProfileID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserAccessProfileDetails" Member="UserAccessProfileDetails">
+    <Type Name="UserAccessProfileDetail">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProfileID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ScreenID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CanShow" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanOpen" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanAdd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanPrint" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fiche_Agent" Member="Fiche_Agents">
+    <Type Name="Fiche_Agent">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Post" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Jour" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
