@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Operation));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -67,47 +68,45 @@
             this.layoutControl1.Controls.Add(this.gridControl2);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 41);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 55);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(923, 445);
+            this.layoutControl1.Size = new System.Drawing.Size(1384, 665);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // gridControl2
             // 
-            this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(1);
-            this.gridControl2.Location = new System.Drawing.Point(36, 267);
+            this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.gridControl2.Location = new System.Drawing.Point(35, 406);
             this.gridControl2.MainView = this.gridView2;
-            this.gridControl2.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(851, 142);
+            this.gridControl2.Size = new System.Drawing.Size(1314, 224);
             this.gridControl2.TabIndex = 5;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView2});
             // 
             // gridView2
             // 
-            this.gridView2.DetailHeight = 239;
+            this.gridView2.DetailHeight = 349;
             this.gridView2.GridControl = this.gridControl2;
             this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsView.ShowGroupPanel = false;
             // 
             // gridControl1
             // 
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(1);
-            this.gridControl1.Location = new System.Drawing.Point(24, 45);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.gridControl1.Location = new System.Drawing.Point(35, 67);
             this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(875, 185);
+            this.gridControl1.Size = new System.Drawing.Size(1314, 267);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
             // gridView1
             // 
-            this.gridView1.DetailHeight = 239;
+            this.gridView1.DetailHeight = 349;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             // 
@@ -116,43 +115,49 @@
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlGroup1});
+            this.layoutControlGroup1,
+            this.layoutControlGroup2});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(923, 445);
+            this.Root.Size = new System.Drawing.Size(1384, 665);
             this.Root.TextVisible = false;
             // 
             // layoutControlGroup1
             // 
+            this.layoutControlGroup1.AppearanceGroup.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.layoutControlGroup1.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem1,
-            this.layoutControlGroup2});
+            this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(903, 425);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1354, 339);
+            this.layoutControlGroup1.Text = "Liste des agents actuelles";
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(879, 189);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 273);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlGroup2
             // 
+            this.layoutControlGroup2.AppearanceGroup.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.layoutControlGroup2.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem2});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 189);
+            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 339);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(879, 191);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1354, 296);
+            this.layoutControlGroup2.Text = "Liste des agents envoyées";
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControl2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(855, 146);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1320, 230);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -187,7 +192,11 @@
             // 
             this.btn_envoyer.Caption = "Envoyer";
             this.btn_envoyer.Id = 0;
+            this.btn_envoyer.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_envoyer.ImageOptions.SvgImage")));
+            this.btn_envoyer.ItemAppearance.Normal.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.btn_envoyer.ItemAppearance.Normal.Options.UseFont = true;
             this.btn_envoyer.Name = "btn_envoyer";
+            this.btn_envoyer.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             this.btn_envoyer.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_envoyer_ItemClick);
             // 
             // bar2
@@ -218,47 +227,42 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlTop.Size = new System.Drawing.Size(923, 41);
+            this.barDockControlTop.Size = new System.Drawing.Size(1384, 55);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 486);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 720);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(923, 20);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1384, 20);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 41);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 55);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 445);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(923, 41);
+            this.barDockControlRight.Location = new System.Drawing.Point(1384, 55);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 445);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
             // 
             // Frm_Operation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(923, 506);
+            this.ClientSize = new System.Drawing.Size(1384, 740);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Frm_Operation";
             this.Text = "Frm_Operation";
             this.Load += new System.EventHandler(this.Frm_Operation_Load);

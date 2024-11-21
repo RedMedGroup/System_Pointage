@@ -77,6 +77,12 @@
   <ItemGroup>
     <Compile Include="Classe\Models.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
+    <Compile Include="Form\Frm_Fiche_Ajent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Fiche_Ajent.Designer.cs">
+      <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_LogIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,12 @@
     <Compile Include="Form\Frm_Operation.Designer.cs">
       <DependentUpon>Frm_Operation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_Pointage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Pointage.Designer.cs">
+      <DependentUpon>Frm_Pointage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Prevu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +139,9 @@
     <Compile Include="report\rpt_penalite.Designer.cs">
       <DependentUpon>rpt_penalite.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form\Frm_Fiche_Ajent.resx">
+      <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_LogIn.resx">
       <DependentUpon>Frm_LogIn.cs</DependentUpon>
     </EmbeddedResource>
@@ -141,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Operation.resx">
       <DependentUpon>Frm_Operation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Pointage.resx">
+      <DependentUpon>Frm_Pointage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Prevu.resx">
       <DependentUpon>Frm_Prevu.cs</DependentUpon>

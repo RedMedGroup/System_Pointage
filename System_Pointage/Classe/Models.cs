@@ -13,6 +13,10 @@ namespace System_Pointage.Classe
             public string Name { get; set; }
             public DateTime Date { get; set; }
             public string Statut { get; set; }
+            public int Jour { get; set; }
+            public string Poste { get; set; }
+            public DateTime CalculatedDate { get; set; } 
         }
+   
     }
 }

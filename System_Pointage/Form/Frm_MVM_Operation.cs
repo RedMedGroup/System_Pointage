@@ -38,6 +38,7 @@ namespace System_Pointage.Classe
                     break;
                 case Master.MVMType.A:
                     this.Text = "Absent";
+                    layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
                     break;
                 case Master.MVMType.CR:
                     this.Text = "cr";
@@ -55,34 +56,8 @@ namespace System_Pointage.Classe
 
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            GridName();
         }
-
-        private void btn_ovrirEn_Click(object sender, EventArgs e)
-        {
-            switch (Type)
-            {
-                case Master.MVMType.P:
-                    Frm_Operation frmType1 = new Frm_Operation(Type);
-                    frmType1.Owner = this;
-                    frmType1.Show();
-                    break;
-
-                case Master.MVMType.A:
-                    Frm_Operation frmType2 = new Frm_Operation(Type);
-                    frmType2.Owner = this;
-                    frmType2.Show();
-                    break;
-                case Master.MVMType.CR:
-                    Frm_Operation frmType3 = new Frm_Operation(Type);
-                    frmType3.Owner = this;
-                    frmType3.Show();
-                    break;
-                default:
-                    MessageBox.Show("نوع الاستقبال غير معروف.");
-                    break;
-            }
-        }
-        /// <summary>
       
         private BindingList<Models.AgentStatus> transferredAgentsList = new BindingList<Models.AgentStatus>();
         public void AddTransferredAgentse(BindingList<Models.AgentStatus> transferredAgents)
@@ -129,6 +104,11 @@ namespace System_Pointage.Classe
         private void btn_save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var selectedRows = gridView1.GetSelectedRows();
+            if (selectedRows.Length == 0)
+            {
+                XtraMessageBox.Show("Veuillez sélectionner au moins une ligne à enregistrer.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; 
+            }
             List<Models.AgentStatus> selectedAgents = new List<Models.AgentStatus>();
 
             foreach (var rowIndex in selectedRows)
@@ -157,11 +137,28 @@ namespace System_Pointage.Classe
                 }
 
                 context.SubmitChanges();
+                XtraMessageBox.Show("Enregistrer succés");
+                activeAgentsList.Clear(); // إفراغ القائمة
+                gridControl1.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList); 
+                gridView1.ClearSelection();
             }
-
         }
 
-        private void btn_list_prevu_Click(object sender, EventArgs e)
+        public void GridName()
+        {
+            gridView1.Columns["Name"].Caption = "Nom et prénom";
+            gridView1.Columns["Date"].Caption = "Date de début";
+            gridView1.Columns["Jour"].Caption = "Systéme";
+            gridView1.Columns["CalculatedDate"].Caption = "Date prévue";
+            gridView1.Columns["Name"].VisibleIndex = 0;
+            gridView1.Columns["Poste"].VisibleIndex = 1;
+            gridView1.Columns["Date"].VisibleIndex = 3;
+            gridView1.Columns["Jour"].VisibleIndex = 4;
+            gridView1.Columns["CalculatedDate"].VisibleIndex = 5;
+            gridView1.Columns["Statut"].VisibleIndex = 6;
+        }
+
+        private void btn_list_prevu_Click_1(object sender, EventArgs e)
         {
             switch (Type)
             {
@@ -178,6 +175,32 @@ namespace System_Pointage.Classe
                     break;
                 case Master.MVMType.CR:
                     Frm_Prevu frmType3 = new Frm_Prevu(Type);
+                    frmType3.Owner = this;
+                    frmType3.Show();
+                    break;
+                default:
+                    MessageBox.Show("نوع الاستقبال غير معروف.");
+                    break;
+            }
+        }
+
+        private void btn_ovrirEn_Click_1(object sender, EventArgs e)
+        {
+            switch (Type)
+            {
+                case Master.MVMType.P:
+                    Frm_Operation frmType1 = new Frm_Operation(Type);
+                    frmType1.Owner = this;
+                    frmType1.Show();
+                    break;
+
+                case Master.MVMType.A:
+                    Frm_Operation frmType2 = new Frm_Operation(Type);
+                    frmType2.Owner = this;
+                    frmType2.Show();
+                    break;
+                case Master.MVMType.CR:
+                    Frm_Operation frmType3 = new Frm_Operation(Type);
                     frmType3.Owner = this;
                     frmType3.Show();
                     break;
