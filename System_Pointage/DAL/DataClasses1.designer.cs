@@ -860,6 +860,10 @@ namespace System_Pointage.DAL
 		
 		private System.Nullable<int> _Jour;
 		
+		private System.Nullable<System.DateTime> _Date_Embauche;
+		
+		private System.Nullable<bool> _Statut;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -872,6 +876,10 @@ namespace System_Pointage.DAL
     partial void OnID_PostChanged();
     partial void OnJourChanging(System.Nullable<int> value);
     partial void OnJourChanged();
+    partial void OnDate_EmbaucheChanging(System.Nullable<System.DateTime> value);
+    partial void OnDate_EmbaucheChanged();
+    partial void OnStatutChanging(System.Nullable<bool> value);
+    partial void OnStatutChanged();
     #endregion
 		
 		public Fiche_Agent()
@@ -955,6 +963,46 @@ namespace System_Pointage.DAL
 					this._Jour = value;
 					this.SendPropertyChanged("Jour");
 					this.OnJourChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_Embauche", DbType="Date")]
+		public System.Nullable<System.DateTime> Date_Embauche
+		{
+			get
+			{
+				return this._Date_Embauche;
+			}
+			set
+			{
+				if ((this._Date_Embauche != value))
+				{
+					this.OnDate_EmbaucheChanging(value);
+					this.SendPropertyChanging();
+					this._Date_Embauche = value;
+					this.SendPropertyChanged("Date_Embauche");
+					this.OnDate_EmbaucheChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Statut", DbType="Bit")]
+		public System.Nullable<bool> Statut
+		{
+			get
+			{
+				return this._Statut;
+			}
+			set
+			{
+				if ((this._Statut != value))
+				{
+					this.OnStatutChanging(value);
+					this.SendPropertyChanging();
+					this._Statut = value;
+					this.SendPropertyChanged("Statut");
+					this.OnStatutChanged();
 				}
 			}
 		}

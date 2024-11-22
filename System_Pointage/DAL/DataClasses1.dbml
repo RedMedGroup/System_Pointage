@@ -46,6 +46,8 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ID_Post" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Jour" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Date_Embauche" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Statut" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

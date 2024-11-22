@@ -29,10 +29,8 @@ namespace System_Pointage.report
             cell_TotalPenalties.DataBindings.Add("Text", this.DataSource, "TotalPenalties");
             cell_nP.DataBindings.Add("Text", this.DataSource, "Nombre du personnel absent");
 
-
-
-            //string formattedDate = DateTime.Now.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
-            //lbl_date.Text = formattedDate;
+            string formattedDate = DateTime.Now.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
+            lbl_date.Text = formattedDate;
         }
     }
 }

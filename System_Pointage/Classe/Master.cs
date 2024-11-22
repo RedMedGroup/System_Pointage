@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -81,6 +83,27 @@ namespace System_Pointage.Classe
                                     }).ToList();
             }
         }
-    
+        public static void IntializeData(this GridLookUpEdit lkp, object dataSource)
+        {
+            lkp.IntializeData(dataSource, "Name", "ID");
+
+        }
+        public static void IntializeData(this GridLookUpEdit lkp, object dataSource, string displayMember, string valuMember)
+        {
+            lkp.Properties.DataSource = dataSource;
+            lkp.Properties.DisplayMember = displayMember;
+            lkp.Properties.ValueMember = valuMember;
+            lkp.Properties.NullText = "";
+            lkp.Properties.ValidateOnEnterKey = true;
+            lkp.Properties.AllowNullInput = DefaultBoolean.False;
+            lkp.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+            lkp.Properties.ImmediatePopup = true;
+            var PartIDView = lkp.Properties.View;
+            //PartIDView.FocusRectStyle = DrawFocusRectStyle.RowFullFocus;
+            PartIDView.OptionsSelection.UseIndicatorForSelection = true;
+            PartIDView.OptionsView.ShowAutoFilterRow = true;
+            //PartIDView.OptionsView.ShowFilterPanelMode = ShowFilterPanelMode.ShowAlways;
+            PartIDView.PopulateColumns(lkp.Properties.DataSource);
+        }
     }
 }

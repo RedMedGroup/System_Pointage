@@ -25,7 +25,7 @@ namespace System_Pointage.Form
             using (var db = new DAL.DataClasses1DataContext())
             {
                 agent = db.Fiche_Agents.Single(x => x.ID == id);
-                GetData();
+              //  GetData();
             }
             this.Text = string.Format(";;: {0}", agent.Name);
         }
@@ -44,7 +44,7 @@ namespace System_Pointage.Form
                 lkp_post.Properties.View.Columns["ID"].Visible = false;
             }
             lkp_post.EditValueChanged += Lkp_post_EditValueChanged;
-
+            GetData();
         }
 
         private void Lkp_post_EditValueChanged(object sender, EventArgs e)
@@ -73,14 +73,31 @@ namespace System_Pointage.Form
             agent.Name = txt_Name.Text;
             agent.ID_Post = Convert.ToInt32(lkp_post.EditValue);
             agent.Jour = Convert.ToInt32(spn_jour.EditValue);
-           // agent.Date_StopJob = dateEdit1.DateTime;
+            agent.Date_Embauche = dt_embouch.DateTime; 
+
+            if (cmb_statut.Text== "Actif")//
+            {
+               agent.Statut = true;
+            }
+            else
+            {
+                agent.Statut = false;
+            }
         }
         void GetData()
         {
             txt_Name.Text = agent.Name;
             lkp_post.EditValue = agent.ID_Post;
             spn_jour.EditValue= agent.Jour;
-           // dateEdit1.DateTime = (DateTime)agent.Date_StopJob;
+            dt_embouch.DateTime = (DateTime)agent.Date_Embauche;
+            if (agent.Statut == true) // تحقق مما إذا كانت الحالة true
+            {
+                cmb_statut.Text = "Actif"; // تعيين النص إلى "Actif"
+            }
+            else
+            {
+                cmb_statut.Text = "Inactif"; // تعيين النص إلى "Inactif" إذا كانت الحالة ليست true
+            }
         }
         void New()
         {

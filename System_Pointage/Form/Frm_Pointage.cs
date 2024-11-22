@@ -18,6 +18,7 @@ namespace System_Pointage.Form
     {
         List<DAL.Fiche_Agent> FicheAgentList;
         List<DAL.Fiche_Poste> FichePOSTE;
+        List<DAL.MVMAgentDetail> listOfDays;
         public Frm_Pointage()
         {
             InitializeComponent();
@@ -28,6 +29,7 @@ namespace System_Pointage.Form
             DateTime today = DateTime.Today;
             dateEdit1.DateTime = new DateTime(today.Year, today.Month, 1);
             dateEdit2.DateTime = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
+
             gridView1.OptionsView.AllowCellMerge = true;
             gridView1.RowCellStyle += GridView1_RowCellStyle;
             gridView1.CellMerge += GridView1_CellMerge;
@@ -299,6 +301,7 @@ namespace System_Pointage.Form
         {
             using (var context = new DAL.DataClasses1DataContext())
             {
+                listOfDays = context.MVMAgentDetails.ToList();
                 // تحميل قائمة الوكلاء من جدول Fich_Agents
                 FicheAgentList = context.Fiche_Agents
 
@@ -373,46 +376,41 @@ namespace System_Pointage.Form
 
                     foreach (var agent in absenceRecordsByAgent)
                     {
-                        bool hasAbsence = false;
                         var absenceRecords = agent.Value;
 
                         for (int i = 0; i < absenceRecords.Count; i++)
                         {
                             if (absenceRecords[i].Status == "A")
                             {
-                                hasAbsence = true;
                                 uniqueAbsentPersonnelSet.Add(agent.Key); // إضافة ID الموظف إلى المجموعة
 
-                                int absenceStartIndex = i;
+                                DateTime absenceStart = absenceRecords[i].Date;
 
-                                // البحث عن أول يوم حضور بعد يوم الغياب
+                                // البحث عن أول تاريخ يتغير فيه الحالة
+                                DateTime absenceEnd = endDate; // افتراضياً نهاية الغياب هي نهاية الفترة
                                 for (int j = i + 1; j < absenceRecords.Count; j++)
                                 {
-                                    if (absenceRecords[j].Status == "P")
+                                    if (absenceRecords[j].Status != "A")
                                     {
-                                        // حساب عدد أيام الغياب مع استبعاد يوم العودة
-                                        int absenceCount = (absenceRecords[j].Date - absenceRecords[absenceStartIndex].Date).Days;
-                                        totalAbsences += absenceCount; // إضافة إلى الإجمالي
-                                        i = j; // تحديث الفهرس للانتقال إلى سجل الحضور
-                                        break; // الخروج من الحلقة الداخلية
+                                        absenceEnd = absenceRecords[j].Date.AddDays(-1); // اليوم الذي يسبق حالة الحضور
+                                        break;
                                     }
                                 }
+                                // التأكد من أن التواريخ تقع ضمن النطاق المحدد
+                                absenceStart = (absenceStart < startDate) ? startDate : absenceStart;
+                                absenceEnd = (absenceEnd > endDate) ? endDate : absenceEnd;
 
-                                // إذا لم يتم العثور على يوم حضور، يتم حساب الغيابات حتى اليوم الحالي
-                                if (i == absenceStartIndex) // يعني أنه لم نجد أي يوم حضور
-                                {
-                                    // حساب الغيابات حتى نهاية الفترة المحددة
-                                    if (absenceRecords[absenceStartIndex].Date <= endDate)
-                                    {
-                                        // إضافة 1 لأننا نريد حساب يوم الغياب نفسه
-                                        int absenceCount = (endDate - absenceRecords[absenceStartIndex].Date).Days + 1;
-                                        totalAbsences += absenceCount; // إضافة إلى الإجمالي
-                                    }
-                                    break; // الخروج من الحلقة لأن الفترة انتهت
-                                }
+                                // حساب عدد أيام الغياب ضمن الفترة
+                                int absenceCount = (absenceEnd - absenceStart).Days + 1;
+                                totalAbsences += absenceCount; // إضافة إلى الإجمالي
+
+                                // إذا انتهى الغياب بنهاية الفترة، لا حاجة للاستمرار
+                                if (absenceEnd == endDate)
+                                    break;
                             }
                         }
                     }
+
 
                     // إذا كان هناك غيابات في القسم، أضف الصف إلى التقرير
                     if (totalAbsences > 0)
@@ -460,6 +458,136 @@ namespace System_Pointage.Form
 
             // ضبط dateEdit1 ليكون اليوم الأول من الشهر المحدد في dateEdit2
             dateEdit1.DateTime = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+        }
+
+        private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            LoadData();
+            PrintReport();
+        }
+        private void PrintReport()
+        {
+
+            report.rpt_pointage report = new report.rpt_pointage();
+
+            DateTime startDate = dateEdit1.DateTime;
+            DateTime endDate = dateEdit2.DateTime;
+            report.AddDateColumnsToReport(report, startDate, endDate);
+            DataTable table = CreateDataTable();
+            report.DataSource = table;
+
+            report.BindAttendanceDataToCells(table);
+
+            ReportPrintTool printTool = new ReportPrintTool(report);
+            printTool.ShowPreview();
+        }
+
+        private void btn_print2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gridView1.ShowRibbonPrintPreview();
+        }
+        private DataTable CreateDailyReport(DateTime reportDate)
+        {
+            DataTable table = new DataTable();
+
+            // إضافة الأعمدة
+            table.Columns.Add("Department", typeof(string));
+            table.Columns.Add("RequiredEmployees", typeof(int));
+            table.Columns.Add("WorkerName", typeof(string));
+            table.Columns.Add("Status", typeof(string));
+            table.Columns.Add("PresentCount", typeof(int));
+            table.Columns.Add("cell_Ecart", typeof(int));
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                // استرجاع الأقسام
+                var departments = context.Fiche_Postes
+                    .Select(post => new
+                    {
+                        ID_Post = post.ID,
+                        DepartmentName = post.Name,
+                        RequiredEmployees = post.Nembre_Contra
+                    })
+                    .ToList();
+
+                // استرجاع العمال وحالاتهم في التاريخ المحدد
+                var workers = context.Fiche_Agents
+                    .Select(agent => new
+                    {
+                        WorkerName = agent.Name,
+                        DepartmentID = agent.ID_Post,
+                        LastStatus = context.MVMAgentDetails
+                            .Where(detail =>
+                                detail.ItemID == agent.ID &&
+                                detail.Date <= reportDate)
+                            .OrderByDescending(detail => detail.Date)
+                            .Select(detail => detail.Statut)
+                            .FirstOrDefault(), // أخذ آخر حالة قبل أو في التاريخ المحدد
+                        NextAbsenceDate = context.MVMAgentDetails
+                            .Where(detail =>
+                                detail.ItemID == agent.ID &&
+                                detail.Date > reportDate && // تحقق من وجود غياب بعد تاريخ التقرير
+                                detail.Statut == "CR")
+                            .OrderBy(detail => detail.Date)
+                            .Select(detail => (DateTime?)detail.Date) // تحويل إلى نوع Nullable<DateTime>
+                            .FirstOrDefault() // الحصول على أقرب تاريخ غياب بعد تاريخ التقرير
+                    })
+                    .Where(worker => worker.LastStatus != null && worker.LastStatus != "CR") // تجاهل العمال الذين لا حالة لهم
+                    .ToList();
+
+                // إضافة البيانات إلى الجدول
+                foreach (var department in departments)
+                {
+                    // استرجاع عمال القسم
+                    var departmentWorkers = workers.Where(w => w.DepartmentID == department.ID_Post).ToList();
+
+                    // حساب عدد الحضور
+                    int presentCount = departmentWorkers.Count(w => w.LastStatus == "P" && (w.NextAbsenceDate == null || w.NextAbsenceDate > reportDate));
+
+                    // حساب الفارق
+                    int cellEcart = (int)(presentCount - department.RequiredEmployees);
+
+                    foreach (var worker in departmentWorkers)
+                    {
+                        DataRow row = table.NewRow();
+                        row["Department"] = department.DepartmentName;
+                        row["RequiredEmployees"] = department.RequiredEmployees;
+                        row["WorkerName"] = worker.WorkerName;
+
+                        // تحديد الحالة النهائية
+                        string status = worker.LastStatus ?? "A"; // افتراض الحالة "A" عند عدم وجود حالة
+                        if (worker.LastStatus == "P" && (worker.NextAbsenceDate == null || worker.NextAbsenceDate > reportDate))
+                        {
+                            status = "P"; // العامل حاضر
+                        }
+                        else if (worker.LastStatus == "P" && worker.NextAbsenceDate <= reportDate)
+                        {
+                            status = "A"; // العامل غائب لأن لديه غياب مسجل بعد تاريخ التقرير
+                        }
+
+                        row["Status"] = status;
+                        row["PresentCount"] = presentCount;
+                        row["cell_Ecart"] = cellEcart;
+
+                        table.Rows.Add(row);
+                    }
+                }
+            }
+
+            return table;
+        }
+
+        private void GenerateDailyReport()
+        {
+            DateTime reportDate = dateEdit1.DateTime;
+            rpt_DailyReport report = new rpt_DailyReport();
+            report.DataSource = CreateDailyReport(reportDate);
+            report.ShowPreview();
+        }
+
+        private void btn_reportAparJour_Click(object sender, EventArgs e)
+        {
+            GenerateDailyReport();
         }
     }
 }
