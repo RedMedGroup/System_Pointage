@@ -34,10 +34,15 @@
             this.dateEdit11 = new DevExpress.XtraEditors.DateEdit();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.btn_list_prevu = new DevExpress.XtraEditors.SimpleButton();
+            this.btn_ovrirEn = new DevExpress.XtraEditors.SimpleButton();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btn_save = new DevExpress.XtraBars.BarButtonItem();
@@ -47,11 +52,6 @@
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.btn_list_prevu = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.btn_ovrirEn = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit11.Properties)).BeginInit();
@@ -62,10 +62,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -85,25 +85,25 @@
             // dateEdit11
             // 
             this.dateEdit11.EditValue = null;
-            this.dateEdit11.Location = new System.Drawing.Point(86, 18);
-            this.dateEdit11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateEdit11.Location = new System.Drawing.Point(74, 12);
+            this.dateEdit11.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit11.Name = "dateEdit11";
             this.dateEdit11.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit11.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit11.Size = new System.Drawing.Size(312, 26);
+            this.dateEdit11.Size = new System.Drawing.Size(323, 26);
             this.dateEdit11.StyleController = this.layoutControl1;
             this.dateEdit11.TabIndex = 8;
             // 
             // gridControl1
             // 
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.gridControl1.Location = new System.Drawing.Point(35, 125);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(6);
+            this.gridControl1.Location = new System.Drawing.Point(24, 112);
             this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1189, 434);
+            this.gridControl1.Size = new System.Drawing.Size(1211, 458);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -113,6 +113,32 @@
             this.gridView1.DetailHeight = 512;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
+            // 
+            // btn_list_prevu
+            // 
+            this.btn_list_prevu.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.btn_list_prevu.Appearance.Options.UseFont = true;
+            this.btn_list_prevu.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_list_prevu.ImageOptions.SvgImage")));
+            this.btn_list_prevu.Location = new System.Drawing.Point(845, 12);
+            this.btn_list_prevu.Name = "btn_list_prevu";
+            this.btn_list_prevu.Size = new System.Drawing.Size(199, 52);
+            this.btn_list_prevu.StyleController = this.layoutControl1;
+            this.btn_list_prevu.TabIndex = 11;
+            this.btn_list_prevu.Text = "Partants prévue";
+            this.btn_list_prevu.Click += new System.EventHandler(this.btn_list_prevu_Click_1);
+            // 
+            // btn_ovrirEn
+            // 
+            this.btn_ovrirEn.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.btn_ovrirEn.Appearance.Options.UseFont = true;
+            this.btn_ovrirEn.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_ovrirEn.ImageOptions.SvgImage")));
+            this.btn_ovrirEn.Location = new System.Drawing.Point(1048, 12);
+            this.btn_ovrirEn.Name = "btn_ovrirEn";
+            this.btn_ovrirEn.Size = new System.Drawing.Size(199, 52);
+            this.btn_ovrirEn.StyleController = this.layoutControl1;
+            this.btn_ovrirEn.TabIndex = 12;
+            this.btn_ovrirEn.Text = "Séléction Agent";
+            this.btn_ovrirEn.Click += new System.EventHandler(this.btn_ovrirEn_Click_1);
             // 
             // Root
             // 
@@ -137,7 +163,7 @@
             this.layoutControlItem2.CustomizationFormText = "Date";
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(386, 58);
+            this.layoutControlItem2.Size = new System.Drawing.Size(389, 56);
             this.layoutControlItem2.Text = "Date";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(50, 25);
             // 
@@ -148,10 +174,10 @@
             this.layoutControlGroup2.CustomizationFormText = "Pour sauvegarder cocher les agents";
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem3});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 58);
+            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 56);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.OptionsItemText.TextToControlDistance = 5;
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1229, 506);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1239, 518);
             this.layoutControlGroup2.Text = "Pour sauvegarder cocher les agents";
             // 
             // layoutControlItem3
@@ -161,10 +187,36 @@
             this.layoutControlItem3.CustomizationFormText = "layoutControlItem1";
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1195, 440);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1215, 462);
             this.layoutControlItem3.Text = "layoutControlItem1";
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btn_list_prevu;
+            this.layoutControlItem5.Location = new System.Drawing.Point(833, 0);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(203, 56);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.Control = this.btn_ovrirEn;
+            this.layoutControlItem4.Location = new System.Drawing.Point(1036, 0);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(203, 56);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem4.TextVisible = false;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(389, 0);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(444, 56);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // barManager1
             // 
@@ -236,7 +288,7 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlTop.Size = new System.Drawing.Size(1259, 55);
             // 
             // barDockControlBottom
@@ -245,7 +297,7 @@
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 649);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlBottom.Size = new System.Drawing.Size(1259, 20);
             // 
             // barDockControlLeft
@@ -254,7 +306,7 @@
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 55);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 594);
             // 
             // barDockControlRight
@@ -263,60 +315,8 @@
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1259, 55);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 594);
-            // 
-            // btn_list_prevu
-            // 
-            this.btn_list_prevu.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.btn_list_prevu.Appearance.Options.UseFont = true;
-            this.btn_list_prevu.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_list_prevu.ImageOptions.SvgImage")));
-            this.btn_list_prevu.Location = new System.Drawing.Point(844, 18);
-            this.btn_list_prevu.Name = "btn_list_prevu";
-            this.btn_list_prevu.Size = new System.Drawing.Size(196, 52);
-            this.btn_list_prevu.StyleController = this.layoutControl1;
-            this.btn_list_prevu.TabIndex = 11;
-            this.btn_list_prevu.Text = "Partants prévue";
-            this.btn_list_prevu.Click += new System.EventHandler(this.btn_list_prevu_Click_1);
-            // 
-            // layoutControlItem5
-            // 
-            this.layoutControlItem5.Control = this.btn_list_prevu;
-            this.layoutControlItem5.Location = new System.Drawing.Point(826, 0);
-            this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(202, 58);
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem5.TextVisible = false;
-            // 
-            // btn_ovrirEn
-            // 
-            this.btn_ovrirEn.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.btn_ovrirEn.Appearance.Options.UseFont = true;
-            this.btn_ovrirEn.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_ovrirEn.ImageOptions.SvgImage")));
-            this.btn_ovrirEn.Location = new System.Drawing.Point(1046, 18);
-            this.btn_ovrirEn.Name = "btn_ovrirEn";
-            this.btn_ovrirEn.Size = new System.Drawing.Size(195, 52);
-            this.btn_ovrirEn.StyleController = this.layoutControl1;
-            this.btn_ovrirEn.TabIndex = 12;
-            this.btn_ovrirEn.Text = "Séléction Agent";
-            this.btn_ovrirEn.Click += new System.EventHandler(this.btn_ovrirEn_Click_1);
-            // 
-            // layoutControlItem4
-            // 
-            this.layoutControlItem4.Control = this.btn_ovrirEn;
-            this.layoutControlItem4.Location = new System.Drawing.Point(1028, 0);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(201, 58);
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem4.TextVisible = false;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(386, 0);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(440, 58);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // Frm_MVM_Operation
             // 
@@ -342,10 +342,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

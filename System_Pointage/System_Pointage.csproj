@@ -56,6 +56,10 @@
     <Reference Include="DevExpress.XtraPrinting.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraReports.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraReports.v22.2.Extensions, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -75,8 +79,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classe\AgentDataService.cs" />
+    <Compile Include="Classe\DatabaseHelper.cs" />
     <Compile Include="Classe\Models.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
+    <Compile Include="Form\Frm_AccessPosteHeder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_AccessPosteHeder.Designer.cs">
+      <DependentUpon>Frm_AccessPosteHeder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frm_AccessProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frm_AccessProfile.Designer.cs">
+      <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_Debut_Present.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Debut_Present.Designer.cs">
+      <DependentUpon>Frm_Debut_Present.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Fiche_Agent_Import.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +161,18 @@
     <Compile Include="Form\Frm_Prevu.Designer.cs">
       <DependentUpon>Frm_Prevu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_User.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_User.Designer.cs">
+      <DependentUpon>Frm_User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SQL_Server_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\SQL_Server_Config.Designer.cs">
+      <DependentUpon>SQL_Server_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_List\Frm_AgentList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +199,15 @@
     <Compile Include="report\rpt_pointage.Designer.cs">
       <DependentUpon>rpt_pointage.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form\Frm_AccessPosteHeder.resx">
+      <DependentUpon>Frm_AccessPosteHeder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frm_AccessProfile.resx">
+      <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Debut_Present.resx">
+      <DependentUpon>Frm_Debut_Present.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Fiche_Agent_Import.resx">
       <DependentUpon>Frm_Fiche_Agent_Import.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,6 +234,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Prevu.resx">
       <DependentUpon>Frm_Prevu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_User.resx">
+      <DependentUpon>Frm_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\SQL_Server_Config.resx">
+      <DependentUpon>SQL_Server_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\Frm_AgentList.resx">
       <DependentUpon>Frm_AgentList.cs</DependentUpon>
@@ -221,6 +272,7 @@
     <None Include="DAL\DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -33,6 +33,7 @@ namespace System_Pointage.Classe
         {
             switch (Type)
             {
+    
                 case Master.MVMType.P:
                     this.Text = "Présent";
                     break;
@@ -188,6 +189,7 @@ namespace System_Pointage.Classe
         {
             switch (Type)
             {
+             
                 case Master.MVMType.P:
                     Frm_Operation frmType1 = new Frm_Operation(Type);
                     frmType1.Owner = this;

@@ -57,8 +57,8 @@ namespace System_Pointage.Form
             gridView2.OptionsBehavior.Editable = true;
             transferredAgentsList = new BindingList<Models.AgentStatus>();
             gridControl2.DataSource = transferredAgentsList;
-           
-                    RefrecheData();
+
+            RefrecheData();
             SetupGridColumns();
             #region إضافة زر الحذف
             RepositoryItemButtonEdit buttonEdit = new RepositoryItemButtonEdit
@@ -76,9 +76,9 @@ namespace System_Pointage.Form
                 Name = "clmnDelete",
                 Caption = "Sup",
                 FieldName = "Delete", 
-                UnboundType = DevExpress.Data.UnboundColumnType.Object, // عمود غير مرتبط
+                UnboundType = DevExpress.Data.UnboundColumnType.Object, 
                 ColumnEdit = buttonEdit,
-                VisibleIndex = gridView2.Columns.Count, // إظهاره في نهاية الجدول
+                VisibleIndex = gridView2.Columns.Count, 
                 Width = 50,
                 MaxWidth = 50,
                 Visible = true
@@ -137,121 +137,25 @@ namespace System_Pointage.Form
                 activeAgentsList.Remove(selectedRow);
             }
         }
-        void RefrecheData()
+        private void RefrecheData()
         {
-            using (var context = new DAL.DataClasses1DataContext())
-            {
-                switch (Type)
-                {
-                    case Master.MVMType.P:
-                        activeAgentsList = new BindingList<Models.AgentStatus>(
-                context.MVMAgentDetails
-                    .GroupBy(agent => agent.ItemID)
-                    .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
-                    .Where(lastRecord => lastRecord.Statut == "A" || lastRecord.Statut == "CR")
-                    .Join(context.Fiche_Agents,
-                        agent => agent.ItemID,
-                        worker => worker.ID,
-                        (agent, worker) => new { agent, worker })
-                    .Join(context.Fiche_Postes,
-                        ma => ma.worker.ID_Post,
-                        poste => poste.ID,
-                        (ma, poste) => new Models.AgentStatus
-                        {
-                            Name = ma.worker.Name,
-                            Date = ma.agent.Date,
-                            Statut = ma.agent.Statut,
-                            Poste = poste.Name,
-                            Jour = ma.worker.Jour.GetValueOrDefault(), // إضافة Jour مع معالجة القيم null
-                                                                       // استخدام ConvertToDateTime لتحويل التاريخ إلى datetime قبل إضافة الأيام
-                            CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.worker.Jour.GetValueOrDefault()) // تحويل Date إلى datetime
-                        })
-                    .ToList()
-            );
+            var agentDataService = new AgentDataService();
 
+            // التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
 
-                        //                        activeAgentsList = new BindingList<Models.AgentStatus>(
-                        //                         context.MVMAgentDetails
-                        //                             .GroupBy(agent => agent.ItemID)
-                        //                             .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
-                        //                             .Where(lastRecord => lastRecord.Statut == "A" || lastRecord.Statut == "CR")
-                        //                             .Join(context.Fiche_Agents,
-                        //                                   agent => agent.ItemID,
-                        //                        worker => worker.ID,
-                        //                                   (agent, worker) => new  { agent, worker })
-                        //                                  .Join(context.Fiche_Postes,
-                        //              ma => ma.worker.ID_Post,
-                        //              poste => poste.ID,
-                        //              (ma, poste) => new Models.AgentStatus
-                        //              {
-                        //                  Name = ma.worker.Name,
-                        //                  Date = ma.agent.Date,
-                        //                  Statut = ma.agent.Statut,
-                        //                  Poste = poste.Name,
-                        //                  Jour = ma.worker.Jour.GetValueOrDefault(), // إضافة Jour
-                        //                  CalculatedDate = ma.agent.Date.AddDays(ma.worker.Jour.GetValueOrDefault())
-                        //              })
-                        //        .ToList()
-                        //);
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
-                        break;
+            // جلب البيانات
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin);
 
-                    case Master.MVMType.A:
-                        activeAgentsList = new BindingList<Models.AgentStatus>(
-                                        context.MVMAgentDetails
-                                            .GroupBy(agent => agent.ItemID)
-                                            .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
-                                            .Where(lastRecord => lastRecord.Statut == "P" || lastRecord.Statut == "CR")
-                                            .Join(context.Fiche_Agents,
-                                                  agent => agent.ItemID,
-                                                  worker => worker.ID,
-                                                  (agent, worker) => new Models.AgentStatus // استخدام الكلاس الجديد
-                                                  {
-                                                      Name = worker.Name,
-                                                      Date = agent.Date,
-                                                      Statut = agent.Statut
-                                                  })
-                                            .ToList()
-                                    );
+            // تعيين البيانات للجدول
+            gridControl1.DataSource = activeAgentsList;
 
-                        break;
-
-                    case Master.MVMType.CR:
-                        activeAgentsList = new BindingList<Models.AgentStatus>(
-               context.MVMAgentDetails
-                   .GroupBy(agent => agent.ItemID)
-                   .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
-                   .Where(lastRecord => lastRecord.Statut == "A" || lastRecord.Statut == "P")
-                   .Join(context.Fiche_Agents,
-                       agent => agent.ItemID,
-                       worker => worker.ID,
-                       (agent, worker) => new { agent, worker })
-                   .Join(context.Fiche_Postes,
-                       ma => ma.worker.ID_Post,
-                       poste => poste.ID,
-                       (ma, poste) => new Models.AgentStatus
-                       {
-                           Name = ma.worker.Name,
-                           Date = ma.agent.Date,
-                           Statut = ma.agent.Statut,
-                           Poste = poste.Name,
-                           Jour = ma.worker.Jour.GetValueOrDefault(), // إضافة Jour مع معالجة القيم null
-                                                                      // استخدام ConvertToDateTime لتحويل التاريخ إلى datetime قبل إضافة الأيام
-                           CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.worker.Jour.GetValueOrDefault()) // تحويل Date إلى datetime
-                       })
-                   .ToList()
-           );
-
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-                gridControl1.DataSource = activeAgentsList;
-                GridName();
-
-            }
+            GridName();
         }
+
         public void GridName()
         {
             gridView1.Columns["Name"].Caption = "Nom et prénom";
@@ -281,8 +185,8 @@ namespace System_Pointage.Form
                     {
                         string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
                         MessageBox.Show(
-                            $"العناصر التالية مكررة بالفعل في القائمة: {duplicateNames}",
-                            "تحذير",
+                            $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
+                            "avertissement",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning
                         );
@@ -296,7 +200,7 @@ namespace System_Pointage.Form
             }
             else
             {
-                MessageBox.Show("لا توجد بيانات لإرسالها.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Il n'y a aucune donnée à envoyer.", "avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

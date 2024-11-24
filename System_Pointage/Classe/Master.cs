@@ -33,6 +33,9 @@ namespace System_Pointage.Classe
             Absent,
             Congée,
         }
+        public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
+                new ValueAndID() { ID = (int)UserType.Admin, Name="Admin" },
+            new ValueAndID() { ID = (int)UserType.User, Name="Utilisateur"} };
         public enum UserType
         {
             Admin = 1,
@@ -104,6 +107,26 @@ namespace System_Pointage.Classe
             PartIDView.OptionsView.ShowAutoFilterRow = true;
             //PartIDView.OptionsView.ShowFilterPanelMode = ShowFilterPanelMode.ShowAlways;
             PartIDView.PopulateColumns(lkp.Properties.DataSource);
+        }
+        public static void IntializeData(this LookUpEdit lkp, object dataSource)
+        {
+            lkp.IntializeData(dataSource, "Name", "ID");
+
+        }
+        public static void IntializeData(this LookUpEdit lkp, object dataSource, string displayMember, string valuMember)
+        {
+            lkp.Properties.DataSource = dataSource;
+            lkp.Properties.DisplayMember = displayMember;
+            lkp.Properties.ValueMember = valuMember;
+            lkp.Properties.Columns.Clear();
+            lkp.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo()
+            {
+                FieldName = displayMember,
+            });
+            lkp.Properties.ShowHeader = false;
+            //lkp.Properties.PopulateColumns();
+            //lkp.Properties.Columns[valuMember].Visible = false;
+            lkp.Properties.NullText = "";
         }
     }
 }

@@ -36,19 +36,28 @@ namespace System_Pointage.DAL
     partial void InsertMVMAgentDetail(MVMAgentDetail instance);
     partial void UpdateMVMAgentDetail(MVMAgentDetail instance);
     partial void DeleteMVMAgentDetail(MVMAgentDetail instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void InsertUserAccessProfileDetail(UserAccessProfileDetail instance);
     partial void UpdateUserAccessProfileDetail(UserAccessProfileDetail instance);
     partial void DeleteUserAccessProfileDetail(UserAccessProfileDetail instance);
+    partial void InsertUserAccessProfilePosteDetail(UserAccessProfilePosteDetail instance);
+    partial void UpdateUserAccessProfilePosteDetail(UserAccessProfilePosteDetail instance);
+    partial void DeleteUserAccessProfilePosteDetail(UserAccessProfilePosteDetail instance);
+    partial void InsertUserAccessProfilePoste(UserAccessProfilePoste instance);
+    partial void UpdateUserAccessProfilePoste(UserAccessProfilePoste instance);
+    partial void DeleteUserAccessProfilePoste(UserAccessProfilePoste instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+    partial void InsertUserAccessProfileName(UserAccessProfileName instance);
+    partial void UpdateUserAccessProfileName(UserAccessProfileName instance);
+    partial void DeleteUserAccessProfileName(UserAccessProfileName instance);
     partial void InsertFiche_Agent(Fiche_Agent instance);
     partial void UpdateFiche_Agent(Fiche_Agent instance);
     partial void DeleteFiche_Agent(Fiche_Agent instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.System_PointageConnectionString, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
 		{
 			OnCreated();
 		}
@@ -93,6 +102,30 @@ namespace System_Pointage.DAL
 			}
 		}
 		
+		public System.Data.Linq.Table<UserAccessProfileDetail> UserAccessProfileDetails
+		{
+			get
+			{
+				return this.GetTable<UserAccessProfileDetail>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserAccessProfilePosteDetail> UserAccessProfilePosteDetails
+		{
+			get
+			{
+				return this.GetTable<UserAccessProfilePosteDetail>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserAccessProfilePoste> UserAccessProfilePostes
+		{
+			get
+			{
+				return this.GetTable<UserAccessProfilePoste>();
+			}
+		}
+		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
@@ -101,11 +134,11 @@ namespace System_Pointage.DAL
 			}
 		}
 		
-		public System.Data.Linq.Table<UserAccessProfileDetail> UserAccessProfileDetails
+		public System.Data.Linq.Table<UserAccessProfileName> UserAccessProfileNames
 		{
 			get
 			{
-				return this.GetTable<UserAccessProfileDetail>();
+				return this.GetTable<UserAccessProfileName>();
 			}
 		}
 		
@@ -386,212 +419,6 @@ namespace System_Pointage.DAL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Name;
-		
-		private string _UserName;
-		
-		private string _Password;
-		
-		private byte _UserType;
-		
-		private System.Nullable<int> _ScreenProfileID;
-		
-		private bool _IsActive;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnUserTypeChanging(byte value);
-    partial void OnUserTypeChanged();
-    partial void OnScreenProfileIDChanging(System.Nullable<int> value);
-    partial void OnScreenProfileIDChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    #endregion
-		
-		public User()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserType", DbType="TinyInt NOT NULL")]
-		public byte UserType
-		{
-			get
-			{
-				return this._UserType;
-			}
-			set
-			{
-				if ((this._UserType != value))
-				{
-					this.OnUserTypeChanging(value);
-					this.SendPropertyChanging();
-					this._UserType = value;
-					this.SendPropertyChanged("UserType");
-					this.OnUserTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenProfileID", DbType="Int")]
-		public System.Nullable<int> ScreenProfileID
-		{
-			get
-			{
-				return this._ScreenProfileID;
-			}
-			set
-			{
-				if ((this._ScreenProfileID != value))
-				{
-					this.OnScreenProfileIDChanging(value);
-					this.SendPropertyChanging();
-					this._ScreenProfileID = value;
-					this.SendPropertyChanged("ScreenProfileID");
-					this.OnScreenProfileIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserAccessProfileDetails")]
 	public partial class UserAccessProfileDetail : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -846,6 +673,518 @@ namespace System_Pointage.DAL
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserAccessProfilePosteDetails")]
+	public partial class UserAccessProfilePosteDetail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _ID_Name_Poste;
+		
+		private int _ID_AccessPoste;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnID_Name_PosteChanging(int value);
+    partial void OnID_Name_PosteChanged();
+    partial void OnID_AccessPosteChanging(int value);
+    partial void OnID_AccessPosteChanged();
+    #endregion
+		
+		public UserAccessProfilePosteDetail()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Name_Poste", DbType="Int NOT NULL")]
+		public int ID_Name_Poste
+		{
+			get
+			{
+				return this._ID_Name_Poste;
+			}
+			set
+			{
+				if ((this._ID_Name_Poste != value))
+				{
+					this.OnID_Name_PosteChanging(value);
+					this.SendPropertyChanging();
+					this._ID_Name_Poste = value;
+					this.SendPropertyChanged("ID_Name_Poste");
+					this.OnID_Name_PosteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_AccessPoste", DbType="Int NOT NULL")]
+		public int ID_AccessPoste
+		{
+			get
+			{
+				return this._ID_AccessPoste;
+			}
+			set
+			{
+				if ((this._ID_AccessPoste != value))
+				{
+					this.OnID_AccessPosteChanging(value);
+					this.SendPropertyChanging();
+					this._ID_AccessPoste = value;
+					this.SendPropertyChanged("ID_AccessPoste");
+					this.OnID_AccessPosteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserAccessProfilePoste")]
+	public partial class UserAccessProfilePoste : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public UserAccessProfilePoste()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private string _UserName;
+		
+		private string _Password;
+		
+		private byte _UserType;
+		
+		private System.Nullable<int> _ScreenProfileID;
+		
+		private bool _IsActive;
+		
+		private System.Nullable<int> _IDAccessPoste;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnUserTypeChanging(byte value);
+    partial void OnUserTypeChanged();
+    partial void OnScreenProfileIDChanging(System.Nullable<int> value);
+    partial void OnScreenProfileIDChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    partial void OnIDAccessPosteChanging(System.Nullable<int> value);
+    partial void OnIDAccessPosteChanged();
+    #endregion
+		
+		public User()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserType", DbType="TinyInt NOT NULL")]
+		public byte UserType
+		{
+			get
+			{
+				return this._UserType;
+			}
+			set
+			{
+				if ((this._UserType != value))
+				{
+					this.OnUserTypeChanging(value);
+					this.SendPropertyChanging();
+					this._UserType = value;
+					this.SendPropertyChanged("UserType");
+					this.OnUserTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenProfileID", DbType="Int")]
+		public System.Nullable<int> ScreenProfileID
+		{
+			get
+			{
+				return this._ScreenProfileID;
+			}
+			set
+			{
+				if ((this._ScreenProfileID != value))
+				{
+					this.OnScreenProfileIDChanging(value);
+					this.SendPropertyChanging();
+					this._ScreenProfileID = value;
+					this.SendPropertyChanged("ScreenProfileID");
+					this.OnScreenProfileIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDAccessPoste", DbType="Int")]
+		public System.Nullable<int> IDAccessPoste
+		{
+			get
+			{
+				return this._IDAccessPoste;
+			}
+			set
+			{
+				if ((this._IDAccessPoste != value))
+				{
+					this.OnIDAccessPosteChanging(value);
+					this.SendPropertyChanging();
+					this._IDAccessPoste = value;
+					this.SendPropertyChanged("IDAccessPoste");
+					this.OnIDAccessPosteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserAccessProfileName")]
+	public partial class UserAccessProfileName : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public UserAccessProfileName()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Agent")]
 	public partial class Fiche_Agent : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -860,9 +1199,11 @@ namespace System_Pointage.DAL
 		
 		private System.Nullable<int> _Jour;
 		
-		private System.Nullable<System.DateTime> _Date_Embauche;
+		private System.DateTime _Date_Embauche;
 		
 		private System.Nullable<bool> _Statut;
+		
+		private System.Nullable<int> _ScreenPosteD;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -876,10 +1217,12 @@ namespace System_Pointage.DAL
     partial void OnID_PostChanged();
     partial void OnJourChanging(System.Nullable<int> value);
     partial void OnJourChanged();
-    partial void OnDate_EmbaucheChanging(System.Nullable<System.DateTime> value);
+    partial void OnDate_EmbaucheChanging(System.DateTime value);
     partial void OnDate_EmbaucheChanged();
     partial void OnStatutChanging(System.Nullable<bool> value);
     partial void OnStatutChanged();
+    partial void OnScreenPosteDChanging(System.Nullable<int> value);
+    partial void OnScreenPosteDChanged();
     #endregion
 		
 		public Fiche_Agent()
@@ -967,8 +1310,8 @@ namespace System_Pointage.DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_Embauche", DbType="Date")]
-		public System.Nullable<System.DateTime> Date_Embauche
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_Embauche", DbType="Date NOT NULL")]
+		public System.DateTime Date_Embauche
 		{
 			get
 			{
@@ -1003,6 +1346,26 @@ namespace System_Pointage.DAL
 					this._Statut = value;
 					this.SendPropertyChanged("Statut");
 					this.OnStatutChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenPosteD", DbType="Int")]
+		public System.Nullable<int> ScreenPosteD
+		{
+			get
+			{
+				return this._ScreenPosteD;
+			}
+			set
+			{
+				if ((this._ScreenPosteD != value))
+				{
+					this.OnScreenPosteDChanging(value);
+					this.SendPropertyChanging();
+					this._ScreenPosteD = value;
+					this.SendPropertyChanged("ScreenPosteD");
+					this.OnScreenPosteDChanged();
 				}
 			}
 		}

@@ -105,6 +105,7 @@ namespace System_Pointage.Form
             XtraForm frm = null;
             switch (name)
             {
+            
                 case "Frm_MVM_Operation_P":
                     frm = new Frm_MVM_Operation(Classe.Master.MVMType.P);
                     break;
@@ -166,6 +167,11 @@ namespace System_Pointage.Form
                     return;
                 }
             }
+        }
+
+        private void Frm_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

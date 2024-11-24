@@ -181,8 +181,8 @@ namespace System_Pointage.Form
                         // عرض رسالة تحذيرية
                         string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
                         MessageBox.Show(
-                            $"العناصر التالية مكررة بالفعل في القائمة: {duplicateNames}",
-                            "تحذير",
+                            $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
+                            "avertissement",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning
                         );
@@ -199,45 +199,10 @@ namespace System_Pointage.Form
             }
             else
             {
-                MessageBox.Show("لا توجد بيانات لإرسالها.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Il n'y a aucune donnée à envoyer.", "avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            //if (transferredAgentsList.Count > 0)
-            //{
-            //    // الحصول على الفورم الأصلية (Frm_MVM_Operation)
-            //    var mainForm = this.Owner as Frm_MVM_Operation;
-            //    if (mainForm != null)
-            //    {
-            //        // التحقق من التكرارات
-            //        var duplicateAgents = transferredAgentsList
-            //            .Where(agent => mainForm.IsAgentExists(agent))
-            //            .ToList();
-
-            //        if (duplicateAgents.Any())
-            //        {
-            //            // عرض رسالة تحذيرية
-            //            string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
-            //            MessageBox.Show(
-            //                $"العناصر التالية مكررة بالفعل في القائمة: {duplicateNames}",
-            //                "تحذير",
-            //                MessageBoxButtons.OK,
-            //                MessageBoxIcon.Warning
-            //            );
-            //        }
-            //        else
-            //        {
-            //            // استدعاء الطريقة لإضافة البيانات إلى Frm_MVM_Operation
-            //            mainForm.AddTransferredAgents(transferredAgentsList);
-
-            //            // إغلاق الفورم الحالية
-            //            this.Close();
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("لا توجد بيانات لإرسالها.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //}
+          
         }
     }
 }

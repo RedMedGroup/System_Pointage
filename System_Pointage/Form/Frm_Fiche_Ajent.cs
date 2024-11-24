@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System_Pointage.Classe;
 
 namespace System_Pointage.Form
 {
@@ -32,16 +33,18 @@ namespace System_Pointage.Form
 
         private void Frm_Fiche_Ajent_Load(object sender, EventArgs e)
         {
+            dt_embouch.DateTime = DateTime.Now;
             using (var db = new DAL.DataClasses1DataContext())
             {
                 var post = db.Fiche_Postes.Select(x => new { x.ID, x.Name }).ToList();
 
-                // تهيئة GridLookUpEdit بالبيانات
                 lkp_post.Properties.DataSource = post;
                 lkp_post.Properties.DisplayMember = "Name";
                 lkp_post.Properties.ValueMember = "ID";
                 lkp_post.Properties.PopulateViewColumns();
                 lkp_post.Properties.View.Columns["ID"].Visible = false;
+                lkp_ScreanPoste.IntializeData(db.UserAccessProfilePostes.Select(x => new { x.ID, x.Name }).ToList());
+
             }
             lkp_post.EditValueChanged += Lkp_post_EditValueChanged;
             GetData();
@@ -73,7 +76,8 @@ namespace System_Pointage.Form
             agent.Name = txt_Name.Text;
             agent.ID_Post = Convert.ToInt32(lkp_post.EditValue);
             agent.Jour = Convert.ToInt32(spn_jour.EditValue);
-            agent.Date_Embauche = dt_embouch.DateTime; 
+            agent.Date_Embauche = dt_embouch.DateTime;
+            agent.ScreenPosteD = Convert.ToInt32(lkp_ScreanPoste.EditValue);
 
             if (cmb_statut.Text== "Actif")//
             {
@@ -89,30 +93,53 @@ namespace System_Pointage.Form
             txt_Name.Text = agent.Name;
             lkp_post.EditValue = agent.ID_Post;
             spn_jour.EditValue= agent.Jour;
-            dt_embouch.DateTime = (DateTime)agent.Date_Embauche;
-            if (agent.Statut == true) // تحقق مما إذا كانت الحالة true
+            dt_embouch.DateTime = agent.Date_Embauche;
+            lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
+
+            if (agent.Statut == true) 
             {
-                cmb_statut.Text = "Actif"; // تعيين النص إلى "Actif"
+                cmb_statut.Text = "Actif"; 
             }
             else
             {
-                cmb_statut.Text = "Inactif"; // تعيين النص إلى "Inactif" إذا كانت الحالة ليست true
+                cmb_statut.Text = "Inactif"; 
             }
         }
         void New()
         {
             agent = new DAL.Fiche_Agent();
+            GetData();
         }
         bool IsValidit()
         {
             if (txt_Name.Text.Trim() == string.Empty)
             {
-                txt_Name.Text = ErrorText;
+                txt_Name.ErrorText = ErrorText;
                 return false;
             }
             if (lkp_post.Text.Trim() == string.Empty)
             {
-                lkp_post.Text = ErrorText;
+                lkp_post.ErrorText = ErrorText;
+                return false;
+            }
+            if (dt_embouch.DateTime == DateTime.MinValue) 
+            {
+                dt_embouch.ErrorText = ErrorText;
+                return false;
+            }
+            if (spn_jour.Text.Trim() == string.Empty)
+            {
+                spn_jour.ErrorText = ErrorText;
+                return false;
+            }
+            if (lkp_ScreanPoste.Text.Trim() == string.Empty)
+            {
+                lkp_ScreanPoste.ErrorText = ErrorText;
+                return false;
+            }
+            if (cmb_statut.Text.Trim() == string.Empty)
+            {
+                cmb_statut.ErrorText = ErrorText;
                 return false;
             }
             return true;
