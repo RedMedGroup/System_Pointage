@@ -177,12 +177,12 @@ namespace System_Pointage.Classe
                 case Master.MVMType.A:
                     gridView1.Columns["Date"].Caption = "Date de rentrée";
                     gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
-                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de travail";
                     break;
                 case Master.MVMType.CR:
                     gridView1.Columns["Date"].Caption = "Date de rentrée";
                     gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
-                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de travail";
                     break;
                 default:
                     throw new NotImplementedException();

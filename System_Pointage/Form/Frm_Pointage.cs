@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System_Pointage.Classe;
 using System_Pointage.report;
 
 namespace System_Pointage.Form
@@ -588,6 +589,12 @@ namespace System_Pointage.Form
         private void btn_reportAparJour_Click(object sender, EventArgs e)
         {
             GenerateDailyReport();
+        }
+
+        private void btn_workdays_Click(object sender, EventArgs e)
+        {
+            Frm_WorkDays frm = new Frm_WorkDays();
+            frm.ShowDialog();
         }
     }
 }
