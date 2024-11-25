@@ -78,10 +78,10 @@
             // gridControl2
             // 
             this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.gridControl2.Location = new System.Drawing.Point(35, 406);
+            this.gridControl2.Location = new System.Drawing.Point(24, 400);
             this.gridControl2.MainView = this.gridView2;
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1314, 224);
+            this.gridControl2.Size = new System.Drawing.Size(1336, 241);
             this.gridControl2.TabIndex = 5;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView2});
@@ -96,10 +96,10 @@
             // gridControl1
             // 
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.gridControl1.Location = new System.Drawing.Point(35, 67);
+            this.gridControl1.Location = new System.Drawing.Point(24, 56);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1314, 267);
+            this.gridControl1.Size = new System.Drawing.Size(1336, 284);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -129,7 +129,7 @@
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1354, 339);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1364, 344);
             this.layoutControlGroup1.Text = "Liste des agents actuelles";
             // 
             // layoutControlItem1
@@ -137,7 +137,7 @@
             this.layoutControlItem1.Control = this.gridControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 273);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1340, 288);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -147,17 +147,17 @@
             this.layoutControlGroup2.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem2});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 339);
+            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 344);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1354, 296);
-            this.layoutControlGroup2.Text = "Liste des agents envoyées";
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1364, 301);
+            this.layoutControlGroup2.Text = "-";
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControl2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1320, 230);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1340, 245);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 

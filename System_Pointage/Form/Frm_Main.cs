@@ -33,6 +33,8 @@ namespace System_Pointage.Form
         {
             InitializeComponent();
             ribbon.ItemClick += Ribbon_ItemClick;
+            ribbon.Name = "Système de pointage";
+            this.Text= ribbon.Name+"  ("+ "Utilisateur :"+Frm_LogIn.NamUser+") ";
         }
 
         private void Ribbon_ItemClick(object sender, ItemClickEventArgs e)

@@ -20,6 +20,7 @@ namespace System_Pointage.Form
         public Frm_LogIn()
         {
             InitializeComponent();
+            CheckForUpdates();
         }
         public static string NamUser;
         public static int IDUser;
@@ -108,9 +109,9 @@ namespace System_Pointage.Form
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            string apiUrl = "https://api.github.com/repos/RedMedGroup/Sonatrach_Pointage_New/releases/latest";
+            string apiUrl = "https://api.github.com/repos/RedMedGroup/System_Pointage/releases/latest";
 
-            string currentVersion = "V2.4.0.0";
+            string currentVersion = "1.1.0.0";
 
             using (WebClient webClient = new WebClient())
             {

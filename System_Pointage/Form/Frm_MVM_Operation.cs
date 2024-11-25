@@ -35,14 +35,23 @@ namespace System_Pointage.Classe
             {
     
                 case Master.MVMType.P:
-                    this.Text = "Présent";
+                    this.Text = "Ajouter des Rentrants";//
+                    btn_list_prevu.Text = "Rentrant prévue";
+                    layoutControlItem2.Text= "Date de Rentrant";
+                    btn_ovrirEn.Text = "Séléction Agent Rentrant";
                     break;
                 case Master.MVMType.A:
-                    this.Text = "Absent";
-                    layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
+                    this.Text = "Ajouter des Absent";
+                    layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem2.Text = "Date de Absent";
+                    btn_ovrirEn.Text = "Séléction Agent Absent";
                     break;
                 case Master.MVMType.CR:
-                    this.Text = "cr";
+                    this.Text = "Ajouter des Partants";
+                    btn_list_prevu.Text = "Partant prévue";
+                    layoutControlItem2.Text = "Date de Partant";
+                    btn_ovrirEn.Text = "Séléction Agent Partant";
+
                     //this.Name = Class.Screens.Trqnsfertchambre.ScreenName;
                     break;
                 default:
@@ -148,15 +157,36 @@ namespace System_Pointage.Classe
         public void GridName()
         {
             gridView1.Columns["Name"].Caption = "Nom et prénom";
-            gridView1.Columns["Date"].Caption = "Date de début";
             gridView1.Columns["Jour"].Caption = "Systéme";
-            gridView1.Columns["CalculatedDate"].Caption = "Date prévue";
-            gridView1.Columns["Name"].VisibleIndex = 0;
-            gridView1.Columns["Poste"].VisibleIndex = 1;
-            gridView1.Columns["Date"].VisibleIndex = 3;
-            gridView1.Columns["Jour"].VisibleIndex = 4;
-            gridView1.Columns["CalculatedDate"].VisibleIndex = 5;
-            gridView1.Columns["Statut"].VisibleIndex = 6;
+            gridView1.Columns["Matricule"].VisibleIndex = 0;
+            gridView1.Columns["Name"].VisibleIndex = 1;
+            gridView1.Columns["Poste"].VisibleIndex = 2;
+            gridView1.Columns["Affecter"].VisibleIndex = 3;
+            gridView1.Columns["Date"].VisibleIndex = 4;
+            gridView1.Columns["Jour"].VisibleIndex = 5;
+            gridView1.Columns["CalculatedDate"].VisibleIndex = 6;
+            gridView1.Columns["DaysCount"].VisibleIndex = 7;
+            gridView1.Columns["Statut"].VisibleIndex = 8;
+            switch (Type)
+            {
+                case Master.MVMType.P:
+                    gridView1.Columns["Date"].Caption = "Date de début Congé";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue rentrée";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de congé";
+                    break;
+                case Master.MVMType.A:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                case Master.MVMType.CR:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private void btn_list_prevu_Click_1(object sender, EventArgs e)

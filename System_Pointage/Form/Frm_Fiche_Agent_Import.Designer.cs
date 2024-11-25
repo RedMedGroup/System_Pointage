@@ -30,46 +30,46 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Fiche_Agent_Import));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.btn_exl = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl11 = new DevExpress.XtraGrid.GridControl();
             this.gridView11 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lkp_Firstname = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView2112 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.lkp_Division = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView21131 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lkp_Matricule = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView211 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lkp_Name = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2111 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lkp_Firstname = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView2112 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lkp_Poste = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2113 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lkp_Division = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView21131 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.btn_exl = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkp_Firstname.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2112)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkp_Division.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView21131)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Matricule.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView211)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Name.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2111)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lkp_Firstname.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2112)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Poste.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2113)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lkp_Division.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView21131)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
@@ -96,16 +96,15 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // Root
+            // btn_exl
             // 
-            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.Root.GroupBordersVisible = false;
-            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlGroup6,
-            this.layoutControlGroup4});
-            this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(1301, 532);
-            this.Root.TextVisible = false;
+            this.btn_exl.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_exl.ImageOptions.SvgImage")));
+            this.btn_exl.Location = new System.Drawing.Point(24, 256);
+            this.btn_exl.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_exl.Name = "btn_exl";
+            this.btn_exl.Size = new System.Drawing.Size(294, 52);
+            this.btn_exl.StyleController = this.layoutControl1;
+            this.btn_exl.TabIndex = 9;
             // 
             // gridControl11
             // 
@@ -125,76 +124,6 @@
             this.gridView11.GridControl = this.gridControl11;
             this.gridView11.Name = "gridView11";
             this.gridView11.OptionsView.ShowFooter = true;
-            // 
-            // layoutControlGroup6
-            // 
-            this.layoutControlGroup6.AppearanceGroup.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            this.layoutControlGroup6.AppearanceGroup.Options.UseBorderColor = true;
-            this.layoutControlGroup6.CustomizationFormText = "layoutControlGroup1";
-            this.layoutControlGroup6.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem15});
-            this.layoutControlGroup6.Location = new System.Drawing.Point(322, 0);
-            this.layoutControlGroup6.Name = "layoutControlGroup6";
-            this.layoutControlGroup6.OptionsItemText.TextToControlDistance = 3;
-            this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(13, 13, 13, 13);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(959, 512);
-            this.layoutControlGroup6.Spacing = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
-            this.layoutControlGroup6.Text = "Fichier importé Excel";
-            // 
-            // layoutControlItem15
-            // 
-            this.layoutControlItem15.Control = this.gridControl11;
-            this.layoutControlItem15.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
-            this.layoutControlItem15.CustomizationFormText = "layoutControlItem1";
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
-            this.layoutControlItem15.Size = new System.Drawing.Size(925, 446);
-            this.layoutControlItem15.Text = "layoutControlItem1";
-            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem15.TextVisible = false;
-            // 
-            // lkp_Firstname
-            // 
-            this.lkp_Firstname.Location = new System.Drawing.Point(139, 101);
-            this.lkp_Firstname.Margin = new System.Windows.Forms.Padding(4);
-            this.lkp_Firstname.Name = "lkp_Firstname";
-            this.lkp_Firstname.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lkp_Firstname.Properties.NullText = "";
-            this.lkp_Firstname.Properties.PopupView = this.gridView2112;
-            this.lkp_Firstname.Size = new System.Drawing.Size(174, 26);
-            this.lkp_Firstname.StyleController = this.layoutControl1;
-            this.lkp_Firstname.TabIndex = 5;
-            // 
-            // gridView2112
-            // 
-            this.gridView2112.DetailHeight = 512;
-            this.gridView2112.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView2112.Name = "gridView2112";
-            this.gridView2112.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView2112.OptionsView.ShowGroupPanel = false;
-            // 
-            // lkp_Division
-            // 
-            this.lkp_Division.Location = new System.Drawing.Point(139, 221);
-            this.lkp_Division.Margin = new System.Windows.Forms.Padding(4);
-            this.lkp_Division.Name = "lkp_Division";
-            this.lkp_Division.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lkp_Division.Properties.NullText = "";
-            this.lkp_Division.Properties.PopupView = this.gridView21131;
-            this.lkp_Division.Size = new System.Drawing.Size(174, 26);
-            this.lkp_Division.StyleController = this.layoutControl1;
-            this.lkp_Division.TabIndex = 8;
-            // 
-            // gridView21131
-            // 
-            this.gridView21131.DetailHeight = 512;
-            this.gridView21131.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView21131.Name = "gridView21131";
-            this.gridView21131.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView21131.OptionsView.ShowGroupPanel = false;
             // 
             // lkp_Matricule
             // 
@@ -238,6 +167,27 @@
             this.gridView2111.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView2111.OptionsView.ShowGroupPanel = false;
             // 
+            // lkp_Firstname
+            // 
+            this.lkp_Firstname.Location = new System.Drawing.Point(139, 101);
+            this.lkp_Firstname.Margin = new System.Windows.Forms.Padding(4);
+            this.lkp_Firstname.Name = "lkp_Firstname";
+            this.lkp_Firstname.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lkp_Firstname.Properties.NullText = "";
+            this.lkp_Firstname.Properties.PopupView = this.gridView2112;
+            this.lkp_Firstname.Size = new System.Drawing.Size(174, 26);
+            this.lkp_Firstname.StyleController = this.layoutControl1;
+            this.lkp_Firstname.TabIndex = 5;
+            // 
+            // gridView2112
+            // 
+            this.gridView2112.DetailHeight = 512;
+            this.gridView2112.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView2112.Name = "gridView2112";
+            this.gridView2112.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView2112.OptionsView.ShowGroupPanel = false;
+            // 
             // lkp_Poste
             // 
             this.lkp_Poste.Location = new System.Drawing.Point(139, 181);
@@ -258,6 +208,66 @@
             this.gridView2113.Name = "gridView2113";
             this.gridView2113.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView2113.OptionsView.ShowGroupPanel = false;
+            // 
+            // lkp_Division
+            // 
+            this.lkp_Division.Location = new System.Drawing.Point(139, 221);
+            this.lkp_Division.Margin = new System.Windows.Forms.Padding(4);
+            this.lkp_Division.Name = "lkp_Division";
+            this.lkp_Division.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lkp_Division.Properties.NullText = "";
+            this.lkp_Division.Properties.PopupView = this.gridView21131;
+            this.lkp_Division.Size = new System.Drawing.Size(174, 26);
+            this.lkp_Division.StyleController = this.layoutControl1;
+            this.lkp_Division.TabIndex = 8;
+            // 
+            // gridView21131
+            // 
+            this.gridView21131.DetailHeight = 512;
+            this.gridView21131.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView21131.Name = "gridView21131";
+            this.gridView21131.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView21131.OptionsView.ShowGroupPanel = false;
+            // 
+            // Root
+            // 
+            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.Root.GroupBordersVisible = false;
+            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlGroup6,
+            this.layoutControlGroup4});
+            this.Root.Name = "Root";
+            this.Root.Size = new System.Drawing.Size(1301, 532);
+            this.Root.TextVisible = false;
+            // 
+            // layoutControlGroup6
+            // 
+            this.layoutControlGroup6.AppearanceGroup.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.layoutControlGroup6.AppearanceGroup.Options.UseBorderColor = true;
+            this.layoutControlGroup6.CustomizationFormText = "layoutControlGroup1";
+            this.layoutControlGroup6.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem15});
+            this.layoutControlGroup6.Location = new System.Drawing.Point(322, 0);
+            this.layoutControlGroup6.Name = "layoutControlGroup6";
+            this.layoutControlGroup6.OptionsItemText.TextToControlDistance = 3;
+            this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(13, 13, 13, 13);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(959, 512);
+            this.layoutControlGroup6.Spacing = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
+            this.layoutControlGroup6.Text = "Fichier importé Excel";
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.gridControl11;
+            this.layoutControlItem15.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.layoutControlItem15.CustomizationFormText = "layoutControlItem1";
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
+            this.layoutControlItem15.Size = new System.Drawing.Size(925, 446);
+            this.layoutControlItem15.Text = "layoutControlItem1";
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
             // 
             // layoutControlGroup4
             // 
@@ -352,16 +362,6 @@
             this.layoutControlItem13.TextLocation = DevExpress.Utils.Locations.Left;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(98, 25);
             // 
-            // btn_exl
-            // 
-            this.btn_exl.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_exl.ImageOptions.SvgImage")));
-            this.btn_exl.Location = new System.Drawing.Point(24, 256);
-            this.btn_exl.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_exl.Name = "btn_exl";
-            this.btn_exl.Size = new System.Drawing.Size(294, 52);
-            this.btn_exl.StyleController = this.layoutControl1;
-            this.btn_exl.TabIndex = 9;
-            // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btn_exl;
@@ -382,21 +382,21 @@
             this.Load += new System.EventHandler(this.Frm_Fiche_Agent_Import_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkp_Firstname.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2112)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkp_Division.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView21131)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Matricule.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView211)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Name.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2111)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lkp_Firstname.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2112)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_Poste.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2113)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lkp_Division.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView21131)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();

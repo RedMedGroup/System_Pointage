@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Pointage));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btn_reportAparJour = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btn_print_pinalite = new DevExpress.XtraEditors.SimpleButton();
@@ -44,6 +45,7 @@
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btn_print = new DevExpress.XtraBars.BarButtonItem();
@@ -54,8 +56,6 @@
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.btn_reportAparJour = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -71,8 +71,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -91,6 +91,18 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // btn_reportAparJour
+            // 
+            this.btn_reportAparJour.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_reportAparJour.ImageOptions.SvgImage")));
+            this.btn_reportAparJour.Location = new System.Drawing.Point(1194, 12);
+            this.btn_reportAparJour.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_reportAparJour.Name = "btn_reportAparJour";
+            this.btn_reportAparJour.Size = new System.Drawing.Size(161, 52);
+            this.btn_reportAparJour.StyleController = this.layoutControl1;
+            this.btn_reportAparJour.TabIndex = 22;
+            this.btn_reportAparJour.Text = "Etat personnel";
+            this.btn_reportAparJour.Click += new System.EventHandler(this.btn_reportAparJour_Click);
+            // 
             // gridControl1
             // 
             this.gridControl1.Location = new System.Drawing.Point(24, 112);
@@ -105,6 +117,7 @@
             // 
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // btn_print_pinalite
             // 
@@ -233,6 +246,15 @@
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.btn_reportAparJour;
+            this.layoutControlItem6.Location = new System.Drawing.Point(1182, 0);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(165, 56);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
+            // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -330,27 +352,6 @@
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Size = new System.Drawing.Size(0, 572);
             // 
-            // btn_reportAparJour
-            // 
-            this.btn_reportAparJour.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_reportAparJour.ImageOptions.SvgImage")));
-            this.btn_reportAparJour.Location = new System.Drawing.Point(1194, 12);
-            this.btn_reportAparJour.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_reportAparJour.Name = "btn_reportAparJour";
-            this.btn_reportAparJour.Size = new System.Drawing.Size(161, 52);
-            this.btn_reportAparJour.StyleController = this.layoutControl1;
-            this.btn_reportAparJour.TabIndex = 22;
-            this.btn_reportAparJour.Text = "Etat personnel";
-            this.btn_reportAparJour.Click += new System.EventHandler(this.btn_reportAparJour_Click);
-            // 
-            // layoutControlItem6
-            // 
-            this.layoutControlItem6.Control = this.btn_reportAparJour;
-            this.layoutControlItem6.Location = new System.Drawing.Point(1182, 0);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(165, 56);
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem6.TextVisible = false;
-            // 
             // Frm_Pointage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -379,8 +380,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

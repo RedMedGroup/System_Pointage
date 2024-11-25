@@ -26,7 +26,7 @@ namespace System_Pointage.Classe
                 .Where(agent => agent != null)
                 .Join(_context.Fiche_Agents,
                     agent => agent.ItemID,
-                    worker => worker.ID,
+                    worker => worker.ID,                
                     (agent, worker) => new { agent, worker })
                 .Join(_context.Fiche_Postes,
                     ma => ma.worker.ID_Post,
@@ -36,7 +36,7 @@ namespace System_Pointage.Classe
                         ma.worker,
                         ma.agent,
                         poste.Name,
-                        ma.worker.Jour
+                        ma.worker.Jour,
                     });
 
             // تطبيق الفلترة بناءً على userAccessPosteID إذا لم يكن المستخدم أدمن
@@ -76,13 +76,20 @@ namespace System_Pointage.Classe
                     Statut = ma.agent.Statut,
                     Poste = ma.Name,
                     Jour = ma.Jour.GetValueOrDefault(),
-                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour.GetValueOrDefault())
-                })
+                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour.GetValueOrDefault()),
+                    Matricule = ma.worker.Matricule,
+                    Affecter = ma.worker.Affecter,
+                    DaysCount = ma.agent.Statut == "P"
+                  ? (DateTime.Now - ma.agent.Date).Days 
+                 : ma.agent.Statut == "CR"
+                   ? (DateTime.Now - ma.agent.Date).Days 
+                  : 0 // في الحالات الأخرى، القيمة 0
+                  })
                 .ToList();
 
             return new BindingList<Models.AgentStatus>(agents);
         }
-        #region ////////////////////////
+        #region ////////////////////////  Agent liste
         private readonly DAL.DataClasses1DataContext _dbContext;
 
         public AgentDataService(DAL.DataClasses1DataContext dbContext)
@@ -101,8 +108,10 @@ namespace System_Pointage.Classe
                         {
                             agent.ID,
                            AgentID = agent.ID,
+                           agent.Matricule,
                             Name = agent.Name,
                             PostName = post.Name,
+                            agent.Affecter,
                             agent.Jour,
                             agent.Date_Embauche,
                             agent.Statut,

@@ -57,7 +57,7 @@ namespace System_Pointage.DAL
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.System_PointageConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -1193,6 +1193,8 @@ namespace System_Pointage.DAL
 		
 		private int _ID;
 		
+		private string _Matricule;
+		
 		private string _Name;
 		
 		private int _ID_Post;
@@ -1205,12 +1207,16 @@ namespace System_Pointage.DAL
 		
 		private System.Nullable<int> _ScreenPosteD;
 		
+		private string _Affecter;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
     partial void OnIDChanging(int value);
     partial void OnIDChanged();
+    partial void OnMatriculeChanging(string value);
+    partial void OnMatriculeChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnID_PostChanging(int value);
@@ -1223,6 +1229,8 @@ namespace System_Pointage.DAL
     partial void OnStatutChanged();
     partial void OnScreenPosteDChanging(System.Nullable<int> value);
     partial void OnScreenPosteDChanged();
+    partial void OnAffecterChanging(string value);
+    partial void OnAffecterChanged();
     #endregion
 		
 		public Fiche_Agent()
@@ -1246,6 +1254,26 @@ namespace System_Pointage.DAL
 					this._ID = value;
 					this.SendPropertyChanged("ID");
 					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matricule", DbType="NVarChar(MAX)")]
+		public string Matricule
+		{
+			get
+			{
+				return this._Matricule;
+			}
+			set
+			{
+				if ((this._Matricule != value))
+				{
+					this.OnMatriculeChanging(value);
+					this.SendPropertyChanging();
+					this._Matricule = value;
+					this.SendPropertyChanged("Matricule");
+					this.OnMatriculeChanged();
 				}
 			}
 		}
@@ -1366,6 +1394,26 @@ namespace System_Pointage.DAL
 					this._ScreenPosteD = value;
 					this.SendPropertyChanged("ScreenPosteD");
 					this.OnScreenPosteDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Affecter", DbType="NVarChar(10)")]
+		public string Affecter
+		{
+			get
+			{
+				return this._Affecter;
+			}
+			set
+			{
+				if ((this._Affecter != value))
+				{
+					this.OnAffecterChanging(value);
+					this.SendPropertyChanging();
+					this._Affecter = value;
+					this.SendPropertyChanged("Affecter");
+					this.OnAffecterChanged();
 				}
 			}
 		}

@@ -38,14 +38,19 @@ namespace System_Pointage.Form
             switch (Type)
             {
                 case Master.MVMType.P:
-                    this.Text = "Présent";
+                    this.Text = "Liste des agents  en congé";
+                    layoutControlGroup1.Text = "Liste des agents  en congé";
+                    btn_envoyer.Caption = "Envoyer sur liste rentrant";
                     break;
                 case Master.MVMType.A:
-                    this.Text = "Absent";
+                    this.Text = "Liste des agents  en Présent";
+                    layoutControlGroup1.Text = "Liste des agents";
+                    btn_envoyer.Caption = "Envoyer sur liste absent";
                     break;
                 case Master.MVMType.CR:
-                    this.Text = "cr";
-                    //this.Name = Class.Screens.Trqnsfertchambre.ScreenName;
+                    this.Text = "Liste des agents  en Présent";
+                    layoutControlGroup1.Text = "Liste des agents  en Présent";
+                    btn_envoyer.Caption = "Envoyer sur liste partant";
                     break;
                 default:
                     throw new NotImplementedException();
@@ -109,23 +114,15 @@ namespace System_Pointage.Form
                 }
             }
         }
-
         private void SetupGridColumns()
         {
             gridView2.Columns.Clear();
 
             gridView2.Columns.AddVisible("Name", "Nom et prénom");
-        //    gridView2.Columns.AddVisible("Date", "Date");
             gridView2.Columns.AddVisible("Poste", "Poste");
-
-            // إعداد تاريخ التنسيق
-            //gridView2.Columns["Date"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            //gridView2.Columns["Date"].DisplayFormat.FormatString = "dd/MM/yyyy";
         }
-
         private void GridView1_DoubleClick(object sender, EventArgs e)
         {
-            // الحصول على السطر المحدد
             var selectedRow = gridView1.GetFocusedRow() as Models.AgentStatus;
 
             if (selectedRow != null)
@@ -159,15 +156,36 @@ namespace System_Pointage.Form
         public void GridName()
         {
             gridView1.Columns["Name"].Caption = "Nom et prénom";
-            gridView1.Columns["Date"].Caption = "Date de début";
             gridView1.Columns["Jour"].Caption = "Systéme";
-            gridView1.Columns["CalculatedDate"].Caption = "Date prévue";
-            gridView1.Columns["Name"].VisibleIndex = 0;
-            gridView1.Columns["Poste"].VisibleIndex = 1;
-            gridView1.Columns["Date"].VisibleIndex = 3;
-            gridView1.Columns["Jour"].VisibleIndex = 4;
-            gridView1.Columns["CalculatedDate"].VisibleIndex = 5;
-            gridView1.Columns["Statut"].VisibleIndex = 6;
+            gridView1.Columns["Matricule"].VisibleIndex = 0;
+            gridView1.Columns["Name"].VisibleIndex = 1;
+            gridView1.Columns["Poste"].VisibleIndex = 2;
+            gridView1.Columns["Affecter"].VisibleIndex = 3;
+            gridView1.Columns["Date"].VisibleIndex = 4;
+            gridView1.Columns["Jour"].VisibleIndex = 5;
+            gridView1.Columns["CalculatedDate"].VisibleIndex = 6;
+            gridView1.Columns["DaysCount"].VisibleIndex = 7;
+            gridView1.Columns["Statut"].VisibleIndex = 8;
+            switch (Type)
+            {
+                case Master.MVMType.P:
+                    gridView1.Columns["Date"].Caption = "Date de début Congé";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue rentrée";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de congé";
+                    break;
+                case Master.MVMType.A:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                case Master.MVMType.CR:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
         private void btn_envoyer_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

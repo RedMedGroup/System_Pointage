@@ -15,7 +15,10 @@ namespace System_Pointage.Classe
             public string Statut { get; set; }
             public int Jour { get; set; }
             public string Poste { get; set; }
-            public DateTime CalculatedDate { get; set; } 
+            public DateTime CalculatedDate { get; set; }
+            public int DaysCount { get; set; }
+            public string Matricule { get; set; }
+            public string Affecter { get; set; }
         }
    
     }

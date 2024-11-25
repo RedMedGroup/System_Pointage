@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraLayout;
 using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace System_Pointage.Form
         {
             InitializeComponent();
             Type = _Type;
+            SetFormType();
         }
  
         private void Frm_Prevu_Load(object sender, EventArgs e)
@@ -34,6 +36,27 @@ namespace System_Pointage.Form
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
             transferredAgentsList = new BindingList<Models.AgentStatus>();
+        }
+        void SetFormType()
+        {
+            switch (Type)
+            {
+                case Master.MVMType.P:
+                    this.Text = "Présent";
+                    btn_envoyer.Caption = "Envoyer sur liste rentrant";
+                    this.Text = "Ajouter des Rentrants";
+                    break;
+                case Master.MVMType.A:
+                    this.Text = "Ajouter des Absent";
+                    break;
+                case Master.MVMType.CR:
+                    this.Text = "cr";
+                    btn_envoyer.Caption = "Envoyer sur liste partant";
+                    this.Text = "Ajouter des Partant";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
         private void DateEdit1_EditValueChanged(object sender, EventArgs e)
         {
@@ -69,7 +92,14 @@ namespace System_Pointage.Form
                       ma.m.Statut,
                       ma.agent.Jour,
                       PosteName = poste.Name,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()) // حساب التاريخ
+                      ma.agent.Matricule,
+                      ma.agent.Affecter,
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()) ,
+                      DaysCount = ma.m.Statut == "P"
+                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                    : ma.m.Statut == "CR"
+                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                        : 0 // الحالات الأخرى
                   }) // اختيار Name من Fiche_Agents
                             .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
                             .ToList();
@@ -83,7 +113,10 @@ namespace System_Pointage.Form
                                 Statut = x.Statut,
                                 Jour = x.Jour ?? 0,
                                 Poste = x.PosteName,
-                                CalculatedDate = x.CalculatedDate
+                                CalculatedDate = x.CalculatedDate,
+                                DaysCount = x.DaysCount,
+                                Matricule = x.Matricule,
+                                Affecter = x.Affecter,
                             }).ToList()
                         );
 
@@ -107,9 +140,27 @@ namespace System_Pointage.Form
                             .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
                                   m => m.ItemID,
                                   agent => agent.ID,
-                                  (m, agent) => new { agent.Name, m.Date, m.Statut, agent.Jour,
-                                      CalculatedDate = m.Date.AddDays(agent.Jour ?? 0)
-                                  }) // اختيار Name من Fiche_Agents
+                                  (m, agent) => new { m, agent })
+                                     .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+                  ma => ma.agent.ID_Post,
+                  poste => poste.ID,
+                  (ma, poste) => new
+                  {
+                      ma.agent.Name,
+                      ma.m.Date,
+                      ma.m.Statut,
+                      ma.agent.Jour,
+                      PosteName = poste.Name,
+                      ma.agent.Matricule,
+                      ma.agent.Affecter,
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()) ,// حساب التاريخ
+                      DaysCount = ma.m.Statut == "P"
+                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                    : ma.m.Statut == "CR"
+                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                        : 0 // الحالات الأخرى
+
+                  }) // اختيار Name من Fiche_Agents
                             .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
                             .ToList();
 
@@ -121,7 +172,12 @@ namespace System_Pointage.Form
                                 Date = x.Date,
                                 Statut = x.Statut,
                                 Jour = x.Jour ?? 0,
-                                CalculatedDate = x.CalculatedDate
+                                Poste = x.PosteName,
+                                CalculatedDate = x.CalculatedDate,
+                                DaysCount = x.DaysCount,
+                                Matricule = x.Matricule,
+                                Affecter = x.Affecter,
+
                             }).ToList()
                         );
 
@@ -129,6 +185,42 @@ namespace System_Pointage.Form
                         gridControl1.DataSource = transferredAgentsList;
                         GridName();
                     }
+                    //using (var context = new DAL.DataClasses1DataContext())
+                    //{
+                    //    // استرجاع أحدث سجل لكل عامل
+                    //    var latestStatusForEachEmployee = context.MVMAgentDetails
+                    //        .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
+                    //        .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
+                    //        .Where(m => m.Statut == "P") // التأكد من أن الحالة "P"
+                    //        .ToList();
+
+                    //    // الربط بين الجداول بعد التحقق من الحالة
+                    //    var eligibleEmployees = latestStatusForEachEmployee
+                    //        .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
+                    //              m => m.ItemID,
+                    //              agent => agent.ID,
+                    //              (m, agent) => new { agent.Name, m.Date, m.Statut, agent.Jour,
+                    //                  CalculatedDate = m.Date.AddDays(agent.Jour ?? 0)
+                    //              }) // اختيار Name من Fiche_Agents
+                    //        .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                    //        .ToList();
+
+                    //    // إنشاء BindingList جديدة
+                    //    transferredAgentsList = new BindingList<Models.AgentStatus>(
+                    //        eligibleEmployees.Select(x => new Models.AgentStatus
+                    //        {
+                    //            Name = x.Name,
+                    //            Date = x.Date,
+                    //            Statut = x.Statut,
+                    //            Jour = x.Jour ?? 0,
+                    //            CalculatedDate = x.CalculatedDate
+                    //        }).ToList()
+                    //    );
+
+                    //    // تعيين البيانات إلى GridControl
+                    //    gridControl1.DataSource = transferredAgentsList;
+                    //    GridName();
+                    //}
                     break;
                 default:
                     break;
@@ -136,17 +228,38 @@ namespace System_Pointage.Form
             }
         }
         public void GridName()
-        {
+        {           
             gridView1.Columns["Name"].Caption = "Nom et prénom";
-            gridView1.Columns["Date"].Caption = "Date de début";
             gridView1.Columns["Jour"].Caption = "Systéme";
-            gridView1.Columns["CalculatedDate"].Caption = "Date prévue";
-            gridView1.Columns["Name"].VisibleIndex = 1;
-            gridView1.Columns["Poste"].VisibleIndex = 2;
-            gridView1.Columns["Date"].VisibleIndex = 3;
-            gridView1.Columns["Jour"].VisibleIndex = 4;
-            gridView1.Columns["CalculatedDate"].VisibleIndex = 5;
-            gridView1.Columns["Statut"].VisibleIndex =6;
+            gridView1.Columns["Matricule"].VisibleIndex =1;
+            gridView1.Columns["Name"].VisibleIndex = 2;
+            gridView1.Columns["Poste"].VisibleIndex = 3;
+            gridView1.Columns["Affecter"].VisibleIndex =4;
+            gridView1.Columns["Date"].VisibleIndex =5;
+            gridView1.Columns["Jour"].VisibleIndex = 6;
+            gridView1.Columns["CalculatedDate"].VisibleIndex = 7;
+            gridView1.Columns["DaysCount"].VisibleIndex =8;
+            gridView1.Columns["Statut"].VisibleIndex =9;
+            switch (Type)
+            {
+                case Master.MVMType.P:
+                    gridView1.Columns["Date"].Caption = "Date de début Congé";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue rentrée";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de congé";
+                    break;
+                case Master.MVMType.A:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                case Master.MVMType.CR:
+                    gridView1.Columns["Date"].Caption = "Date de rentrée";
+                    gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
+                    gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
         private void btn_prevu_Click(object sender, EventArgs e)
         {

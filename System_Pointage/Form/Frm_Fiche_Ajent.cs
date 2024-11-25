@@ -78,7 +78,8 @@ namespace System_Pointage.Form
             agent.Jour = Convert.ToInt32(spn_jour.EditValue);
             agent.Date_Embauche = dt_embouch.DateTime;
             agent.ScreenPosteD = Convert.ToInt32(lkp_ScreanPoste.EditValue);
-
+            agent.Matricule=txt_matricule.Text;
+            agent.Affecter=cmb_affecte.Text;
             if (cmb_statut.Text== "Actif")//
             {
                agent.Statut = true;
@@ -95,7 +96,8 @@ namespace System_Pointage.Form
             spn_jour.EditValue= agent.Jour;
             dt_embouch.DateTime = agent.Date_Embauche;
             lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
-
+            txt_matricule.Text=agent.Matricule;
+            cmb_affecte.Text = agent.Affecter;
             if (agent.Statut == true) 
             {
                 cmb_statut.Text = "Actif"; 
