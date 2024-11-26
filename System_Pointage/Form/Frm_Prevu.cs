@@ -185,42 +185,7 @@ namespace System_Pointage.Form
                         gridControl1.DataSource = transferredAgentsList;
                         GridName();
                     }
-                    //using (var context = new DAL.DataClasses1DataContext())
-                    //{
-                    //    // استرجاع أحدث سجل لكل عامل
-                    //    var latestStatusForEachEmployee = context.MVMAgentDetails
-                    //        .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
-                    //        .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
-                    //        .Where(m => m.Statut == "P") // التأكد من أن الحالة "P"
-                    //        .ToList();
-
-                    //    // الربط بين الجداول بعد التحقق من الحالة
-                    //    var eligibleEmployees = latestStatusForEachEmployee
-                    //        .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
-                    //              m => m.ItemID,
-                    //              agent => agent.ID,
-                    //              (m, agent) => new { agent.Name, m.Date, m.Statut, agent.Jour,
-                    //                  CalculatedDate = m.Date.AddDays(agent.Jour ?? 0)
-                    //              }) // اختيار Name من Fiche_Agents
-                    //        .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
-                    //        .ToList();
-
-                    //    // إنشاء BindingList جديدة
-                    //    transferredAgentsList = new BindingList<Models.AgentStatus>(
-                    //        eligibleEmployees.Select(x => new Models.AgentStatus
-                    //        {
-                    //            Name = x.Name,
-                    //            Date = x.Date,
-                    //            Statut = x.Statut,
-                    //            Jour = x.Jour ?? 0,
-                    //            CalculatedDate = x.CalculatedDate
-                    //        }).ToList()
-                    //    );
-
-                    //    // تعيين البيانات إلى GridControl
-                    //    gridControl1.DataSource = transferredAgentsList;
-                    //    GridName();
-                    //}
+                  
                     break;
                 default:
                     break;
@@ -228,7 +193,8 @@ namespace System_Pointage.Form
             }
         }
         public void GridName()
-        {           
+        {
+            gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
             gridView1.Columns["Matricule"].VisibleIndex =1;

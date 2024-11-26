@@ -60,6 +60,9 @@
     <Reference Include="DevExpress.XtraReports.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraReports.v22.2.Extensions, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="ExcelDataReader, Version=3.7.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.7.0\lib\net462\ExcelDataReader.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -68,6 +71,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
@@ -104,6 +108,12 @@
     <Compile Include="Form\Frm_Debut_Present.Designer.cs">
       <DependentUpon>Frm_Debut_Present.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_FichePost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_FichePost.Designer.cs">
+      <DependentUpon>Frm_FichePost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Fiche_Agent_Import.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +125,12 @@
     </Compile>
     <Compile Include="Form\Frm_Fiche_Ajent.Designer.cs">
       <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_Heir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Heir.Designer.cs">
+      <DependentUpon>Frm_Heir.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_LogIn.cs">
       <SubType>Form</SubType>
@@ -223,11 +239,17 @@
     <EmbeddedResource Include="Form\Frm_Debut_Present.resx">
       <DependentUpon>Frm_Debut_Present.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_FichePost.resx">
+      <DependentUpon>Frm_FichePost.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Fiche_Agent_Import.resx">
       <DependentUpon>Frm_Fiche_Agent_Import.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Fiche_Ajent.resx">
       <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Heir.resx">
+      <DependentUpon>Frm_Heir.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_LogIn.resx">
       <DependentUpon>Frm_LogIn.cs</DependentUpon>

@@ -25,7 +25,6 @@ namespace System_Pointage.Form
             InitializeComponent();
             
         }
-
         private void Frm_WorkDays_Load(object sender, EventArgs e)
         {
             RefrecheData();
@@ -52,6 +51,7 @@ namespace System_Pointage.Form
         }
         public void GridName()
         {
+            gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
             gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
@@ -69,28 +69,24 @@ namespace System_Pointage.Form
         }
         private void GenerateReport()
         {
-            // تأكد من أن قائمة البيانات ليست فارغة
             if (activeAgentsList == null || !activeAgentsList.Any())
             {
-                MessageBox.Show("لا توجد بيانات لإنشاء التقرير.");
+                MessageBox.Show("Il n'y a aucune donnée pour générer le rapport.");
                 return;
             }
 
-            // إنشاء كائن التقرير
             rpt_WorkDay report = new rpt_WorkDay();
 
-            // تعيين مصدر البيانات
             report.DataSource = activeAgentsList;
             report.DataMember = "";
 
-            // إعداد الحقول المطلوبة في التقرير
             var nameField = new XRLabel { Text = "Name" };
             var matriculeField = new XRLabel { Text = "Matricule" };
             var posteField = new XRLabel { Text = "Poste" };
             var daysCountField = new XRLabel { Text = "DaysCount" };
             var calculatedDateField = new XRLabel { Text = "CalculatedDate" };
 
-            // إضافة الحقول إلى التقرير
+            // ajouter les champs dans rapport
             report.Bands.Add(new DetailBand());
             report.Bands[0].Controls.AddRange(new XRControl[]
             {
@@ -101,21 +97,17 @@ namespace System_Pointage.Form
         calculatedDateField
             });
 
-            //// معاينة التقرير
-            //ReportPrintTool printTool = new ReportPrintTool(report);
-            //printTool.ShowPreviewDialog();
+      
         }
         private void ShowWorkDayReport()
         {
-            // إنشاء التقرير
             var report = new rpt_WorkDay();
             var filteredData = activeAgentsList
        .Where(agent => agent.DaysCount > agent.Jour)
        .ToList();
-            // تحميل البيانات
-            report.LoadData(filteredData); // حيث أن activeAgentsList هي بياناتك
 
-            // معاينة التقرير
+            report.LoadData(filteredData); 
+
             ReportPrintTool printTool = new ReportPrintTool(report);
             printTool.ShowPreviewDialog();
         }

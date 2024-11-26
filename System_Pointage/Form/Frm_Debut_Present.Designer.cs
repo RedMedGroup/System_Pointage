@@ -78,14 +78,14 @@
             // dateEdit1
             // 
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(161, 42);
+            this.dateEdit1.Location = new System.Drawing.Point(65, 42);
             this.dateEdit1.MenuManager = this.barManager1;
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(984, 26);
+            this.dateEdit1.Size = new System.Drawing.Size(1080, 26);
             this.dateEdit1.StyleController = this.layoutControl1;
             this.dateEdit1.TabIndex = 6;
             // 
@@ -197,7 +197,7 @@
             // txt_Statut
             // 
             this.txt_Statut.EditValue = "";
-            this.txt_Statut.Location = new System.Drawing.Point(161, 12);
+            this.txt_Statut.Location = new System.Drawing.Point(65, 12);
             this.txt_Statut.Name = "txt_Statut";
             this.txt_Statut.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -205,7 +205,7 @@
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("P"),
             new DevExpress.XtraEditors.Controls.CheckedListBoxItem("CR")});
             this.txt_Statut.Properties.NullText = "[EditValue is null]";
-            this.txt_Statut.Size = new System.Drawing.Size(984, 26);
+            this.txt_Statut.Size = new System.Drawing.Size(1080, 26);
             this.txt_Statut.StyleController = this.layoutControl1;
             this.txt_Statut.TabIndex = 5;
             // 
@@ -236,7 +236,8 @@
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(1137, 30);
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(137, 19);
+            this.layoutControlItem2.Text = "Statut";
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(41, 19);
             // 
             // layoutControlItem3
             // 
@@ -244,7 +245,8 @@
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 30);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(1137, 30);
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(137, 19);
+            this.layoutControlItem3.Text = "Date";
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(41, 19);
             // 
             // Frm_Debut_Present
             // 

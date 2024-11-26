@@ -35,19 +35,19 @@ namespace System_Pointage.Classe
             {
     
                 case Master.MVMType.P:
-                    this.Text = "Ajouter des Rentrants";//
+                    this.Text = "Liste des Rentrants";//
                     btn_list_prevu.Text = "Rentrant prévue";
                     layoutControlItem2.Text= "Date de Rentrant";
                     btn_ovrirEn.Text = "Séléction Agent Rentrant";
                     break;
                 case Master.MVMType.A:
-                    this.Text = "Ajouter des Absent";
+                    this.Text = "Liste des Absents";
                     layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem2.Text = "Date de Absent";
                     btn_ovrirEn.Text = "Séléction Agent Absent";
                     break;
                 case Master.MVMType.CR:
-                    this.Text = "Ajouter des Partants";
+                    this.Text = "Liste des Partants";
                     btn_list_prevu.Text = "Partant prévue";
                     layoutControlItem2.Text = "Date de Partant";
                     btn_ovrirEn.Text = "Séléction Agent Partant";
@@ -156,6 +156,7 @@ namespace System_Pointage.Classe
 
         public void GridName()
         {
+            gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
             gridView1.Columns["Matricule"].VisibleIndex = 0;

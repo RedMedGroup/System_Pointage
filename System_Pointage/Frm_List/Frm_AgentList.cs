@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Form;
 using System_Pointage.Classe;
+using DevExpress.XtraGrid.Views.Card;
+using DevExpress.XtraGrid.Views.Card.ViewInfo;
+using DevExpress.ClipboardSource.SpreadsheetML;
 
 namespace System_Pointage.Frm_List
 {
@@ -26,6 +29,7 @@ namespace System_Pointage.Frm_List
 
         private void Frm_AgentList_Load(object sender, EventArgs e)
         {
+            
             gridView1.DoubleClick += GridView1_DoubleClick;
             gridView1.OptionsBehavior.Editable = false;
 
@@ -39,11 +43,31 @@ namespace System_Pointage.Frm_List
 
                 // استدعاء الخدمة للحصول على البيانات
                 var data = _agentDataService.GetAgents(userAccessPosteID, isAdmin);
-
                 // تعيين البيانات إلى الجدول
-                gridControl1.DataSource = data;
-             //   gridView1.Columns["ID"].Visible = false;
+               // gridControl1.DataSource = data;
+                if (data == null || !data.Any())
+                {
+                    DataTable emptyTable = new DataTable();
+                    emptyTable.Columns.Add("ID", typeof(int));
+                    emptyTable.Columns.Add("AgentID", typeof(int));
+                    emptyTable.Columns.Add("Matricule", typeof(string));
+                    emptyTable.Columns.Add("Name", typeof(string));
+                    emptyTable.Columns.Add("PostName", typeof(string));
+                    emptyTable.Columns.Add("Affecter", typeof(bool));
+                    emptyTable.Columns.Add("Jour", typeof(string));
+                    emptyTable.Columns.Add("Date_Embauche", typeof(DateTime));
+                    emptyTable.Columns.Add("Statut", typeof(string));
+                    emptyTable.Columns.Add("ScreenPosteD", typeof(int));
+                    emptyTable.Columns.Add("AccessPosteID", typeof(int));
+                    emptyTable.Columns.Add("NamePosteDetail", typeof(string));
 
+                    gridControl1.DataSource = emptyTable;
+                }
+                else
+                {
+                    gridControl1.DataSource = data;
+                }
+                gridView1.GroupPanelText = " ";
                 // تحديث التسميات
                 gridView1.Columns["Name"].Caption = "Nom et prénom";
                 gridView1.Columns["PostName"].Caption = "Poste";
@@ -55,6 +79,55 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["NamePosteDetail"].Visible = false;
             }
         }
+        //private void GridView1_DoubleClick(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // التحقق من أن sender هو CardView
+        //        if (sender is CardView view)
+        //        {
+        //            // التحقق من أن e هو DXMouseEventArgs
+        //            if (e is DXMouseEventArgs ea)
+        //            {
+        //                // استخدام CardHitInfo بدلاً من GridHitInfo
+        //                CardHitInfo info = view.CalcHitInfo(ea.Location);
+
+        //                if (info.InCard)
+        //                {
+        //                    // الحصول على قيمة الحقل "ID"
+        //                    object idValue = view.GetFocusedRowCellValue("ID");
+        //                    if (idValue != null && int.TryParse(idValue.ToString(), out int id))
+        //                    {
+        //                        OpenForm(id); // فتح النموذج بناءً على ID
+        //                    }
+        //                    else
+        //                    {
+        //                        MessageBox.Show("لا توجد قيمة صالحة لـ 'ID' في العنصر المحدد.");
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    MessageBox.Show("لم يتم النقر على عنصر صالح.");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("حدث خطأ: لم يتم توفير حدث ماوس صالح.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("حدث خطأ: العنصر ليس من نوع CardView.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // التعامل مع الأخطاء غير المتوقعة
+        //        MessageBox.Show($"حدث خطأ غير متوقع: {ex.Message}");
+        //    }
+        //}
+
+
         private void GridView1_DoubleClick(object sender, EventArgs e)
         {
             DXMouseEventArgs ea = e as DXMouseEventArgs;
@@ -73,72 +146,11 @@ namespace System_Pointage.Frm_List
             var frm = new Form.Frm_Fiche_Ajent(id);
             frm.ShowDialog();
         }
-        //void RefrechData(int? userAccessPosteID)
-        //{
-        //    using (var db = new DAL.DataClasses1DataContext())
-        //    {
-        //        // استعلام أساسي لجميع البيانات
-        //        var query = from ag in db.Fiche_Agents
-        //                    join post in db.Fiche_Postes on ag.ID_Post equals post.ID
-        //                    join userAccess in db.UserAccessProfilePostes on ag.ScreenPosteD equals userAccess.ID
-        //                    join accessDetails in db.UserAccessProfilePosteDetails on userAccess.ID equals accessDetails.ID_AccessPoste
-        //                    select new
-        //                    {
-        //                        ag.ID,
-        //                        Name = ag.Name,
-        //                        Post = post.Name,                             
-        //                        AccessPosteID = accessDetails.ID_AccessPoste
-        //                    };
 
-        //        // إذا كان المستخدم Admin، عرض الجميع
-        //        if (Master.User.UserType == (byte)Master.UserType.Admin)
-        //        {
-        //            query = query.Distinct(); // عرض الجميع دون تصفية
-        //        }
-        //        else
-        //        {
-        //            // المستخدم العادي: تطبيق التصفية
-        //            if (userAccessPosteID.HasValue)
-        //            {
-        //                query = query.Where(q => q.AccessPosteID == userAccessPosteID.Value);
-        //            }
-        //            else
-        //            {
-        //                query = query.Where(q => false); // إذا لم يتم تمرير معرف القسم
-        //            }
-        //        }
-
-        //        // جلب البيانات مع إزالة التكرار
-        //        var data = query.Distinct().ToList();
-
-        //        // تعيين البيانات لمصدر بيانات الجدول
-        //        gridControl1.DataSource = data;
-
-        //        // إخفاء عمود ID
-        //        if (gridView1.Columns["ID"] != null)
-        //        {
-        //            gridView1.Columns["ID"].Visible = false;
-        //        }
-        //    }
-        //}
-
-
-
-
-
-        //void RefrechData()
-        //{
-        //    var db = new DAL.DataClasses1DataContext();
-        //    var data = from ag in db.Fiche_Agents
-        //               join post in db.Fiche_Postes on ag.ID_Post equals post.ID
-        //               select new
-        //               {
-        //                   ag.ID,
-        //                   Name = ag.Name,
-        //                   Post = post.Name,
-        //               };
-        //    gridControl1.DataSource = data;
-        //    gridView1.Columns["ID"].Visible = false;
-        //}
+        private void btn_import_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Frm_Fiche_Agent_Import frm = new Frm_Fiche_Agent_Import();
+            frm.ShowDialog();
+        }
     }
 }

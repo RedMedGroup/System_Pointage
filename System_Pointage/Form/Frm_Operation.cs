@@ -49,7 +49,7 @@ namespace System_Pointage.Form
                     break;
                 case Master.MVMType.CR:
                     this.Text = "Liste des agents  en Présent";
-                    layoutControlGroup1.Text = "Liste des agents  en Présent";
+                    layoutControlGroup1.Text = "Liste des agents   Présent";
                     btn_envoyer.Caption = "Envoyer sur liste partant";
                     break;
                 default:
@@ -155,6 +155,7 @@ namespace System_Pointage.Form
 
         public void GridName()
         {
+            gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
             gridView1.Columns["Matricule"].VisibleIndex = 0;

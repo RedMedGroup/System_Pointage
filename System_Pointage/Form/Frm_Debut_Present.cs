@@ -41,11 +41,32 @@ namespace System_Pointage.Form
                 int? userAccessPosteID = isAdmin ? null : Master.User.IDAccessPoste;
 
                 // استدعاء الخدمة للحصول على البيانات
-                var data = _agentDataService.GetAgents(userAccessPosteID, isAdmin);
+                //var data = _agentDataService.GetAgents(userAccessPosteID, isAdmin);
+                var data = _agentDataService.GetAgentsWithoutMovement(userAccessPosteID, isAdmin);
 
-                // تعيين البيانات إلى الجدول
-                gridControl1.DataSource = data;
-                //   gridView1.Columns["ID"].Visible = false;
+
+                if (data == null || !data.Any())
+                {
+                    DataTable emptyTable = new DataTable();
+                    emptyTable.Columns.Add("ID", typeof(int));
+                    emptyTable.Columns.Add("AgentID", typeof(int));
+                    emptyTable.Columns.Add("Matricule", typeof(string));
+                    emptyTable.Columns.Add("Name", typeof(string));
+                    emptyTable.Columns.Add("PostName", typeof(string));
+                    emptyTable.Columns.Add("Affecter", typeof(bool));
+                    emptyTable.Columns.Add("Jour", typeof(string));
+                    emptyTable.Columns.Add("Date_Embauche", typeof(DateTime));
+                    emptyTable.Columns.Add("Statut", typeof(string));
+                    emptyTable.Columns.Add("ScreenPosteD", typeof(int));
+                    emptyTable.Columns.Add("AccessPosteID", typeof(int));
+                    emptyTable.Columns.Add("NamePosteDetail", typeof(string));
+
+                    gridControl1.DataSource = emptyTable;
+                }
+                else
+                {
+                    gridControl1.DataSource = data;
+                }
 
                 // تحديث التسميات
                 gridView1.Columns["Name"].Caption = "Nom et prénom";
@@ -57,18 +78,7 @@ namespace System_Pointage.Form
                 gridView1.Columns["AccessPosteID"].Visible = false;
                 gridView1.Columns["NamePosteDetail"].Visible = false;
             }
-            //using (var db = new DAL.DataClasses1DataContext())
-            //{
-            //    gridControl1.DataSource = db.Fiche_Agents;
-            //    gridView1.Columns["Name"].Caption = "Nom et prénom";
-            //    gridView1.Columns["ID_Post"].Caption = "Poste";
-            //    gridView1.Columns["Jour"].Caption = "Systéme";
-            //    //gridView1.Columns["AgentID"].Visible = false;
-            //    gridView1.Columns["ID"].Visible = false;
-            //    gridView1.Columns["ScreenPosteD"].Visible = false;
-            //    //gridView1.Columns["AccessPosteID"].Visible = false;
-            //    //gridView1.Columns["NamePosteDetail"].Visible = false;
-            //}
+          
         }
         void SetData()
         {
