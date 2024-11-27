@@ -18,6 +18,12 @@ namespace System_Pointage.Form
 {
     public partial class Frm_Prevu : DevExpress.XtraEditors.XtraForm
     {
+        private BindingList<Models.AgentStatus> activeAgentsList;
+        public BindingList<Models.AgentStatus> ActiveAgentsList
+        {
+            get { return activeAgentsList; }
+            set { activeAgentsList = value; }
+        }
         Master.MVMType Type;
         private BindingList<Models.AgentStatus> transferredAgentsList;       
 
@@ -30,6 +36,10 @@ namespace System_Pointage.Form
  
         private void Frm_Prevu_Load(object sender, EventArgs e)
         {
+            activeAgentsList = new BindingList<Models.AgentStatus>();
+            activeAgentsList = new BindingList<Models.AgentStatus>();
+            gridControl1_Prvu.DataSource = activeAgentsList;
+
             dateEdit1.DateTime=DateTime.Now;
             dateEdit1.EditValueChanged += DateEdit1_EditValueChanged;
             gridView1.OptionsBehavior.Editable = false;
@@ -120,8 +130,9 @@ namespace System_Pointage.Form
                             }).ToList()
                         );
 
-                        // تعيين البيانات إلى GridControl
-                        gridControl1.DataSource = transferredAgentsList;
+                        var mergedList = new BindingList<Models.AgentStatus>(transferredAgentsList.Concat(activeAgentsList).ToList());
+                        gridControl1_Prvu.DataSource = mergedList;
+                       // gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
                     break;
@@ -180,9 +191,9 @@ namespace System_Pointage.Form
 
                             }).ToList()
                         );
-
-                        // تعيين البيانات إلى GridControl
-                        gridControl1.DataSource = transferredAgentsList;
+                        var mergedList = new BindingList<Models.AgentStatus>(transferredAgentsList.Concat(activeAgentsList).ToList());
+                        gridControl1_Prvu.DataSource = mergedList;
+                        //gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
                   
@@ -282,6 +293,46 @@ namespace System_Pointage.Form
             }
 
           
+        }
+        public void AddTransferredAgentsPR(BindingList<Models.AgentStatus> transferredAgents)
+        {
+            foreach (var agent in transferredAgents)
+            {
+                if (!IsAgentExists(agent))
+                {
+                    activeAgentsList.Add(agent);
+                }
+            }
+
+            // تحديث البيانات في واجهة المستخدم
+            gridControl1_Prvu.RefreshDataSource();
+        }
+        public bool IsAgentExists(Models.AgentStatus agent)
+        {
+            return activeAgentsList != null && activeAgentsList.Any(existingAgent =>
+                existingAgent.Name == agent.Name &&
+                existingAgent.Date.Date == agent.Date.Date &&
+                existingAgent.Statut == agent.Statut);
+        }
+        private void btn_ovrirEn_Click(object sender, EventArgs e)
+        {
+            switch (Type)
+            {
+
+                case Master.MVMType.P:
+                    Frm_Operation frmType1 = new Frm_Operation(Type,this);
+                    frmType1.Owner = this;
+                    frmType1.Show();
+                    break;              
+                case Master.MVMType.CR:
+                    Frm_Operation frmType3 = new Frm_Operation(Type,this);
+                    frmType3.Owner = this;
+                    frmType3.Show();
+                    break;
+                default:
+                    MessageBox.Show("نوع الاستقبال غير معروف.");
+                    break;
+            }
         }
     }
 }

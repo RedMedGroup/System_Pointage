@@ -24,14 +24,15 @@ namespace System_Pointage.Form
 
         private BindingList<Models.AgentStatus> activeAgentsList;
         private BindingList<Models.AgentStatus> transferredAgentsList;
-
+        private Frm_Prevu otherForm;
         // حدث لتمرير البيانات إلى الفورم الأصلية
         public event EventHandler<BindingList<Models.AgentStatus>> AgentsTransferred;
-        public Frm_Operation(Master.MVMType _Type)
+        public Frm_Operation(Master.MVMType _Type, Frm_Prevu formPrevu)
         {
             InitializeComponent();
             Type = _Type;
             SetFormType();
+            otherForm = formPrevu;
         }
         void SetFormType()
         {
@@ -147,12 +148,30 @@ namespace System_Pointage.Form
             // جلب البيانات
             activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin);
 
+
+            SomeMethod();
             // تعيين البيانات للجدول
-            gridControl1.DataSource = activeAgentsList;
+         //      gridControl1.DataSource = activeAgentsList;
 
             GridName();
         }
+        // في Frm_Operation
+        private void SomeMethod()
+        {
+            if (otherForm.ActiveAgentsList != null)
+            {
+                var filteredList = new BindingList<Models.AgentStatus>(
+                    activeAgentsList.Where(agent =>
+                        !otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name)).ToList()
+                );
 
+                gridControl1.DataSource = filteredList;
+            }
+            else
+            {
+                gridControl1.DataSource = activeAgentsList;
+            }
+        }
         public void GridName()
         {
             gridView1.GroupPanelText = " ";
@@ -195,7 +214,7 @@ namespace System_Pointage.Form
         {
             if (transferredAgentsList.Count > 0)
             {
-                var mainForm = this.Owner as Frm_MVM_Operation;
+                var mainForm = this.Owner as Frm_Prevu;
                 if (mainForm != null)
                 {
                     // التحقق من التكرارات
@@ -215,7 +234,7 @@ namespace System_Pointage.Form
                     }
                     else
                     {
-                        mainForm.AddTransferredAgents(transferredAgentsList);
+                        mainForm.AddTransferredAgentsPR(transferredAgentsList);
                         this.Close();
                     }
                 }

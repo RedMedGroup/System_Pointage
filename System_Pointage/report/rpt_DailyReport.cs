@@ -143,46 +143,111 @@ namespace System_Pointage.report
         {
             XRTableCell cell = (XRTableCell)sender;
 
+            // إعداد التوسيط
             cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
 
+            // تعيين وضع الدمج
             cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
             cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Value;
 
-            cell.Text = cell.Text;
-            //XRTableCell currentCell = (XRTableCell)sender;
-            //string currentDepartment = GetCurrentColumnValue("Department")?.ToString();
-            //string currentEcartValue = GetCurrentColumnValue("RequiredEmployees")?.ToString();
+            // استرجاع القسم وعدد الموظفين المطلوبين
+            var department = GetCurrentColumnValue("Department")?.ToString();
+            var requiredEmployees = GetCurrentColumnValue("RequiredEmployees")?.ToString();
 
-            //// تحقق إذا كانت القيم الحالية فارغة
-            //if (string.IsNullOrEmpty(currentDepartment) || string.IsNullOrEmpty(currentEcartValue))
+            if (!string.IsNullOrEmpty(department) && !string.IsNullOrEmpty(requiredEmployees))
+            {
+                // تخزين النصوص في متغيرات
+                string cell1 = department; // القسم
+                string cell2 = requiredEmployees; // عدد الموظفين المطلوبين
+
+                // تكوين النص النهائي مع دمج cell1 و cell2
+                cell.Text = $"{cell1}: {cell2}";
+
+                // جعل النص الخاص بـ cell1 غير مرئي (مطابقًا للخلفية)
+                if (!string.IsNullOrEmpty(cell1))
+                {
+                    // جعل النص الخاص بـ cell1 بنفس لون الخلفية لإخفائه
+                    // إخفاء cell1 فقط
+                    string hiddenCell1 = $"{cell1}: "; // نص الخلية 1 فقط بدون إظهارها
+                    string visibleCell2 = cell2; // نص الخلية 2 فقط
+
+                    // دمج النصين مع الحفاظ على cell1 مخفيًا
+                    cell.Text = $"{hiddenCell1}{visibleCell2}";
+                    cell.ForeColor = cell.BackColor; // تغيير اللون ليتطابق مع الخلفية (إخفاء cell1)
+                }
+            }
+
+
+
+            //XRTableCell cell = (XRTableCell)sender;
+            //cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            ////// تعيين وضع الدمج
+            //cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            //cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Value;
+            //// استرجاع القسم وعدد الموظفين المطلوبين
+            //var department = GetCurrentColumnValue("Department")?.ToString();
+            //var requiredEmployees = GetCurrentColumnValue("RequiredEmployees")?.ToString();
+
+            //if (department != null && requiredEmployees != null)
             //{
-            //    return;
+            //    // تخزين القسم وعدد الموظفين المطلوبين في متغيرين
+            //    string cell1 = department;
+            //    string cell2 = requiredEmployees;
+
+            //    // تكوين النص النهائي داخل الخلية
+            //    cell.Text = $"{cell1}: {cell2}";
+
+            //    // إخفاء النص الخاص بـ cell1 (القسم) عن طريق جعله شفافاً
+            //    cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            //    cell.ForeColor = Color.Black; // اللون العام للنص
+
+            //    // لإخفاء النص الخاص بالقسم (cell1)، استخدم هذه الطريقة
+            //    if (cell1 != null)
+            //    {
+            //        cell.Text = $"{cell1}: {cell2}"; // دمج النصوص
+            //       cell1.ForeColor = Color.Transparent; // جعل النص الخاص بـ cell1 غير مرئي
+            //    }
             //}
 
-            //// تحقق مما إذا كانت هناك خلية سابقة بنفس القسم
-            //if (lastCellByDepartment2.ContainsKey(currentDepartment) &&
-            //    lastValueByDepartment2[currentDepartment]?.ToString() == currentEcartValue)
+            ///////////////////////////////////////////////////////////////////////
+            //XRTableCell cell = (XRTableCell)sender;
+
+            //// إعدادات التوسيط
+            //cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            //// تعيين وضع الدمج
+            //cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            //cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Value;
+
+            //// تحقق من وجود قسم (Department) للتأكد من أن الدمج يتم فقط ضمن المجموعة
+            //XRTableRow row = cell.Parent as XRTableRow;
+            //if (row != null)
             //{
-            //    XRTableCell lastCell = lastCellByDepartment2[currentDepartment];
-
-            //    // زيادة قيمة RowSpan للخلية السابقة
-            //    lastCell.RowSpan = lastCell.RowSpan == 0 ? 2 : lastCell.RowSpan + 1;
-
-            //    // تعيين الخلية الحالية كغير مرئية
-            //    currentCell.Visible = false;
+            //    var department = GetCurrentColumnValue("Department"); // استرجاع اسم القسم الحالي
+            //    if (department != null)
+            //    {
+            //        cell.Text = $" {cell.Text}"; // إضافة القسم إلى النص إذا أردت
+            //    }
             //}
-            //else
-            //{
-            //    // إذا كانت القيم مختلفة، تحديث القيم للخلية الحالية
-            //    lastCellByDepartment2[currentDepartment] = currentCell;
-            //    lastValueByDepartment2[currentDepartment] = currentEcartValue;
+            ///////////////////////////////////////////////////////////////////////
+            //XRTableCell cell = (XRTableCell)sender;
 
-            //    // اجعل الخلية الحالية مرئية وأعد ضبط RowSpan
-            //    currentCell.Visible = true;
-            //    currentCell.RowSpan = 1;
-            //}
+            //cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            //cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            //cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Value;
+
+            //cell.Text = cell.Text;
+
         }
 
+        private string GetPreviousValue(XRTableCell currentCell)
+        {
+            // هنا تحتاج إلى تنفيذ المنطق للحصول على القيمة السابقة بناءً على القسم
+            // يمكنك استخدام السياق أو أي طريقة أخرى لتحديد القيمة السابقة
+            return ""; // قم بإرجاع القيمة السابقة المناسبة هنا
+        }
         private void Cell_Department_BeforePrint(object sender, CancelEventArgs e)
         {
             XRTableCell cell = (XRTableCell)sender;

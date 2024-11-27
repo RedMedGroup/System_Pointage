@@ -39,6 +39,7 @@ namespace System_Pointage.Classe
                     btn_list_prevu.Text = "Rentrant prévue";
                     layoutControlItem2.Text= "Date de Rentrant";
                     btn_ovrirEn.Text = "Séléction Agent Rentrant";
+                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     break;
                 case Master.MVMType.A:
                     this.Text = "Liste des Absents";
@@ -51,7 +52,7 @@ namespace System_Pointage.Classe
                     btn_list_prevu.Text = "Partant prévue";
                     layoutControlItem2.Text = "Date de Partant";
                     btn_ovrirEn.Text = "Séléction Agent Partant";
-
+                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     //this.Name = Class.Screens.Trqnsfertchambre.ScreenName;
                     break;
                 default:
@@ -221,22 +222,22 @@ namespace System_Pointage.Classe
             switch (Type)
             {
              
-                case Master.MVMType.P:
-                    Frm_Operation frmType1 = new Frm_Operation(Type);
-                    frmType1.Owner = this;
-                    frmType1.Show();
-                    break;
+                //case Master.MVMType.P:
+                //    Frm_Operation frmType1 = new Frm_Operation(Type);
+                //    frmType1.Owner = this;
+                //    frmType1.Show();
+                //    break;
 
-                case Master.MVMType.A:
-                    Frm_Operation frmType2 = new Frm_Operation(Type);
-                    frmType2.Owner = this;
-                    frmType2.Show();
-                    break;
-                case Master.MVMType.CR:
-                    Frm_Operation frmType3 = new Frm_Operation(Type);
-                    frmType3.Owner = this;
-                    frmType3.Show();
-                    break;
+                //case Master.MVMType.A:
+                //    Frm_Operation frmType2 = new Frm_Operation(Type,this);
+                //    frmType2.Owner = this;
+                //    frmType2.Show();
+                //    break;
+                //case Master.MVMType.CR:
+                //    Frm_Operation frmType3 = new Frm_Operation(Type);
+                //    frmType3.Owner = this;
+                //    frmType3.Show();
+                //    break;
                 default:
                     MessageBox.Show("نوع الاستقبال غير معروف.");
                     break;

@@ -190,7 +190,7 @@ namespace System_Pointage.Form
             table.Columns.Add("Total", typeof(int));
 
             var context = new DAL.DataClasses1DataContext();
-            var groups = FicheAgentList
+            var groups = FicheAgentList.Where(x=>x.Statut==true)
                 .GroupBy(agent => agent.ID_Post)
                 .Select(g => new
                 {

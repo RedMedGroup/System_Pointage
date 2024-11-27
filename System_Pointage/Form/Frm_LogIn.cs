@@ -111,7 +111,7 @@ namespace System_Pointage.Form
 
             string apiUrl = "https://api.github.com/repos/RedMedGroup/System_Pointage/releases/latest";
 
-            string currentVersion = "1.1.0.0";
+            string currentVersion = "1.0.0.1";
 
             using (WebClient webClient = new WebClient())
             {

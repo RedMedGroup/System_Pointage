@@ -16,6 +16,7 @@ using System_Pointage.Classe;
 using DevExpress.XtraGrid.Views.Card;
 using DevExpress.XtraGrid.Views.Card.ViewInfo;
 using DevExpress.ClipboardSource.SpreadsheetML;
+using DevExpress.XtraExport.Helpers;
 
 namespace System_Pointage.Frm_List
 {
@@ -77,8 +78,34 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["ScreenPosteD"].Visible = false;
                 gridView1.Columns["AccessPosteID"].Visible = false;
                 gridView1.Columns["NamePosteDetail"].Visible = false;
+                gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
         }
+
+        private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            // تحقق إذا كان العمود هو "Name" و إذا كانت الحالة في العمود "Status" هي false
+            if (e.RowHandle >= 0 && e.Column.FieldName == "Name")
+            {
+                // استرجاع القيمة من عمود "Status"
+                bool status = Convert.ToBoolean(gridView1.GetRowCellValue(e.RowHandle, "Statut"));
+
+                // إذا كانت القيمة في عمود "Status" هي false
+                if (!status)
+                {
+                    // تخصيص لون النص باللون الأحمر
+                    e.Appearance.ForeColor = Color.Red;
+
+                    // رسم النص مع السهم
+                    string arrow = "→"; // السهم الذي تريده
+                    e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
+
+                    // منع الرسم الافتراضي
+                    e.Handled = true;
+                }
+            }
+        }
+
         //private void GridView1_DoubleClick(object sender, EventArgs e)
         //{
         //    try

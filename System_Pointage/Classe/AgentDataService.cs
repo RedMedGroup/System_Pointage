@@ -24,7 +24,7 @@ namespace System_Pointage.Classe
                 .GroupBy(agent => agent.ItemID)
                 .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
                 .Where(agent => agent != null)
-                .Join(_context.Fiche_Agents,
+                .Join(_context.Fiche_Agents.Where(x=>x.Statut==true),
                     agent => agent.ItemID,
                     worker => worker.ID,                
                     (agent, worker) => new { agent, worker })
@@ -52,7 +52,7 @@ namespace System_Pointage.Classe
             {
 
                 case Master.MVMType.P:
-                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "CR");
+                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" /*|| ma.agent.Statut == "A"*/);
                     break;
 
                 case Master.MVMType.A:
