@@ -24,10 +24,10 @@ namespace System_Pointage.Form
 
         private BindingList<Models.AgentStatus> activeAgentsList;
         private BindingList<Models.AgentStatus> transferredAgentsList;
-        private Frm_Prevu otherForm;
+        private Frm_MVM_Operation otherForm;
         // حدث لتمرير البيانات إلى الفورم الأصلية
         public event EventHandler<BindingList<Models.AgentStatus>> AgentsTransferred;
-        public Frm_Operation(Master.MVMType _Type, Frm_Prevu formPrevu)
+        public Frm_Operation(Master.MVMType _Type, Frm_MVM_Operation formPrevu)
         {
             InitializeComponent();
             Type = _Type;
@@ -112,6 +112,7 @@ namespace System_Pointage.Form
 
                     // إزالة السطر من القائمة الثانية (transferredAgentsList)
                     transferredAgentsList.Remove(selectedRow);
+                    SomeMethod();
                 }
             }
         }
@@ -133,6 +134,7 @@ namespace System_Pointage.Form
 
                 // إزالة السطر من القائمة الأولى
                 activeAgentsList.Remove(selectedRow);
+                SomeMethod();
             }
         }
         private void RefrecheData()
@@ -160,11 +162,16 @@ namespace System_Pointage.Form
         {
             if (otherForm.ActiveAgentsList != null)
             {
+                //var filteredList = new BindingList<Models.AgentStatus>(
+                //    activeAgentsList.Where(agent =>
+                //        !otherForm.ActiveAgentsList && !otherForm.TransferredAgentsList.Any(existingAgent => existingAgent.Name == agent.Name)).ToList()
+                //);
                 var filteredList = new BindingList<Models.AgentStatus>(
-                    activeAgentsList.Where(agent =>
-                        !otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name)).ToList()
+                     activeAgentsList.Where(agent =>
+                     !(otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name) ||
+                       otherForm.TransferredAgentsList.Any(existingAgent => existingAgent.Name == agent.Name))
+                  ).ToList()
                 );
-
                 gridControl1.DataSource = filteredList;
             }
             else
@@ -214,29 +221,29 @@ namespace System_Pointage.Form
         {
             if (transferredAgentsList.Count > 0)
             {
-                var mainForm = this.Owner as Frm_Prevu;
+                var mainForm = this.Owner as Frm_MVM_Operation;
                 if (mainForm != null)
                 {
                     // التحقق من التكرارات
-                    var duplicateAgents = transferredAgentsList
-                        .Where(agent => mainForm.IsAgentExists(agent))
-                        .ToList();
+                    //var duplicateAgents = transferredAgentsList
+                    //    .Where(agent => mainForm.IsAgentExists(agent))
+                    //    .ToList();
 
-                    if (duplicateAgents.Any())
-                    {
-                        string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
-                        MessageBox.Show(
-                            $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
-                            "avertissement",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-                    }
-                    else
-                    {
-                        mainForm.AddTransferredAgentsPR(transferredAgentsList);
+                    //if (duplicateAgents.Any())
+                    //{
+                    //    string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
+                    //    MessageBox.Show(
+                    //        $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
+                    //        "avertissement",
+                    //        MessageBoxButtons.OK,
+                    //        MessageBoxIcon.Warning
+                    //    );
+                    //}
+                    //else
+                    //{
+                        mainForm.AddTransferredAgents(transferredAgentsList);
                         this.Close();
-                    }
+                 //   }
                 }
             }
             else

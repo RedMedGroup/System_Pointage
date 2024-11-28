@@ -25,8 +25,12 @@ namespace System_Pointage.Form
             set { activeAgentsList = value; }
         }
         Master.MVMType Type;
-        private BindingList<Models.AgentStatus> transferredAgentsList;       
-
+        private BindingList<Models.AgentStatus> transferredAgentsList;
+        public BindingList<Models.AgentStatus> TransferredAgentsList
+        {
+            get { return transferredAgentsList; }
+            set { transferredAgentsList = value; }
+        }
         public Frm_Prevu(Master.MVMType _Type)
         {
             InitializeComponent();
@@ -36,7 +40,6 @@ namespace System_Pointage.Form
  
         private void Frm_Prevu_Load(object sender, EventArgs e)
         {
-            activeAgentsList = new BindingList<Models.AgentStatus>();
             activeAgentsList = new BindingList<Models.AgentStatus>();
             gridControl1_Prvu.DataSource = activeAgentsList;
 
@@ -130,9 +133,8 @@ namespace System_Pointage.Form
                             }).ToList()
                         );
 
-                        var mergedList = new BindingList<Models.AgentStatus>(transferredAgentsList.Concat(activeAgentsList).ToList());
-                        gridControl1_Prvu.DataSource = mergedList;
-                       // gridControl1_Prvu.DataSource = transferredAgentsList;
+                        FilterGrid();
+                        // gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
                     break;
@@ -191,8 +193,7 @@ namespace System_Pointage.Form
 
                             }).ToList()
                         );
-                        var mergedList = new BindingList<Models.AgentStatus>(transferredAgentsList.Concat(activeAgentsList).ToList());
-                        gridControl1_Prvu.DataSource = mergedList;
+                        FilterGrid();
                         //gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
@@ -262,29 +263,29 @@ namespace System_Pointage.Form
                 if (mainForm != null)
                 {
                     // التحقق من التكرارات
-                    var duplicateAgents = selectedAgentsBindingList
-                        .Where(agent => mainForm.IsAgentExists(agent))
-                        .ToList();
+                    //var duplicateAgents = selectedAgentsBindingList
+                    //    .Where(agent => mainForm.IsAgentExists(agent))
+                    //    .ToList();
 
-                    if (duplicateAgents.Any())
-                    {
-                        // عرض رسالة تحذيرية
-                        string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
-                        MessageBox.Show(
-                            $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
-                            "avertissement",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-                    }
-                    else
-                    {
+                    //if (duplicateAgents.Any())
+                    //{
+                    //    // عرض رسالة تحذيرية
+                    //    string duplicateNames = string.Join(", ", duplicateAgents.Select(a => a.Name));
+                    //    MessageBox.Show(
+                    //        $"Les Agent suivants sont déjà dupliqués dans la liste: {duplicateNames}",
+                    //        "avertissement",
+                    //        MessageBoxButtons.OK,
+                    //        MessageBoxIcon.Warning
+                    //    );
+                    //}
+                    //else
+                    //{
                         // استدعاء الطريقة لإضافة البيانات إلى Frm_MVM_Operation
                         mainForm.AddTransferredAgents(selectedAgentsBindingList);
 
                         // إغلاق الفورم الحالية
                         this.Close();
-                    }
+                  //  }
                 }
             }
             else
@@ -298,40 +299,57 @@ namespace System_Pointage.Form
         {
             foreach (var agent in transferredAgents)
             {
-                if (!IsAgentExists(agent))
-                {
+                //if (!IsAgentExists(agent))
+                //{
                     activeAgentsList.Add(agent);
-                }
+               // }
             }
-
-            // تحديث البيانات في واجهة المستخدم
+            var mergedList = new BindingList<Models.AgentStatus>(
+                            transferredAgentsList
+                      .Concat(activeAgentsList)
+                         .GroupBy(agent => agent.Name)
+                         .Select(group => group.First()) // أخذ العنصر الأول من كل مجموعة
+                             .ToList()
+                           );
+            FilterGrid();
             gridControl1_Prvu.RefreshDataSource();
         }
-        public bool IsAgentExists(Models.AgentStatus agent)
+        void FilterGrid()
         {
-            return activeAgentsList != null && activeAgentsList.Any(existingAgent =>
-                existingAgent.Name == agent.Name &&
-                existingAgent.Date.Date == agent.Date.Date &&
-                existingAgent.Statut == agent.Statut);
+            var mergedList = new BindingList<Models.AgentStatus>(
+                           transferredAgentsList
+                     .Concat(activeAgentsList)
+                        .GroupBy(agent => agent.Name)
+                        .Select(group => group.First()) // أخذ العنصر الأول من كل مجموعة
+                            .ToList()
+                          );
+            gridControl1_Prvu.DataSource = mergedList;
         }
+        //public bool IsAgentExists(Models.AgentStatus agent)
+        //{
+        //    return activeAgentsList != null && activeAgentsList.Any(existingAgent =>
+        //        existingAgent.Name == agent.Name &&
+        //        existingAgent.Date.Date == agent.Date.Date &&
+        //        existingAgent.Statut == agent.Statut);
+        //}
         private void btn_ovrirEn_Click(object sender, EventArgs e)
         {
             switch (Type)
             {
 
-                case Master.MVMType.P:
-                    Frm_Operation frmType1 = new Frm_Operation(Type,this);
-                    frmType1.Owner = this;
-                    frmType1.Show();
-                    break;              
-                case Master.MVMType.CR:
-                    Frm_Operation frmType3 = new Frm_Operation(Type,this);
-                    frmType3.Owner = this;
-                    frmType3.Show();
-                    break;
-                default:
-                    MessageBox.Show("نوع الاستقبال غير معروف.");
-                    break;
+                //case Master.MVMType.P:
+                //    Frm_Operation frmType1 = new Frm_Operation(Type,this);
+                //    frmType1.Owner = this;
+                //    frmType1.Show();
+                //    break;              
+                //case Master.MVMType.CR:
+                //    Frm_Operation frmType3 = new Frm_Operation(Type,this);
+                //    frmType3.Owner = this;
+                //    frmType3.Show();
+                //    break;
+                //default:
+                //    MessageBox.Show("نوع الاستقبال غير معروف.");
+                //    break;
             }
         }
     }

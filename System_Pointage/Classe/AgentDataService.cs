@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraPivotGrid.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -75,6 +76,7 @@ namespace System_Pointage.Classe
                     Date = ma.agent.Date,
                     Statut = ma.agent.Statut,
                     Poste = ma.Name,
+                    screenPosteD =ma.worker.ScreenPosteD ??0,
                     Jour = ma.Jour.GetValueOrDefault(),
                     CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour.GetValueOrDefault()),
                     Matricule = ma.worker.Matricule,
@@ -83,12 +85,17 @@ namespace System_Pointage.Classe
                   ? (DateTime.Now - ma.agent.Date).Days 
                  : ma.agent.Statut == "CR"
                    ? (DateTime.Now - ma.agent.Date).Days 
-                  : 0 // في الحالات الأخرى، القيمة 0
-                  })
+                  : 0, // في الحالات الأخرى، القيمة 0
+                    Difference = 0
+                })
                 .ToList();
-
+            foreach (var agent in agents)
+            {
+                agent.Difference = agent.DaysCount - agent.Jour;
+            }
             return new BindingList<Models.AgentStatus>(agents);
         }
+
         #region ////////////////////////  Agent liste
         private readonly DAL.DataClasses1DataContext _dbContext;
 

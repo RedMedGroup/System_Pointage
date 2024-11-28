@@ -19,15 +19,25 @@ namespace System_Pointage.Classe
     public partial class Frm_MVM_Operation : DevExpress.XtraEditors.XtraForm
     {
         Master.MVMType Type;
-        private BindingList<Models.AgentStatus> agentList;
+       // private BindingList<Models.AgentStatus> agentList;
         private BindingList<Models.AgentStatus> activeAgentsList;
-
+        public BindingList<Models.AgentStatus> ActiveAgentsList
+        {
+            get { return activeAgentsList; }
+            set { activeAgentsList = value; }
+        }
+        private BindingList<Models.AgentStatus> transferredAgentsList;
+        public BindingList<Models.AgentStatus> TransferredAgentsList
+        {
+            get { return transferredAgentsList; }
+            set { transferredAgentsList = value; }
+        }
         public Frm_MVM_Operation(Master.MVMType _Type)
         {
             InitializeComponent();
             Type = _Type;
             SetFormType();
-            agentList = new BindingList<Models.AgentStatus>();
+          //  agentList = new BindingList<Models.AgentStatus>();
         }
         void SetFormType()
         {
@@ -39,7 +49,7 @@ namespace System_Pointage.Classe
                     btn_list_prevu.Text = "Rentrant prévue";
                     layoutControlItem2.Text= "Date de Rentrant";
                     btn_ovrirEn.Text = "Séléction Agent Rentrant";
-                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+               //     layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     break;
                 case Master.MVMType.A:
                     this.Text = "Liste des Absents";
@@ -52,7 +62,7 @@ namespace System_Pointage.Classe
                     btn_list_prevu.Text = "Partant prévue";
                     layoutControlItem2.Text = "Date de Partant";
                     btn_ovrirEn.Text = "Séléction Agent Partant";
-                    layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                   // layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     //this.Name = Class.Screens.Trqnsfertchambre.ScreenName;
                     break;
                 default:
@@ -62,15 +72,17 @@ namespace System_Pointage.Classe
         private void Frm_MVM_Operation_Load(object sender, EventArgs e)
         {
             activeAgentsList = new BindingList<Models.AgentStatus>();
-            gridControl1.DataSource = activeAgentsList;
-            dateEdit11.DateTime = DateTime.Now;
+            transferredAgentsList = new BindingList<Models.AgentStatus>();
+
+            gridControl1_mvm.DataSource = activeAgentsList;
+            dateEdit1.DateTime = DateTime.Now;
 
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
             GridName();
         }
       
-        private BindingList<Models.AgentStatus> transferredAgentsList = new BindingList<Models.AgentStatus>();
+      //  private BindingList<Models.AgentStatus> transferredAgentsList = new BindingList<Models.AgentStatus>();
         public void AddTransferredAgentse(BindingList<Models.AgentStatus> transferredAgents)
         {
             // يمكن هنا إضافة البيانات إلى القائمة في Frm_MVM_Operation
@@ -80,7 +92,7 @@ namespace System_Pointage.Classe
             }
 
             // تأكد من تحديث الواجهة إذا لزم الأمر
-            gridControl1.DataSource = transferredAgentsList;
+            gridControl1_mvm.DataSource = transferredAgentsList;
         }
 
         // يمكنك إضافة دالة للتحقق من وجود العامل في القائمة
@@ -95,22 +107,22 @@ namespace System_Pointage.Classe
         {
             foreach (var agent in transferredAgents)
             {
-                if (!IsAgentExists(agent))
-                {
+                //if (!IsAgentExists(agent))
+                //{
                     activeAgentsList.Add(agent);
-                }
+              //  }
             }
-
+            FilterGrid();
             // تحديث البيانات في واجهة المستخدم
-            gridControl1.RefreshDataSource();
+            gridControl1_mvm.RefreshDataSource();
         }
-        public bool IsAgentExists(Models.AgentStatus agent)
-        {
-            return activeAgentsList != null && activeAgentsList.Any(existingAgent =>
-                existingAgent.Name == agent.Name &&
-                existingAgent.Date.Date == agent.Date.Date &&
-                existingAgent.Statut == agent.Statut);
-        }
+        //public bool IsAgentExists(Models.AgentStatus agent)
+        //{
+        //    return activeAgentsList != null && activeAgentsList.Any(existingAgent =>
+        //        existingAgent.Name == agent.Name &&
+        //        existingAgent.Date.Date == agent.Date.Date &&
+        //        existingAgent.Statut == agent.Statut);
+        //}
 
         private void btn_save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -132,7 +144,7 @@ namespace System_Pointage.Classe
             }
             string statut = Type == Master.MVMType.P ? "P" : (Type == Master.MVMType.A ? "A" : "CR");
 
-            DateTime date = dateEdit11.DateTime;
+            DateTime date = dateEdit1.DateTime;
             using (var context = new DAL.DataClasses1DataContext())
             {
                 foreach (var agent in selectedAgents)
@@ -150,7 +162,7 @@ namespace System_Pointage.Classe
                 context.SubmitChanges();
                 XtraMessageBox.Show("Enregistrer succés");
                 activeAgentsList.Clear(); // إفراغ القائمة
-                gridControl1.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList); 
+                gridControl1_mvm.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList); 
                 gridView1.ClearSelection();
             }
         }
@@ -190,24 +202,218 @@ namespace System_Pointage.Classe
                     throw new NotImplementedException();
             }
         }
-
-        private void btn_list_prevu_Click_1(object sender, EventArgs e)
+        #region
+        private void LoadEligibleEmployees(DateTime selectedDate)
         {
             switch (Type)
             {
                 case Master.MVMType.P:
-                    Frm_Prevu frmType1 = new Frm_Prevu(Type);
+                    using (var context = new DAL.DataClasses1DataContext())
+                    {
+                        // استرجاع أحدث سجل لكل عامل
+                        var latestStatusForEachEmployee = context.MVMAgentDetails
+                            .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
+                            .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
+                            .Where(m => m.Statut == "CR") // التأكد من أن الحالة "P"
+                            .ToList();
+
+                        // الربط بين الجداول بعد التحقق من الحالة
+                        var eligibleEmployees = latestStatusForEachEmployee
+                            .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
+                                  m => m.ItemID,
+                                  agent => agent.ID,
+                                  (m, agent) => new { m, agent })
+                                     .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+                  ma => ma.agent.ID_Post,
+                  poste => poste.ID,
+                  (ma, poste) => new
+                  {
+                      ma.agent.Matricule,
+                      ma.agent.Name,
+                      ma.m.Date,
+                      ma.m.Statut,
+                      ma.agent.Jour,
+                      PosteName = poste.Name,
+                      ma.agent.ScreenPosteD,
+                      ma.agent.Affecter,
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()),
+                      DaysCount = ma.m.Statut == "P"
+                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                    : ma.m.Statut == "CR"
+                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                        : 0 // الحالات الأخرى
+                  }) // اختيار Name من Fiche_Agents
+                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .ToList();
+
+                        // إنشاء BindingList جديدة
+                        transferredAgentsList = new BindingList<Models.AgentStatus>(
+                            eligibleEmployees.Select(x => new Models.AgentStatus
+                            {
+                                Matricule = x.Matricule,
+                                Name = x.Name,
+                                Poste = x.PosteName,
+                                screenPosteD = x.ScreenPosteD ?? 0,
+                                Affecter = x.Affecter,
+                                Date = x.Date,
+                                Jour = x.Jour ?? 0,
+                                CalculatedDate = x.CalculatedDate,
+                                DaysCount = x.DaysCount,
+                                Statut = x.Statut,
+                                Difference = (x.DaysCount - (x.Jour ?? 0))
+                            }).ToList()
+                        );
+
+                        FilterGrid();
+                        // gridControl1_Prvu.DataSource = transferredAgentsList;
+                        GridName();
+                    }
+                    break;
+                case Master.MVMType.CR:
+                    using (var context = new DAL.DataClasses1DataContext())
+                    {
+                        // استرجاع أحدث سجل لكل عامل
+                        var latestStatusForEachEmployee = context.MVMAgentDetails
+                            .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
+                            .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
+                            .Where(m => m.Statut == "P") // التأكد من أن الحالة "P"
+                            .ToList();
+
+                        // الربط بين الجداول بعد التحقق من الحالة
+                        var eligibleEmployees = latestStatusForEachEmployee
+                            .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
+                                  m => m.ItemID,
+                                  agent => agent.ID,
+                                  (m, agent) => new { m, agent })
+                                     .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+                  ma => ma.agent.ID_Post,
+                  poste => poste.ID,
+                  (ma, poste) => new
+                  {
+                      ma.agent.Matricule,
+                      ma.agent.Name,
+                      ma.m.Date,
+                      ma.m.Statut,
+                      ma.agent.Jour,
+                      PosteName = poste.Name,
+                      ma.agent.ScreenPosteD,
+                      ma.agent.Affecter,
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()),// حساب التاريخ
+                      DaysCount = ma.m.Statut == "P"
+                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                    : ma.m.Statut == "CR"
+                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                        : 0 // الحالات الأخرى
+
+                  }) // اختيار Name من Fiche_Agents
+                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .ToList();
+
+                        // إنشاء BindingList جديدة
+                        transferredAgentsList = new BindingList<Models.AgentStatus>(
+                            eligibleEmployees.Select(x => new Models.AgentStatus
+                            {
+                                Matricule = x.Matricule,
+                                Name = x.Name,
+                                Poste = x.PosteName,
+                                screenPosteD = x.ScreenPosteD ?? 0,
+                                Affecter = x.Affecter,
+                                Date = x.Date,
+                                Jour = x.Jour ?? 0,
+                                CalculatedDate = x.CalculatedDate,
+                                DaysCount = x.DaysCount,
+                                Statut = x.Statut,
+                                Difference = (x.DaysCount - (x.Jour ?? 0))
+                            }).ToList()
+                        );
+                        FilterGrid();
+                        //gridControl1_Prvu.DataSource = transferredAgentsList;
+                        GridName();
+                    }
+
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        void FilterGrid()
+        {// التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+            // دمج القائمتين مع الاحتفاظ بعنصر واحد فقط من العناصر المتكررة
+            var mergedList = new BindingList<Models.AgentStatus>(
+                transferredAgentsList
+                    .Concat(activeAgentsList)
+                     .Where(agent => isAdmin || agent.screenPosteD == userAccessPosteID)
+                    .GroupBy(agent => agent.Name)
+                    .Select(group => group.First()) // أخذ العنصر الأول من كل مجموعة
+                    .ToList()
+            );
+
+            gridControl1_mvm.DataSource = new BindingList<Models.AgentStatus>(mergedList);
+            //var mergedList = new BindingList<Models.AgentStatus>(
+            //               transferredAgentsList
+            //         .Concat(activeAgentsList)
+            //            .GroupBy(agent => agent.Name)
+            //            .Select(group => group.First()) // أخذ العنصر الأول من كل مجموعة
+            //                .ToList()
+            //              );
+            //gridControl1_mvm.DataSource = mergedList;
+        }
+        #endregion
+        private void btn_list_prevu_Click_1(object sender, EventArgs e)
+        {
+            if (dateEdit1.EditValue is DateTime selectedDate)
+            {
+                LoadEligibleEmployees(selectedDate);
+                GridName();
+            }
+            //switch (Type)
+            //{
+            //    case Master.MVMType.P:
+            //        Frm_Prevu frmType1 = new Frm_Prevu(Type);
+            //        frmType1.Owner = this;
+            //        frmType1.Show();
+            //        break;
+
+            //    case Master.MVMType.A:
+            //        Frm_Prevu frmType2 = new Frm_Prevu(Type);
+            //        frmType2.Owner = this;
+            //        frmType2.Show();
+            //        break;
+            //    case Master.MVMType.CR:
+            //        Frm_Prevu frmType3 = new Frm_Prevu(Type);
+            //        frmType3.Owner = this;
+            //        frmType3.Show();
+            //        break;
+            //    default:
+            //        MessageBox.Show("نوع الاستقبال غير معروف.");
+            //        break;
+            //}
+        }
+
+        private void btn_ovrirEn_Click_1(object sender, EventArgs e)
+        {
+            switch (Type)
+            {
+
+                case Master.MVMType.P:
+                    Frm_Operation frmType1 = new Frm_Operation(Type,this);
                     frmType1.Owner = this;
                     frmType1.Show();
                     break;
 
                 case Master.MVMType.A:
-                    Frm_Prevu frmType2 = new Frm_Prevu(Type);
+                    Frm_Operation frmType2 = new Frm_Operation(Type,this);
                     frmType2.Owner = this;
                     frmType2.Show();
                     break;
                 case Master.MVMType.CR:
-                    Frm_Prevu frmType3 = new Frm_Prevu(Type);
+                    Frm_Operation frmType3 = new Frm_Operation(Type,this);
                     frmType3.Owner = this;
                     frmType3.Show();
                     break;
@@ -217,31 +423,6 @@ namespace System_Pointage.Classe
             }
         }
 
-        private void btn_ovrirEn_Click_1(object sender, EventArgs e)
-        {
-            switch (Type)
-            {
-             
-                //case Master.MVMType.P:
-                //    Frm_Operation frmType1 = new Frm_Operation(Type);
-                //    frmType1.Owner = this;
-                //    frmType1.Show();
-                //    break;
 
-                //case Master.MVMType.A:
-                //    Frm_Operation frmType2 = new Frm_Operation(Type,this);
-                //    frmType2.Owner = this;
-                //    frmType2.Show();
-                //    break;
-                //case Master.MVMType.CR:
-                //    Frm_Operation frmType3 = new Frm_Operation(Type);
-                //    frmType3.Owner = this;
-                //    frmType3.Show();
-                //    break;
-                default:
-                    MessageBox.Show("نوع الاستقبال غير معروف.");
-                    break;
-            }
-        }
     }
 }
