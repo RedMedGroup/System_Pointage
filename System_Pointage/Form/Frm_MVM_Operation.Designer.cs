@@ -52,6 +52,11 @@
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btn_attent = new DevExpress.XtraBars.BarButtonItem();
+            this.gridControl1_attent = new DevExpress.XtraGrid.GridControl();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
@@ -66,10 +71,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1_attent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.gridControl1_attent);
             this.layoutControl1.Controls.Add(this.dateEdit1);
             this.layoutControl1.Controls.Add(this.gridControl1_mvm);
             this.layoutControl1.Controls.Add(this.btn_list_prevu);
@@ -99,11 +109,11 @@
             // gridControl1_mvm
             // 
             this.gridControl1_mvm.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(6);
-            this.gridControl1_mvm.Location = new System.Drawing.Point(24, 112);
+            this.gridControl1_mvm.Location = new System.Drawing.Point(251, 112);
             this.gridControl1_mvm.MainView = this.gridView1;
             this.gridControl1_mvm.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1_mvm.Name = "gridControl1_mvm";
-            this.gridControl1_mvm.Size = new System.Drawing.Size(1211, 458);
+            this.gridControl1_mvm.Size = new System.Drawing.Size(984, 458);
             this.gridControl1_mvm.TabIndex = 4;
             this.gridControl1_mvm.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -149,7 +159,8 @@
             this.layoutControlGroup2,
             this.layoutControlItem5,
             this.layoutControlItem4,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlGroup1});
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(1259, 594);
             this.Root.TextVisible = false;
@@ -174,10 +185,10 @@
             this.layoutControlGroup2.CustomizationFormText = "Pour sauvegarder cocher les agents";
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem3});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 56);
+            this.layoutControlGroup2.Location = new System.Drawing.Point(227, 56);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.OptionsItemText.TextToControlDistance = 5;
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1239, 518);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1012, 518);
             this.layoutControlGroup2.Text = "Pour sauvegarder cocher les agents";
             // 
             // layoutControlItem3
@@ -187,7 +198,7 @@
             this.layoutControlItem3.CustomizationFormText = "layoutControlItem1";
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1215, 462);
+            this.layoutControlItem3.Size = new System.Drawing.Size(988, 462);
             this.layoutControlItem3.Text = "layoutControlItem1";
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
@@ -230,9 +241,10 @@
             this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.btn_save});
+            this.btn_save,
+            this.btn_attent});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 1;
+            this.barManager1.MaxItemId = 2;
             this.barManager1.StatusBar = this.bar3;
             // 
             // bar1
@@ -242,7 +254,8 @@
             this.bar1.DockRow = 1;
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.btn_save)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_save),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_attent)});
             this.bar1.Text = "Tools";
             // 
             // btn_save
@@ -318,6 +331,47 @@
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 594);
             // 
+            // btn_attent
+            // 
+            this.btn_attent.Caption = "Envoyer a liste attent";
+            this.btn_attent.Id = 1;
+            this.btn_attent.Name = "btn_attent";
+            this.btn_attent.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_attent_ItemClick);
+            // 
+            // gridControl1_attent
+            // 
+            this.gridControl1_attent.Location = new System.Drawing.Point(24, 112);
+            this.gridControl1_attent.MainView = this.gridView2;
+            this.gridControl1_attent.MenuManager = this.barManager1;
+            this.gridControl1_attent.Name = "gridControl1_attent";
+            this.gridControl1_attent.Size = new System.Drawing.Size(199, 458);
+            this.gridControl1_attent.TabIndex = 13;
+            this.gridControl1_attent.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView2});
+            // 
+            // gridView2
+            // 
+            this.gridView2.GridControl = this.gridControl1_attent;
+            this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsView.ShowGroupPanel = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.Control = this.gridControl1_attent;
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Size = new System.Drawing.Size(203, 462);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem1.TextVisible = false;
+            // 
+            // layoutControlGroup1
+            // 
+            this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem1});
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 56);
+            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Size = new System.Drawing.Size(227, 518);
+            // 
             // Frm_MVM_Operation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -346,6 +400,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1_attent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -375,5 +433,10 @@
         private DevExpress.XtraEditors.SimpleButton btn_ovrirEn;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraBars.BarButtonItem btn_attent;
+        private DevExpress.XtraGrid.GridControl gridControl1_attent;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
     }
 }

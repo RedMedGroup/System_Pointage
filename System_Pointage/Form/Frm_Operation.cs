@@ -148,12 +148,10 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             // جلب البيانات
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin);
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin,null,true);
 
 
             SomeMethod();
-            // تعيين البيانات للجدول
-         //      gridControl1.DataSource = activeAgentsList;
 
             GridName();
         }
@@ -162,10 +160,6 @@ namespace System_Pointage.Form
         {
             if (otherForm.ActiveAgentsList != null)
             {
-                //var filteredList = new BindingList<Models.AgentStatus>(
-                //    activeAgentsList.Where(agent =>
-                //        !otherForm.ActiveAgentsList && !otherForm.TransferredAgentsList.Any(existingAgent => existingAgent.Name == agent.Name)).ToList()
-                //);
                 var filteredList = new BindingList<Models.AgentStatus>(
                      activeAgentsList.Where(agent =>
                      !(otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name) ||
@@ -179,6 +173,7 @@ namespace System_Pointage.Form
                 gridControl1.DataSource = activeAgentsList;
             }
         }
+       
         public void GridName()
         {
             gridView1.GroupPanelText = " ";

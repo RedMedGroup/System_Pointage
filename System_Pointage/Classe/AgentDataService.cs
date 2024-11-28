@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraPivotGrid.Data;
+using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,11 +18,23 @@ namespace System_Pointage.Classe
             _context = new DAL.DataClasses1DataContext();
         }
 
-        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin)
+        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false)
         {
-        
+            var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
+
+            // تحديد الشرط بناءً على fetchNullOnly
+            if (fetchNullOnly)
+            {
+                agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
+            }
+            else
+            {
+                agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == idAttentListe);
+            }
+
+
             // استعلام أساسي
-            var agentsQuery = _context.MVMAgentDetails
+            var agentsQuery = agentsQueryF// _context.MVMAgentDetails.Where(x=>x.ID_Attent_Liste==null || x.ID_Attent_Liste == idAttentListe)
                 .GroupBy(agent => agent.ItemID)
                 .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
                 .Where(agent => agent != null)

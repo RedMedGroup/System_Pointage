@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +21,7 @@ namespace System_Pointage.Classe
     public partial class Frm_MVM_Operation : DevExpress.XtraEditors.XtraForm
     {
         Master.MVMType Type;
-       // private BindingList<Models.AgentStatus> agentList;
+        DAL.Attent_Heder ATH;
         private BindingList<Models.AgentStatus> activeAgentsList;
         public BindingList<Models.AgentStatus> ActiveAgentsList
         {
@@ -35,9 +37,9 @@ namespace System_Pointage.Classe
         public Frm_MVM_Operation(Master.MVMType _Type)
         {
             InitializeComponent();
+            ATH=new DAL.Attent_Heder();
             Type = _Type;
             SetFormType();
-          //  agentList = new BindingList<Models.AgentStatus>();
         }
         void SetFormType()
         {
@@ -63,7 +65,6 @@ namespace System_Pointage.Classe
                     layoutControlItem2.Text = "Date de Partant";
                     btn_ovrirEn.Text = "Séléction Agent Partant";
                    // layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    //this.Name = Class.Screens.Trqnsfertchambre.ScreenName;
                     break;
                 default:
                     throw new NotImplementedException();
@@ -77,12 +78,41 @@ namespace System_Pointage.Classe
             gridControl1_mvm.DataSource = activeAgentsList;
             dateEdit1.DateTime = DateTime.Now;
 
+            var db = new DAL.DataClasses1DataContext();
+            gridControl1_attent.DataSource = db.Attent_Heders;
+            gridView2.Columns["ID"].Visible=false;
+            gridView2.OptionsBehavior.Editable=false;
+            gridView2.DoubleClick += GridView2_DoubleClick;
+
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
             GridName();
         }
-      
-      //  private BindingList<Models.AgentStatus> transferredAgentsList = new BindingList<Models.AgentStatus>();
+
+        private void GridView2_DoubleClick(object sender, EventArgs e)
+        {
+            var agentDataService = new AgentDataService();
+            var selectedRow = gridView2.GetFocusedRow() as DAL.Attent_Heder;
+            ATH.ID = selectedRow.ID;
+            if (selectedRow != null)
+            {
+                // استخراج ID_Attent_Liste
+                int selectedID = selectedRow.ID;
+
+                bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+                int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+                // جلب البيانات باستخدام GetAgentStatuses مع ID_Attent_Liste
+                var agentData = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin, selectedID,false);
+
+                // تعيين البيانات إلى GridControl1
+                gridControl1_mvm.DataSource = agentData;
+                activeAgentsList = agentData;
+            }
+            else
+            {
+                XtraMessageBox.Show("Veuillez sélectionner une ligne.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         public void AddTransferredAgentse(BindingList<Models.AgentStatus> transferredAgents)
         {
             // يمكن هنا إضافة البيانات إلى القائمة في Frm_MVM_Operation
@@ -214,7 +244,7 @@ namespace System_Pointage.Classe
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
                             .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
-                            .Where(m => m.Statut == "CR") // التأكد من أن الحالة "P"
+                            .Where(m => m.Statut == "CR" &&m.ID_Attent_Liste==null) // التأكد من أن الحالة "P"
                             .ToList();
 
                         // الربط بين الجداول بعد التحقق من الحالة
@@ -276,7 +306,7 @@ namespace System_Pointage.Classe
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
                             .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
-                            .Where(m => m.Statut == "P") // التأكد من أن الحالة "P"
+                            .Where(m => m.Statut == "P" && m.ID_Attent_Liste == null) // التأكد من أن الحالة "P"
                             .ToList();
 
                         // الربط بين الجداول بعد التحقق من الحالة
@@ -423,6 +453,111 @@ namespace System_Pointage.Classe
             }
         }
 
+        private void btn_attent_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        { 
+          
+            var selectedRows = gridView1.GetSelectedRows();
+            if (selectedRows.Length == 0)
+            {
+                XtraMessageBox.Show("Veuillez sélectionner au moins une ligne à enregistrer.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            List<Models.AgentStatus> selectedAgents = new List<Models.AgentStatus>();
+
+            foreach (var rowIndex in selectedRows)
+            {
+                var agent = gridView1.GetRow(rowIndex) as Models.AgentStatus;
+                if (agent != null)
+                {
+                    selectedAgents.Add(agent);
+                }
+            }
+
+            //string statut = Type == Master.MVMType.P ? "P" : (Type == Master.MVMType.A ? "A" : "CR");
+            DateTime date = dateEdit1.DateTime;
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var existingAth = context.Attent_Heders.FirstOrDefault(a => a.ID == ATH.ID);
+
+                if (existingAth == null)
+                {
+                    // إذا لم يكن السجل موجودًا، أضف سجلًا جديدًا
+                    context.Attent_Heders.InsertOnSubmit(ATH);
+                }
+                else
+                {
+                    // إذا كان السجل موجودًا، قم بتحديث القيم
+                    existingAth.Date = dateEdit1.DateTime; // تحديث التاريخ
+
+                    // تعيين الحالة إلى Modified
+                    context.Refresh(System.Data.Linq.RefreshMode.KeepCurrentValues, existingAth);
+                }
+
+                //if (ATH.ID == 0)
+                //{
+                //    context.Attent_Heders.InsertOnSubmit(ATH);
+                //}
+                //else
+                //{
+                //    context.Attent_Heders.Attach(ATH);
+                //}
+        
+                //ATH.Date = dateEdit1.DateTime;
+                context.SubmitChanges(); 
+
+                int hederID = ATH.ID; 
+                foreach (var agent in selectedAgents)
+                {
+                    // جلب معرف ItemID بناءً على الاسم
+                    int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Name == agent.Name)?.ID ?? 0;
+
+                    string statut1 = agent.Statut; // استخدم القيمة مباشرة من agent
+                    DateTime? dt = context.MVMAgentDetails.FirstOrDefault(f => f.Date == agent.Date)?.Date;
+
+                    if (itemID == 0)
+                    {
+                        XtraMessageBox.Show($"Agent non trouvé: {agent.Name}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
+                    }
+
+                    if (!dt.HasValue)
+                    {
+                        XtraMessageBox.Show($"Date non trouvée pour l'agent: {agent.Name}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
+                    }
+                   
+                    // استرجاع السجل الحالي
+                    var existingAgentDetail = context.MVMAgentDetails.FirstOrDefault(ad => ad.ItemID == itemID && ad.Date == dt.Value && ad.Statut == statut1);
+
+                    if (existingAgentDetail != null)
+                    {
+                        // تحديث فقط حقل ID_Attent_Liste
+                        existingAgentDetail.ID_Attent_Liste = hederID; // تحديث حقل ID_Attent_Liste بقيمة معرف Attent_Heder
+                        context.SubmitChanges(); // حفظ التغييرات
+                    }
+                    //else
+                    //{
+                    //    // إذا لم يتم العثور على السجل، يمكنك إضافة سجل جديد إذا كان ذلك مناسبًا
+                    //    var newAgentDetail = new DAL.MVMAgentDetail
+                    //    {
+                    //        ItemID = itemID, // الاحتفاظ بـ ItemID
+                    //        Date = dt.Value, // الاحتفاظ بـ Date
+                    //        Statut = statut1, // تحديد Statut
+                    //        ID_Attent_Liste = hederID // تحديث حقل ID_Attent_Liste بقيمة معرف Attent_Heder
+                    //    };
+
+                    //    context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
+                    //    context.SubmitChanges(); // حفظ التغييرات
+                    //}
+                }
+          
+
+       
+            }
+
+
+        }
     }
 }
