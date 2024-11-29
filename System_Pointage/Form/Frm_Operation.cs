@@ -187,7 +187,9 @@ namespace System_Pointage.Form
             gridView1.Columns["Jour"].VisibleIndex = 5;
             gridView1.Columns["CalculatedDate"].VisibleIndex = 6;
             gridView1.Columns["DaysCount"].VisibleIndex = 7;
-            gridView1.Columns["Statut"].VisibleIndex = 8;
+            gridView1.Columns["Difference"].VisibleIndex = 8;
+            gridView1.Columns["Statut"].VisibleIndex = 9;
+            gridView1.Columns["screenPosteD"].Visible =false;
             switch (Type)
             {
                 case Master.MVMType.P:

@@ -29,6 +29,7 @@ namespace System_Pointage.Form
         {
             RefrecheData();
         }
+        int selectedID;
         private void RefrecheData()
         {
             var agentDataService = new AgentDataService();
@@ -38,7 +39,7 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             var filteredAgents = agentDataService
-         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin)
+         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true)
          .Where(agent => agent.DaysCount > agent.Jour)
          .ToList();
 
@@ -115,6 +116,25 @@ namespace System_Pointage.Form
         private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             ShowWorkDayReport();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            int searchValue = Convert.ToInt32(spinEdit1.Value);
+
+            // تصفية القائمة بناءً على الرقم المدخل
+            var filteredList = activeAgentsList
+                .Where(agent => agent.Difference == searchValue)
+                .ToList();
+
+            // التحقق إذا كانت النتائج فارغة
+            if (filteredList.Count == 0)
+            {
+                MessageBox.Show("لا توجد نتائج مطابقة.");
+            }
+
+            // تحديث مصدر البيانات لـ GridControl
+            gridControl1.DataSource = new BindingList<Models.AgentStatus>(filteredList);
         }
     }
 }

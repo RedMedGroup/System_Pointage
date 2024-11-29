@@ -44,16 +44,16 @@
         <elementListCompartment Id="78d5a710-e75d-40dc-b6c4-75ddce06cb58" absoluteBounds="0.51499999999999968, 0.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="ef6832be-508e-47bd-9756-5d5f4eee6b23" absoluteBounds="6.875, 2.875, 2, 1.1939925130208333">
-      <DataClassMoniker Name="/DataClasses1DataContext/Attent_Heder" />
-      <nestedChildShapes>
-        <elementListCompartment Id="779abc56-0bb3-4ad5-a24b-76584b3da80d" absoluteBounds="6.89, 3.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="e6f2014e-f06d-49c1-bb8c-5d0230ebbef0" absoluteBounds="7.25, 0.75, 2, 1.7708968098958331">
       <DataClassMoniker Name="/DataClasses1DataContext/MVMAgentDetail" />
       <nestedChildShapes>
         <elementListCompartment Id="db11773a-631f-4558-a9a6-c880d2701d95" absoluteBounds="7.265, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fd46adc1-3abb-45de-b1e3-c99237fe2971" absoluteBounds="6.625, 3.25, 2, 1.3862939453125">
+      <DataClassMoniker Name="/DataClasses1DataContext/Attent_Heder" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cc5dd23d-8446-472f-aeb3-5dca74a07199" absoluteBounds="6.64, 3.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

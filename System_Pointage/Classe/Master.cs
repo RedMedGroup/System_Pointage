@@ -128,5 +128,12 @@ namespace System_Pointage.Classe
             //lkp.Properties.Columns[valuMember].Visible = false;
             lkp.Properties.NullText = "";
         }
+        public static string ErrorText
+        {
+            get
+            {
+                return "Ce champ est obligatoire";
+            }
+        }
     }
 }

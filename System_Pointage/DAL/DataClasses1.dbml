@@ -65,12 +65,6 @@
       <Column Name="Affecter" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Attent_Heder" Member="Attent_Heders">
-    <Type Name="Attent_Heder">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.MVMAgentDetails" Member="MVMAgentDetails">
     <Type Name="MVMAgentDetail">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -78,6 +72,13 @@
       <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Statut" Type="System.String" DbType="NVarChar(2) NOT NULL" CanBeNull="false" />
       <Column Name="ID_Attent_Liste" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Attent_Heder" Member="Attent_Heders">
+    <Type Name="Attent_Heder">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
