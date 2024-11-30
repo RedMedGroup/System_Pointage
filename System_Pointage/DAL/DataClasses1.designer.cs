@@ -57,6 +57,9 @@ namespace System_Pointage.DAL
     partial void InsertAttent_Heder(Attent_Heder instance);
     partial void UpdateAttent_Heder(Attent_Heder instance);
     partial void DeleteAttent_Heder(Attent_Heder instance);
+    partial void InsertUserLog(UserLog instance);
+    partial void UpdateUserLog(UserLog instance);
+    partial void DeleteUserLog(UserLog instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -158,6 +161,14 @@ namespace System_Pointage.DAL
 			get
 			{
 				return this.GetTable<Attent_Heder>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserLog> UserLogs
+		{
+			get
+			{
+				return this.GetTable<UserLog>();
 			}
 		}
 	}
@@ -1559,6 +1570,212 @@ namespace System_Pointage.DAL
 					this._Type = value;
 					this.SendPropertyChanged("Type");
 					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserLog")]
+	public partial class UserLog : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _UserID;
+		
+		private System.DateTime _ActionDate;
+		
+		private int _ScreenID;
+		
+		private byte _ActionType;
+		
+		private int _PartID;
+		
+		private string _PartName;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnActionDateChanging(System.DateTime value);
+    partial void OnActionDateChanged();
+    partial void OnScreenIDChanging(int value);
+    partial void OnScreenIDChanged();
+    partial void OnActionTypeChanging(byte value);
+    partial void OnActionTypeChanged();
+    partial void OnPartIDChanging(int value);
+    partial void OnPartIDChanged();
+    partial void OnPartNameChanging(string value);
+    partial void OnPartNameChanged();
+    #endregion
+		
+		public UserLog()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ActionDate
+		{
+			get
+			{
+				return this._ActionDate;
+			}
+			set
+			{
+				if ((this._ActionDate != value))
+				{
+					this.OnActionDateChanging(value);
+					this.SendPropertyChanging();
+					this._ActionDate = value;
+					this.SendPropertyChanged("ActionDate");
+					this.OnActionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenID", DbType="Int NOT NULL")]
+		public int ScreenID
+		{
+			get
+			{
+				return this._ScreenID;
+			}
+			set
+			{
+				if ((this._ScreenID != value))
+				{
+					this.OnScreenIDChanging(value);
+					this.SendPropertyChanging();
+					this._ScreenID = value;
+					this.SendPropertyChanged("ScreenID");
+					this.OnScreenIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionType", DbType="TinyInt NOT NULL")]
+		public byte ActionType
+		{
+			get
+			{
+				return this._ActionType;
+			}
+			set
+			{
+				if ((this._ActionType != value))
+				{
+					this.OnActionTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ActionType = value;
+					this.SendPropertyChanged("ActionType");
+					this.OnActionTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartID", DbType="Int NOT NULL")]
+		public int PartID
+		{
+			get
+			{
+				return this._PartID;
+			}
+			set
+			{
+				if ((this._PartID != value))
+				{
+					this.OnPartIDChanging(value);
+					this.SendPropertyChanging();
+					this._PartID = value;
+					this.SendPropertyChanged("PartID");
+					this.OnPartIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartName", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string PartName
+		{
+			get
+			{
+				return this._PartName;
+			}
+			set
+			{
+				if ((this._PartName != value))
+				{
+					this.OnPartNameChanging(value);
+					this.SendPropertyChanging();
+					this._PartName = value;
+					this.SendPropertyChanged("PartName");
+					this.OnPartNameChanged();
 				}
 			}
 		}

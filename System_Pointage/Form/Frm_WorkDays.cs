@@ -66,7 +66,9 @@ namespace System_Pointage.Form
             gridView1.Columns["Jour"].VisibleIndex = 5;
             gridView1.Columns["CalculatedDate"].VisibleIndex = 6;
             gridView1.Columns["DaysCount"].VisibleIndex = 7;
-            gridView1.Columns["Statut"].VisibleIndex = 8;    
+            gridView1.Columns["Difference"].VisibleIndex = 8;
+            gridView1.Columns["Statut"].VisibleIndex = 9;
+            gridView1.Columns["screenPosteD"].Visible = false;
         }
         private void GenerateReport()
         {
@@ -130,11 +132,16 @@ namespace System_Pointage.Form
             // التحقق إذا كانت النتائج فارغة
             if (filteredList.Count == 0)
             {
-                MessageBox.Show("لا توجد نتائج مطابقة.");
+                MessageBox.Show("Aucun résultat .");
             }
 
             // تحديث مصدر البيانات لـ GridControl
             gridControl1.DataSource = new BindingList<Models.AgentStatus>(filteredList);
+        }
+
+        private void btn_liste_Click(object sender, EventArgs e)
+        {
+            RefrecheData();
         }
     }
 }

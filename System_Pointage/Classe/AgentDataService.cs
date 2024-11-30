@@ -17,7 +17,6 @@ namespace System_Pointage.Classe
         {
             _context = new DAL.DataClasses1DataContext();
         }
-
         public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false)
         {
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();

@@ -320,7 +320,7 @@ namespace System_Pointage.Classe
                 {
                     var newAgentDetail = new DAL.MVMAgentDetail
                     {
-                        ItemID = context.Fiche_Agents.FirstOrDefault(f => f.Name == agent.Name)?.ID ?? 0,
+                        ItemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0,
                         Date = date, 
                         Statut = statut
                     };
@@ -359,7 +359,7 @@ namespace System_Pointage.Classe
                 foreach (var agent in selectedAgents)
                 {
                     // جلب معرف ItemID بناءً على الاسم
-                    int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Name == agent.Name)?.ID ?? 0;
+                    int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0;
 
                     string statut1 = agent.Statut; // استخدم القيمة مباشرة من agent
                     DateTime? dt = context.MVMAgentDetails.FirstOrDefault(f => f.Date == agent.Date)?.Date;
@@ -689,7 +689,7 @@ namespace System_Pointage.Classe
                 foreach (var agent in selectedAgents)
                 {
                     // جلب معرف ItemID بناءً على الاسم
-                    int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Name == agent.Name)?.ID ?? 0;
+                    int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0;
 
                     string statut1 = agent.Statut; // استخدم القيمة مباشرة من agent
                     DateTime? dt = context.MVMAgentDetails.FirstOrDefault(f => f.Date == agent.Date)?.Date;

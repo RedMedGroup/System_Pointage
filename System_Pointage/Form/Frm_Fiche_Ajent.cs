@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraReports.Design;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace System_Pointage.Form
 {
     public partial class Frm_Fiche_Ajent : DevExpress.XtraEditors.XtraForm
     {
+     
+
         DAL.Fiche_Agent agent;
         public Frm_Fiche_Ajent()
         {
@@ -146,24 +149,76 @@ namespace System_Pointage.Form
             }
             return true;
         }
-        void Save()
+        private void Save()
         {
             if (IsValidit() == false)
                 return;
-            var db = new DAL.DataClasses1DataContext();
-            if (agent.ID == 0)
+            UserLogAction.ActionType actionType = agent.ID == 0 ? UserLogAction.ActionType.Add : UserLogAction.ActionType.Edit;
+
+            UserLogAction userLogAction = new UserLogAction
             {
-                db.Fiche_Agents.InsertOnSubmit(agent);
-            }
-            else
+                PartID = agent.ID,
+                PartName = agent.Name,
+                Name = "Frm_Fiche_Ajent", // اسم الشاشة
+                IsNew = agent.ID == 0 // تحديد إذا كان الحفظ جديدًا
+            };
+            userLogAction.SaveAction(() =>
             {
-                db.Fiche_Agents.Attach(agent);
-            }
-            SetData();
-            db.SubmitChanges();
-            New();
-            XtraMessageBox.Show("Enregistrer succés");
+               
+             
+              
+                using (var db = new DAL.DataClasses1DataContext())
+                {
+                    bool VR=false;
+                    if (agent.ID == 0)
+                    {
+                       
+                        db.Fiche_Agents.InsertOnSubmit(agent);
+                    }
+                    else
+                    {
+                        db.Fiche_Agents.Attach(agent);VR = true;
+                    }
+                    SetData();
+                    db.SubmitChanges();
+                    userLogAction.PartID = agent.ID;
+                    userLogAction.PartName = actionType == UserLogAction.ActionType.Add
+                 ? $": {agent.Name} Ajouter-" 
+                 : $": {agent.Name} Modifier-";
+                }
+
+                // إعادة تهيئة البيانات
+                New();
+            });
         }
+
+        //void Save()
+        //{
+        //    UserLogAction userLogAction = new UserLogAction();
+
+        //    if (IsValidit() == false)
+        //        return;
+        //    if (!UserLogAction.CheckActionAuthorization(userLogAction.Name,agent.ID == 0 ? Master.Actions.Add : Master.Actions.Edit))
+        //    {
+        //        // إذا لم يكن لديه الصلاحيات، يتم إيقاف العملية
+        //        return;
+        //    }
+        //    var db = new DAL.DataClasses1DataContext();
+        //    bool isNew = agent.ID == 0;
+        //    if (isNew/*agent.ID == 0*/)
+        //    {
+        //        db.Fiche_Agents.InsertOnSubmit(agent);
+        //    }
+        //    else
+        //    {
+        //        db.Fiche_Agents.Attach(agent);
+        //    }
+        //    SetData();
+        //    db.SubmitChanges();
+        //    New();
+        //    XtraMessageBox.Show("Enregistrer succés");
+        //    userLogAction.PartID = agent.ID; userLogAction.PartName = agent.Name;
+        //}
         public static string ErrorText
         {
             get

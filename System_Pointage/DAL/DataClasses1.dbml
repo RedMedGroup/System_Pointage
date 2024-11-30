@@ -81,4 +81,15 @@
       <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.UserLog" Member="UserLogs">
+    <Type Name="UserLog">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ScreenID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActionType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="PartID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PartName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
 </Database>

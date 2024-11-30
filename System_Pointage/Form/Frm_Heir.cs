@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Xpo.DB;
+using DevExpress.XtraEditors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace System_Pointage.Form
             gridView1.GroupPanelText =" ";
             gridView1.RefreshData();
         }
+        int selectedID;
         private void RefrecheData()
         {
             var agentDataService = new AgentDataService();
@@ -37,7 +39,7 @@ namespace System_Pointage.Form
             // إذا لم يكن أدمن، استخدم userAccessPosteID
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin);
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true);
 
             gridControl1.DataSource = activeAgentsList;
 
@@ -56,12 +58,45 @@ namespace System_Pointage.Form
             gridView1.Columns["Jour"].VisibleIndex = 5;
             gridView1.Columns["CalculatedDate"].VisibleIndex = 6;
             gridView1.Columns["DaysCount"].VisibleIndex = 7;
-            gridView1.Columns["Statut"].VisibleIndex = 8;
+            gridView1.Columns["Difference"].VisibleIndex = 8;
+            gridView1.Columns["Statut"].VisibleIndex = 9;
+            gridView1.Columns["screenPosteD"].Visible = false;
             gridView1.Columns["Date"].Caption = "Date de rentrée";
             gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
-            gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
+          //  gridView1.Columns["DaysCount"].Caption = "Nombre de jours de présent";
             gridView1.Columns["DaysCount"].Caption = "Nombre de jours de travail";
            
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            // التحقق من تحديد تاريخ في DateEdit
+            if (dateEdit1.EditValue == null)
+            {
+                MessageBox.Show("Veuillez sélectionner une date pour la recherche.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // الحصول على التاريخ المدخل
+            DateTime selectedDate = dateEdit1.DateTime.Date;
+
+            // تصفية البيانات بناءً على التاريخ
+            var filteredList = activeAgentsList
+                .Where(agent => agent.Date.Date == selectedDate)
+                .ToList();
+
+            // التحقق إذا لم تكن هناك نتائج مطابقة
+            if (filteredList.Count == 0)
+            {
+                MessageBox.Show("Aucun résultat correspondant à la date sélectionnée.", "Résultats de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            gridControl1.DataSource = new BindingList<Models.AgentStatus>(filteredList);
+        }
+
+        private void btn_liste_Click(object sender, EventArgs e)
+        {
+            RefrecheData();
         }
     }
 }
