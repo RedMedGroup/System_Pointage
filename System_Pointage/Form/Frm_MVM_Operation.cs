@@ -326,6 +326,69 @@ namespace System_Pointage.Classe
                     };
 
                     context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
+                    UserLogAction userLogAction = null;
+                    UserLogAction.ActionType actionType = UserLogAction.ActionType.Sortie;
+                    switch (Type)
+                    {
+                        case Master.MVMType.P:
+                            actionType = UserLogAction.ActionType.Entrée;
+                            userLogAction = new UserLogAction
+                            {
+                                PartID = newAgentDetail.ItemID,
+                                PartName = $"Rentrée la Agent: {agent.Name} P-",
+                                Name = "Frm_MVM_Operation_P",
+                            //    IsNew = true 
+                            };
+                            break;
+                        case Master.MVMType.A:
+                            if (comboBoxEdit1.Text == "A")
+                            {
+                                actionType = UserLogAction.ActionType.Absent;
+                                userLogAction = new UserLogAction
+                                {
+                                    PartID = newAgentDetail.ItemID,
+                                    PartName = $"Absence la Agent: {agent.Name} A-",
+                                    Name = "Frm_MVM_Operation_A",
+                                };
+                            }
+                            else if (comboBoxEdit1.Text == "M")
+                            {
+                                actionType = UserLogAction.ActionType.Absent;
+                                userLogAction = new UserLogAction
+                                {
+                                    PartID = newAgentDetail.ItemID,
+                                    PartName = $"Maladie la Agent: {agent.Name} M-",
+                                    Name = "Frm_MVM_Operation_A",
+                                };
+                            }else if (comboBoxEdit1.Text == "AA")
+                            {
+                                actionType = UserLogAction.ActionType.Absent;
+                                userLogAction = new UserLogAction
+                                {
+                                    PartID = newAgentDetail.ItemID,
+                                    PartName = $"Absence autorisée la Agent: {agent.Name} AA-",
+                                    Name = "Frm_MVM_Operation_A",
+                                };
+                            }
+
+
+                                break;
+                        case Master.MVMType.CR:
+                            actionType = UserLogAction.ActionType.Sortie;
+                            userLogAction = new UserLogAction
+                            {
+                                PartID = newAgentDetail.ItemID,
+                                PartName = $"Sortant la Agent: {agent.Name} CR-",
+                                Name = "Frm_MVM_Operation_CR",
+                            //    IsNew = true
+                            };
+
+                            break;
+                        default:
+                            break;
+                    }
+                 //   userLogAction.PartName += $": P-";
+                    userLogAction.SaveAction(() => { context.SubmitChanges(); }, actionType);
                 }
 
                 context.SubmitChanges();

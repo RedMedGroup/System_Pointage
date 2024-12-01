@@ -12,12 +12,11 @@ namespace System_Pointage.Classe
     public class AgentDataService
     {
         private readonly DAL.DataClasses1DataContext _context;
-
         public AgentDataService()
         {
             _context = new DAL.DataClasses1DataContext();
         }
-        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false)
+        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
         {
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
 
@@ -65,7 +64,7 @@ namespace System_Pointage.Classe
             {
 
                 case Master.MVMType.P:
-                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" /*|| ma.agent.Statut == "A"*/);
+                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "A");
                     break;
 
                 case Master.MVMType.A:
@@ -73,7 +72,11 @@ namespace System_Pointage.Classe
                     break;
 
                 case Master.MVMType.CR:
-                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
+                    if (formName == "Frm_Heir"|| formName == "Frm_WorkDays")
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
+                    else
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" /*|| ma.agent.Statut == "P"*/);
+
                     break;
 
                 default:

@@ -206,6 +206,12 @@
     <Compile Include="Frm_List\Frm_AgentList.Designer.cs">
       <DependentUpon>Frm_AgentList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Frm_List\frm_User_List.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_List\frm_User_List.Designer.cs">
+      <DependentUpon>frm_User_List.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_List\frm_User_MVM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\Frm_AgentList.resx">
       <DependentUpon>Frm_AgentList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_List\frm_User_List.resx">
+      <DependentUpon>frm_User_List.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\frm_User_MVM.resx">
       <DependentUpon>frm_User_MVM.cs</DependentUpon>

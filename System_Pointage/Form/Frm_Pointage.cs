@@ -596,7 +596,6 @@ namespace System_Pointage.Form
             Frm_WorkDays frm = new Frm_WorkDays();
             frm.ShowDialog();
         }
-
         private void btn_mvm_Click(object sender, EventArgs e)
         {
             Frm_Heir frm = new Frm_Heir();

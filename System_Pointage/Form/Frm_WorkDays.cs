@@ -39,7 +39,7 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             var filteredAgents = agentDataService
-         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true)
+         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true, "Frm_WorkDays")
          .Where(agent => agent.DaysCount > agent.Jour)
          .ToList();
 

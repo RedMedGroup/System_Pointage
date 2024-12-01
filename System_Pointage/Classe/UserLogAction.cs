@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System_Pointage.Classe.UserLogAction;
 
 namespace System_Pointage.Classe
 {
@@ -24,6 +25,9 @@ namespace System_Pointage.Classe
             Edit,
             Delete,
             Print,
+            Entrée,
+            Sortie,
+            Absent
         }
         //public void InsertUserAction(ActionType actionType)
         //{
@@ -135,7 +139,7 @@ namespace System_Pointage.Classe
 
             return false;
         }
-        public virtual void SaveAction(Action additionalSaveLogic)
+        public virtual void SaveAction(Action additionalSaveLogic, ActionType actionType)
         {
             // التحقق من الصلاحيات
             if (!CheckActionAuthorization(this.Name, IsNew ? Master.Actions.Add : Master.Actions.Edit))
@@ -147,8 +151,8 @@ namespace System_Pointage.Classe
             additionalSaveLogic?.Invoke();
 
             // تسجيل الإجراء
-            InsertUserAction(IsNew ? ActionType.Add : ActionType.Edit);
-
+            //InsertUserAction(IsNew ? ActionType.Add : ActionType.Edit);
+            InsertUserAction(actionType);
             // تحديث الحالة
             IsNew = false;
 

@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
+using System_Pointage.DAL;
 
 namespace System_Pointage.Form
 {
     public partial class Frm_Heir : DevExpress.XtraEditors.XtraForm
     {
         private BindingList<Models.AgentStatus> activeAgentsList;
+    
 
         public Frm_Heir()
         {
@@ -39,7 +41,7 @@ namespace System_Pointage.Form
             // إذا لم يكن أدمن، استخدم userAccessPosteID
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true);
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true, "Frm_Heir");
 
             gridControl1.DataSource = activeAgentsList;
 

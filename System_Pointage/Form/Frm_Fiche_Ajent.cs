@@ -189,7 +189,7 @@ namespace System_Pointage.Form
 
                 // إعادة تهيئة البيانات
                 New();
-            });
+            },actionType);
         }
 
         //void Save()

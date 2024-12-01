@@ -37,14 +37,17 @@ namespace System_Pointage.Frm_List
                                                Action = (d.ActionType == (byte)Classe.UserLogAction. ActionType.Add) ? "Ajouter" :
                                            (d.ActionType == (byte)Classe.UserLogAction.ActionType.Delete) ? "Supprimer" :
                                            (d.ActionType == (byte)Classe.UserLogAction.ActionType.Edit) ? "Modifier" :
-                                           (d.ActionType == (byte)Classe.UserLogAction.ActionType.Print) ? "Imprimer" : "",
+                                           (d.ActionType == (byte)Classe.UserLogAction.ActionType.Print) ? "Imprimer" :
+                                               (d.ActionType == (byte)Classe.UserLogAction.ActionType.Entrée) ? "Rentrée" :
+                                                 (d.ActionType == (byte)Classe.UserLogAction.ActionType.Sortie) ? "Sortie" :
+                                               (d.ActionType == (byte)Classe.UserLogAction.ActionType.Absent) ? "Absent" : "",
                                                d.PartName,
                                            }).ToList();
             }
-            gridView1.Columns["Name"].Caption = "اسم المستخدم";
-            gridView1.Columns["ActionDate"].Caption = "تاريخ العملية";
-            gridView1.Columns["Action"].Caption = "نوع الحركة";
-            gridView1.Columns["PartName"].Caption = "تقرير";
+            gridView1.Columns["Name"].Caption = "Nom d'utilisateur"; 
+            gridView1.Columns["ActionDate"].Caption = "Date de l'action";
+            gridView1.Columns["Action"].Caption = "Type d'action"; 
+            gridView1.Columns["PartName"].Caption = "Rapport"; 
             gridView1.Columns["ActionDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             gridView1.Columns["ActionDate"].DisplayFormat.FormatString = "yyyy-MM-dd hh:mm:ss";
             //gridView1.RowStyle += GridView1_RowStyle;
@@ -58,7 +61,7 @@ namespace System_Pointage.Frm_List
             if (e.Column.FieldName == "Action")
             {
                 if (action.ToString() == "Ajouter")
-                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
             }
             if (e.Column.FieldName == "Action")
             {
@@ -74,6 +77,21 @@ namespace System_Pointage.Frm_List
             {
                 if (action.ToString() == "Imprimer")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
+            }
+            if (e.Column.FieldName == "Action")
+            {
+                if (action.ToString() == "Rentrée")
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            }
+            if (e.Column.FieldName == "Action")
+            {
+                if (action.ToString() == "Sortie")
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
+            }
+            if (e.Column.FieldName == "Action")
+            {
+                if (action.ToString() == "Absent")
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             }
         }
     }
