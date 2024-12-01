@@ -147,7 +147,20 @@ namespace System_Pointage.Form
                 cmb_statut.ErrorText = ErrorText;
                 return false;
             }
+            var db = new DAL.DataClasses1DataContext();
+            if (db.Fiche_Agents.Where(x => x.ID != agent.ID && x.Matricule.Trim() == txt_matricule.Text.Trim()).Count() > 0)
+            {
+                txt_matricule.ErrorText = ErrorTextadvance;
+                return false;
+            }
             return true;
+        }
+        public static string ErrorTextadvance
+        {
+            get
+            {
+                return "Nom enregistré";
+            }
         }
         private void Save()
         {
@@ -165,8 +178,6 @@ namespace System_Pointage.Form
             userLogAction.SaveAction(() =>
             {
                
-             
-              
                 using (var db = new DAL.DataClasses1DataContext())
                 {
                     bool VR=false;
@@ -186,10 +197,11 @@ namespace System_Pointage.Form
                  ? $": {agent.Name} Ajouter-" 
                  : $": {agent.Name} Modifier-";
                 }
-
+                XtraMessageBox.Show("Enregistrer succés");
                 // إعادة تهيئة البيانات
                 New();
             },actionType);
+           
         }
 
         //void Save()

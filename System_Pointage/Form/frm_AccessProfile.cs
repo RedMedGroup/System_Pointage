@@ -1,6 +1,7 @@
 ﻿using DevExpress.LookAndFeel;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraLayout;
 using DevExpress.XtraTreeList;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,23 @@ namespace System_Pointage.Form
             New();
            // PartID = profile.ID; PartName = profile.Name;
             GetDataList();
+           
+        }
+        public frm_AccessProfile(int id)
+        {
+            InitializeComponent();
+            using (var db = new DAL.DataClasses1DataContext())
+            {
+                profile = db.UserAccessProfileNames.SingleOrDefault(x => x.ID == id);
+            }
+            textEdit1.Text = profile.Name;
+            //PartID = profile.ID;
+            //PartName = profile.Name;
+            GetDataList();
+
+        }
+        private void frm_AccessProfile_Load(object sender, EventArgs e)
+        {
             treeList1.KeyFieldName = nameof(ins.ScreenID);
             treeList1.ParentFieldName = nameof(ins.ParentScreenID);
             treeList1.Columns[nameof(ins.ScreenName)].Visible = false;
@@ -50,10 +68,6 @@ namespace System_Pointage.Form
             treeList1.Columns[nameof(ins.CanOpen)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanPrint)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanShow)].ColumnEdit = repoChech;
-        }
-
-        private void frm_AccessProfile_Load(object sender, EventArgs e)
-        {
             treeList1.CustomNodeCellEdit += TreeList1_CustomNodeCellEdit;
         }
 
@@ -159,8 +173,7 @@ namespace System_Pointage.Form
             }).ToList();
             db.UserAccessProfileDetails.InsertAllOnSubmit(dbData);
             db.SubmitChanges();
-            //PartID = user.ID; PartName = user.Name;
-            //PartID = profile.ID; PartName = profile.Name;
+            XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         public static string ErrorText
         {

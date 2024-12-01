@@ -124,8 +124,16 @@ namespace System_Pointage.Classe
                         flag = false;
                         break;
                 }
-
-                return flag;
+                if (flag == false)
+                {
+                    XtraMessageBox.Show(
+                                       text: "Vous n'avez pas accés",
+                                       caption: "",
+                                       icon: MessageBoxIcon.Error,
+                                       buttons: MessageBoxButtons.OK
+                                       );
+                }
+                    return flag;
 
             }
 
@@ -157,7 +165,7 @@ namespace System_Pointage.Classe
             IsNew = false;
 
             // رسالة نجاح
-            XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          //  XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         //public void SaveAction()
         //{
