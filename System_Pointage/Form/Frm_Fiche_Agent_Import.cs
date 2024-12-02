@@ -241,40 +241,8 @@ namespace System_Pointage.Form
                         }
                     }
                 }
-
                 db.SubmitChanges();
-
-                //            foreach (DataRow row in table.Rows)
-                //            {
-                //                string posteName = row[lkp_Poste.Text].ToString();
-                //                string departementName = row[lkp_departement.Text]?.ToString();
-
-                //                var poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == posteName);
-
-                //                var departement = db.UserAccessProfilePostes.FirstOrDefault(d => d.Name == departementName /*&& d.ID_Entreprise == poste.ID*/);
-
-                //                var agent = db.Fiche_Agents.FirstOrDefault() ?? new DAL.Fiche_Agent();
-
-                //                if (agent != null)
-                //                {
-                //                    agent = new DAL.Fiche_Agent
-                //                    {
-                //                        Matricule = row[lkp_Matricule.Text].ToString(),
-                //                        Name = row[lkp_Name.Text].ToString(),
-                //                        ID_Post =poste.ID,
-                //                        Jour = row[Convert.ToInt32(lkp_syst.EditValue)] as int?,
-                //                        Date_Embauche = 
-                //                        (lkp_date.EditValue != null && row[Convert.ToInt32(lkp_date.EditValue)] != DBNull.Value)
-                //? ((DateTime?)row[Convert.ToInt32(lkp_date.EditValue)]).Value : default(DateTime),
-                //                        ScreenPosteD = departement.ID, 
-                //                        Affecter = row[lkp_affecter.Text].ToString(),
-                //                        Statut = true,
-                //                    };
-                //                    db.Fiche_Agents.InsertOnSubmit(agent);
-                //                }
-
-
-                //                db.SubmitChanges();
+                XtraMessageBox.Show("Enregistrer succés");
             }
         
 

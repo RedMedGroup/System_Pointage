@@ -46,8 +46,6 @@ namespace System_Pointage.Form
                 lkp_ScreanPoste.IntializeData(db.UserAccessProfilePostes.Select(x => new { x.ID,x.Name }).ToList());
                 lkp_UserType.IntializeData(Master.UserTypeList);
             }
-            //btn_print.Visible = false;
-            //btn_Refreche.Visible = false;
         }
         #endregion
         public  void New()

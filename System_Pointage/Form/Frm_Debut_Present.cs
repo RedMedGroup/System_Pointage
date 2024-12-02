@@ -165,7 +165,7 @@ namespace System_Pointage.Form
 
                 // حفظ التغييرات
                 db.SubmitChanges();
-
+                RefrechDate();
                 // عرض رسالة نجاح
                 if (duplicateAgents.Count > 0)
                 {

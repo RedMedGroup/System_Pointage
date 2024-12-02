@@ -47,6 +47,9 @@ namespace System_Pointage.Form
         {
             treeList1.KeyFieldName = nameof(ins.ScreenID);
             treeList1.ParentFieldName = nameof(ins.ParentScreenID);
+            treeList1.Columns[nameof(ins.CanPrint)].Visible = false;
+            treeList1.Columns[nameof(ins.CanDelet)].Visible = false;
+            treeList1.Columns[nameof(ins.SsvgImage)].Visible = false;
             treeList1.Columns[nameof(ins.ScreenName)].Visible = false;
             treeList1.Columns[nameof(ins.ScreenName)].OptionsColumn.AllowEdit = false;
             treeList1.Columns[nameof(ins.ScreenCaption)].OptionsColumn.AllowEdit = false;
@@ -59,7 +62,7 @@ namespace System_Pointage.Form
 
             treeList1.BestFitColumns();
             repoChech = new RepositoryItemCheckEdit();
-            repoChech.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgRadio2;
+            repoChech.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgStar1;
             repoChech.CheckBoxOptions.SvgColorChecked = DXSkinColors.ForeColors.WindowText;
             repoChech.CheckBoxOptions.SvgColorUnchecked = DXSkinColors.ForeColors.Question;
             treeList1.Columns[nameof(ins.CanAdd)].ColumnEdit =

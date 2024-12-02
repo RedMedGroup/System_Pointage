@@ -433,8 +433,9 @@
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Pointage.IconOptions.SvgImage")));
             this.Name = "Frm_Pointage";
-            this.Text = "Frm_Pointage";
+            this.Text = "Pointage";
             this.Load += new System.EventHandler(this.Frm_Pointage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

@@ -73,7 +73,7 @@ namespace System_Pointage.Classe
 
                 case Master.MVMType.CR:
                     if (formName == "Frm_Heir"|| formName == "Frm_WorkDays")
-                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "P");
                     else
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" /*|| ma.agent.Statut == "P"*/);
 

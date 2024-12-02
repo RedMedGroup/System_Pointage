@@ -98,9 +98,7 @@ namespace System_Pointage.Form
         posteField,
         daysCountField,
         calculatedDateField
-            });
-
-      
+            });      
         }
         private void ShowWorkDayReport()
         {
@@ -126,7 +124,7 @@ namespace System_Pointage.Form
 
             // تصفية القائمة بناءً على الرقم المدخل
             var filteredList = activeAgentsList
-                .Where(agent => agent.Difference == searchValue)
+                .Where(agent => agent.Difference <= searchValue)
                 .ToList();
 
             // التحقق إذا كانت النتائج فارغة

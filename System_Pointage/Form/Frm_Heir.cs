@@ -29,7 +29,41 @@ namespace System_Pointage.Form
             RefrecheData();
             gridView1.GroupPanelText =" ";
             gridView1.RefreshData();
+            gridView1.CustomDrawCell += GridView1_CustomDrawCell;
         }
+
+        private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            if (e.RowHandle >= 0 && e.Column.FieldName == "Name")
+            {
+                // استرجاع القيمة من عمود "Statut"
+                string statut = gridView1.GetRowCellValue(e.RowHandle, "Statut").ToString();
+
+                // تخصيص لون النص بناءً على القيمة في عمود "Statut"
+                if (statut == "CR")
+                {
+                    // تخصيص لون النص باللون الأحمر
+                    e.Appearance.ForeColor = Color.Red;
+
+                    // رسم النص مع السهم
+                    string arrow = "→";
+                    e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
+                }
+                else if (statut == "P")
+                {
+                    // تخصيص لون النص باللون الأخضر
+                    e.Appearance.ForeColor = Color.Green;
+
+                    // رسم النص مع السهم المعاكس
+                    string arrow = "←";
+                    e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
+                }
+
+                // منع الرسم الافتراضي
+                e.Handled = true;
+            }
+        }
+
         int selectedID;
         private void RefrecheData()
         {
@@ -78,15 +112,26 @@ namespace System_Pointage.Form
                 MessageBox.Show("Veuillez sélectionner une date pour la recherche.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
+            if (comboBoxEdit1.Text.Trim() == string.Empty)
+            {
+                comboBoxEdit1.ErrorText =Classe.Master.ErrorText;
+                return;
+            }
             // الحصول على التاريخ المدخل
             DateTime selectedDate = dateEdit1.DateTime.Date;
-
+            var statut=comboBoxEdit1.Text;
             // تصفية البيانات بناءً على التاريخ
             var filteredList = activeAgentsList
                 .Where(agent => agent.Date.Date == selectedDate)
                 .ToList();
-
+            if (statut == "CR")
+            {
+                filteredList = filteredList.Where(agent => agent.Statut == "CR").ToList();
+            }
+            else if (statut == "P")
+            {
+                filteredList = filteredList.Where(agent => agent.Statut == "P").ToList();
+            }
             // التحقق إذا لم تكن هناك نتائج مطابقة
             if (filteredList.Count == 0)
             {

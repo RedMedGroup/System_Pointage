@@ -30,31 +30,31 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FichePost));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.treeList1 = new DevExpress.XtraTreeList.TreeList();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.txt_name = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.spn_contra = new DevExpress.XtraEditors.SpinEdit();
-            this.spn_penalite = new DevExpress.XtraEditors.SpinEdit();
-            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btn_new = new DevExpress.XtraEditors.SimpleButton();
             this.btn_save = new DevExpress.XtraEditors.SimpleButton();
+            this.treeList1 = new DevExpress.XtraTreeList.TreeList();
+            this.txt_name = new DevExpress.XtraEditors.TextEdit();
+            this.spn_contra = new DevExpress.XtraEditors.SpinEdit();
+            this.spn_penalite = new DevExpress.XtraEditors.SpinEdit();
+            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txt_name.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spn_contra.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spn_penalite.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,20 +74,27 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // Root
+            // btn_new
             // 
-            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.Root.GroupBordersVisible = false;
-            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem2,
-            this.layoutControlItem3,
-            this.layoutControlItem4,
-            this.layoutControlItem5,
-            this.layoutControlItem1,
-            this.layoutControlItem6});
-            this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(472, 469);
-            this.Root.TextVisible = false;
+            this.btn_new.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_new.ImageOptions.SvgImage")));
+            this.btn_new.Location = new System.Drawing.Point(238, 100);
+            this.btn_new.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_new.Name = "btn_new";
+            this.btn_new.Size = new System.Drawing.Size(222, 52);
+            this.btn_new.StyleController = this.layoutControl1;
+            this.btn_new.TabIndex = 14;
+            this.btn_new.Click += new System.EventHandler(this.btn_new_Click);
+            // 
+            // btn_save
+            // 
+            this.btn_save.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_save.ImageOptions.SvgImage")));
+            this.btn_save.Location = new System.Drawing.Point(12, 100);
+            this.btn_save.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_save.Name = "btn_save";
+            this.btn_save.Size = new System.Drawing.Size(222, 52);
+            this.btn_save.StyleController = this.layoutControl1;
+            this.btn_save.TabIndex = 13;
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
             // treeList1
             // 
@@ -101,15 +108,6 @@
             this.treeList1.TabIndex = 9;
             this.treeList1.TreeLevelWidth = 27;
             // 
-            // layoutControlItem1
-            // 
-            this.layoutControlItem1.Control = this.treeList1;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 144);
-            this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(452, 305);
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem1.TextVisible = false;
-            // 
             // txt_name
             // 
             this.txt_name.Location = new System.Drawing.Point(120, 11);
@@ -117,18 +115,6 @@
             this.txt_name.Size = new System.Drawing.Size(341, 26);
             this.txt_name.StyleController = this.layoutControl1;
             this.txt_name.TabIndex = 4;
-            // 
-            // layoutControlItem2
-            // 
-            this.layoutControlItem2.Control = this.txt_name;
-            this.layoutControlItem2.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
-            this.layoutControlItem2.CustomizationFormText = "Nom de post";
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(1, 1, 1, 1);
-            this.layoutControlItem2.Size = new System.Drawing.Size(452, 28);
-            this.layoutControlItem2.Text = "Nom de post";
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(97, 19);
             // 
             // spn_contra
             // 
@@ -160,6 +146,33 @@
             this.spn_penalite.StyleController = this.layoutControl1;
             this.spn_penalite.TabIndex = 7;
             // 
+            // Root
+            // 
+            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.Root.GroupBordersVisible = false;
+            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem2,
+            this.layoutControlItem3,
+            this.layoutControlItem4,
+            this.layoutControlItem5,
+            this.layoutControlItem1,
+            this.layoutControlItem6});
+            this.Root.Name = "Root";
+            this.Root.Size = new System.Drawing.Size(472, 469);
+            this.Root.TextVisible = false;
+            // 
+            // layoutControlItem2
+            // 
+            this.layoutControlItem2.Control = this.txt_name;
+            this.layoutControlItem2.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.layoutControlItem2.CustomizationFormText = "Nom de post";
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem2.Name = "layoutControlItem2";
+            this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(1, 1, 1, 1);
+            this.layoutControlItem2.Size = new System.Drawing.Size(452, 28);
+            this.layoutControlItem2.Text = "Nom de post";
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(97, 19);
+            // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.spn_contra;
@@ -184,28 +197,6 @@
             this.layoutControlItem4.Text = "Pénalité";
             this.layoutControlItem4.TextSize = new System.Drawing.Size(97, 19);
             // 
-            // btn_new
-            // 
-            this.btn_new.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_new.ImageOptions.SvgImage")));
-            this.btn_new.Location = new System.Drawing.Point(238, 100);
-            this.btn_new.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_new.Name = "btn_new";
-            this.btn_new.Size = new System.Drawing.Size(222, 52);
-            this.btn_new.StyleController = this.layoutControl1;
-            this.btn_new.TabIndex = 14;
-            this.btn_new.Click += new System.EventHandler(this.btn_new_Click);
-            // 
-            // btn_save
-            // 
-            this.btn_save.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_save.ImageOptions.SvgImage")));
-            this.btn_save.Location = new System.Drawing.Point(12, 100);
-            this.btn_save.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(222, 52);
-            this.btn_save.StyleController = this.layoutControl1;
-            this.btn_save.TabIndex = 13;
-            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
-            // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btn_new;
@@ -214,6 +205,15 @@
             this.layoutControlItem5.Size = new System.Drawing.Size(226, 56);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.Control = this.treeList1;
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 144);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Size = new System.Drawing.Size(452, 305);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem6
             // 
@@ -230,21 +230,23 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 469);
             this.Controls.Add(this.layoutControl1);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_FichePost.IconOptions.SvgImage")));
+            this.MaximizeBox = false;
             this.Name = "Frm_FichePost";
-            this.Text = "Frm_FichePost";
+            this.Text = "Fiche de Poste";
             this.Load += new System.EventHandler(this.Frm_FichePost_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txt_name.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spn_contra.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spn_penalite.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
 
