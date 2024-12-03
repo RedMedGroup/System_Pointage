@@ -155,11 +155,22 @@ namespace System_Pointage.Form
 
             GridName();
         }
-        // في Frm_Operation
+      
         private void SomeMethod()
         {
             if (otherForm.ActiveAgentsList != null)
             {
+                DateTime today = DateTime.Today;
+
+                //var filteredList = new BindingList<Models.AgentStatus>(
+                //    activeAgentsList.Where(agent =>
+                //        !(otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name && existingAgent.Date != today) ||
+                //          otherForm.TransferredAgentsList.Any(existingAgent => existingAgent.Name == agent.Name))
+                //    )
+                //    .Where(agent => agent.Date.Date != today) 
+                //    .ToList()
+                //);
+
                 var filteredList = new BindingList<Models.AgentStatus>(
                      activeAgentsList.Where(agent =>
                      !(otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name) ||

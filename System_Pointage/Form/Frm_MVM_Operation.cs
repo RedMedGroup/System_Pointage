@@ -281,9 +281,25 @@ namespace System_Pointage.Classe
                 XtraMessageBox.Show("Veuillez choisir une date qui ne dépasse pas la date actuelle.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-           
-            List<Models.AgentStatus> selectedAgents = new List<Models.AgentStatus>();
+            //
+            var agentService = new AgentDataService();
 
+            foreach (var rowIndex in selectedRows)
+            {
+                var agent = gridView1.GetRow(rowIndex) as Models.AgentStatus;
+                if (agent != null)
+                {
+                    // التحقق من وجود سجل بنفس التاريخ
+                    if (agentService.DoesAgentRecordExist(agent.Matricule, dateEdit1.DateTime))
+                    {
+                        XtraMessageBox.Show($"L'agent avec le matricule {agent.Matricule} possède déjà une entrée pour la date {dateEdit1.DateTime:dd/MM/yyyy}.",
+                            "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+            }
+            //
+            List<Models.AgentStatus> selectedAgents = new List<Models.AgentStatus>();
             foreach (var rowIndex in selectedRows)
             {
                 var agent = gridView1.GetRow(rowIndex) as Models.AgentStatus;
@@ -396,8 +412,25 @@ namespace System_Pointage.Classe
                 if (delete == true) 
                 {
                     ValiderAgentToListeAttent();
+                    #region
+                    var log = context.Attent_Heders.FirstOrDefault(a => a.ID == ATH.ID);
+                    if (log != null)
+                    {
+                        // التحقق من عدم وجود ID_Attent_Liste في جدول MVMAgentDetails
+                        bool existsInMVMAgentDetails = context.MVMAgentDetails.Any(agent => agent.ID_Attent_Liste == ATH.ID);
+
+                        // إذا لم يكن موجودًا في جدول MVMAgentDetails، قم بحذفه
+                        if (!existsInMVMAgentDetails)
+                        {
+                            context.Attent_Heders.DeleteOnSubmit(log);
+                            context.SubmitChanges();
+                        }
+                       
+                    }
+                    #endregion
+                    RefrechAttent();
                 }
-                activeAgentsList.Clear(); // إفراغ القائمة
+                activeAgentsList.Clear();
                 gridControl1_mvm.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList); 
                 gridView1.ClearSelection();
             }
@@ -830,24 +863,22 @@ namespace System_Pointage.Classe
                     }
                     foreach (var agent in selectedAgents)
                     {
-                        // جلب معرف ItemID بناءً على الاسم
                         int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Name == agent.Name)?.ID ?? 0;
 
-                        string statut1 = agent.Statut; // استخدم القيمة مباشرة من agent
+                        string statut1 = agent.Statut;
                         DateTime? dt = context.MVMAgentDetails.FirstOrDefault(f => f.Date == agent.Date)?.Date;
 
 
 
-                        // استرجاع السجل الحالي
+                        // استرجاع السجل 
                         var existingAgentDetail = context.MVMAgentDetails.FirstOrDefault(ad => ad.ItemID == itemID && ad.Date == dt.Value && ad.Statut == statut1);
 
                         if (existingAgentDetail != null)
                         {
                             // تحديث فقط حقل ID_Attent_Liste
-                            existingAgentDetail.ID_Attent_Liste = null; // تحديث حقل ID_Attent_Liste بقيمة معرف Attent_Heder
-                            context.SubmitChanges(); // حفظ التغييرات
+                            existingAgentDetail.ID_Attent_Liste = null;
+                            context.SubmitChanges(); 
                         }
-
                     }
                     var log = context.Attent_Heders.FirstOrDefault(a => a.ID == ATH.ID);
                     if (log != null)
@@ -857,8 +888,7 @@ namespace System_Pointage.Classe
                     }
                     XtraMessageBox.Show("Supprimer succés");
                     activeAgentsList.Clear();
-                    RefrechAttent();
-                
+                    RefrechAttent();                
             }
         }
     }

@@ -11,11 +11,24 @@ namespace System_Pointage.Classe
 {
     public class AgentDataService
     {
-        private readonly DAL.DataClasses1DataContext _context;
+        public readonly DAL.DataClasses1DataContext _context;
         public AgentDataService()
         {
             _context = new DAL.DataClasses1DataContext();
         }
+        public bool DoesAgentRecordExist(string matricule, DateTime date)
+        {
+            var agentID = _context.Fiche_Agents.FirstOrDefault(f => f.Matricule == matricule)?.ID;
+
+            if (agentID.HasValue)
+            {
+                return _context.MVMAgentDetails
+                               .Any(d => d.ItemID == agentID.Value && d.Date == date);
+            }
+
+            return false;
+        }
+
         public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
         {
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
@@ -32,7 +45,7 @@ namespace System_Pointage.Classe
 
 
             // استعلام أساسي
-            var agentsQuery = agentsQueryF// _context.MVMAgentDetails.Where(x=>x.ID_Attent_Liste==null || x.ID_Attent_Liste == idAttentListe)
+            var agentsQuery = agentsQueryF
                 .GroupBy(agent => agent.ItemID)
                 .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
                 .Where(agent => agent != null)
@@ -74,8 +87,8 @@ namespace System_Pointage.Classe
                 case Master.MVMType.CR:
                     if (formName == "Frm_Heir"|| formName == "Frm_WorkDays")
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "P");
-                    else
-                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" /*|| ma.agent.Statut == "P"*/);
+                    else// frm_operation partant/
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
 
                     break;
 
