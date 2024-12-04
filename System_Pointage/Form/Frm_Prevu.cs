@@ -107,7 +107,7 @@ namespace System_Pointage.Form
                       PosteName = poste.Name,
                       ma.agent.Matricule,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()) ,
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour) ,
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
@@ -124,7 +124,7 @@ namespace System_Pointage.Form
                                 Name = x.Name,
                                 Date = x.Date,
                                 Statut = x.Statut,
-                                Jour = x.Jour ?? 0,
+                                Jour = x.Jour ,
                                 Poste = x.PosteName,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
@@ -166,7 +166,7 @@ namespace System_Pointage.Form
                       PosteName = poste.Name,
                       ma.agent.Matricule,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()) ,// حساب التاريخ
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour) ,// حساب التاريخ
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
@@ -184,7 +184,7 @@ namespace System_Pointage.Form
                                 Name = x.Name,
                                 Date = x.Date,
                                 Statut = x.Statut,
-                                Jour = x.Jour ?? 0,
+                                Jour = x.Jour ,
                                 Poste = x.PosteName,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,

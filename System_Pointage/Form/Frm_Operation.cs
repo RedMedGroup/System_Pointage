@@ -148,7 +148,7 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             // جلب البيانات
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin,null,true);
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin,null,true,"frm_op");
 
 
             SomeMethod();

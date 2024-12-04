@@ -32,7 +32,7 @@ namespace System_Pointage.Classe
         public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
         {
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
-
+            IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
             // تحديد الشرط بناءً على fetchNullOnly
             if (fetchNullOnly)
             {
@@ -42,27 +42,81 @@ namespace System_Pointage.Classe
             {
                 agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == idAttentListe);
             }
+            if (formName == "Frm_Heir" || formName == "Frm_WorkDays")
+            {
+                #region
+                 agentsQuery = agentsQueryF
+    .GroupBy(agent => agent.ItemID)
+    .ToList() // تحميل البيانات إلى الذاكرة
+    .Select(g =>
+    {
+        var orderedRecords = g.OrderBy(x => x.Date).ToList();
+
+        // البحث عن أول حالة "P" بعد "CR"
+        bool foundCR = false; // هل وجدنا "CR"
+        foreach (var record in orderedRecords)
+        {
+            if (record.Statut == "CR")
+            {
+                foundCR = true; // وجدنا عطلة
+            }
+            else if (record.Statut == "P" && foundCR)
+            {
+                return record; // أول حضور بعد عطلة
+            }
+        }
+        foreach (var record in orderedRecords)
+        {
+            if (record.Statut == "CR")
+            {
+                return record;// وجدنا عطلة
+            }
+        }
+        // إذا لم يتم العثور على الحضور بعد "CR"، ارجع إلى أول سجل
+        return orderedRecords.FirstOrDefault();
+    })
+    .Where(agent => agent != null)
+    .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+    agent => agent.ItemID,
+    worker => worker.ID,
+    (agent, worker) => new { agent, worker })
+    .Join(_context.Fiche_Postes,
+    ma => ma.worker.ID_Post,
+    poste => poste.ID,
+    (ma, poste) => new
+    {
+        ma.worker,
+        ma.agent,
+        poste.Name,
+        ma.worker.Jour,
+    });
+                #endregion
+            }
 
 
-            // استعلام أساسي
-            var agentsQuery = agentsQueryF
-                .GroupBy(agent => agent.ItemID)
-                .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
-                .Where(agent => agent != null)
-                .Join(_context.Fiche_Agents.Where(x=>x.Statut==true),
-                    agent => agent.ItemID,
-                    worker => worker.ID,                
-                    (agent, worker) => new { agent, worker })
-                .Join(_context.Fiche_Postes,
-                    ma => ma.worker.ID_Post,
-                    poste => poste.ID,
-                    (ma, poste) => new
-                    {
-                        ma.worker,
-                        ma.agent,
-                        poste.Name,
-                        ma.worker.Jour,
-                    });
+            if (formName == "frm_op")
+            {
+                // استعلام أساسي
+                 agentsQuery = agentsQueryF
+                    .GroupBy(agent => agent.ItemID)
+                    .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
+                    .Where(agent => agent != null)
+                    .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+                        agent => agent.ItemID,
+                        worker => worker.ID,
+                        (agent, worker) => new { agent, worker })
+                    .Join(_context.Fiche_Postes,
+                        ma => ma.worker.ID_Post,
+                        poste => poste.ID,
+                        (ma, poste) => new
+                        {
+                            ma.worker,
+                            ma.agent,
+                            poste.Name,
+                            ma.worker.Jour,
+                        });
+            }
+
 
             // تطبيق الفلترة بناءً على userAccessPosteID إذا لم يكن المستخدم أدمن
             if (!isAdmin && userAccessPosteID.HasValue)
@@ -105,8 +159,8 @@ namespace System_Pointage.Classe
                     Statut = ma.agent.Statut,
                     Poste = ma.Name,
                     screenPosteD =ma.worker.ScreenPosteD ??0,
-                    Jour = ma.Jour.GetValueOrDefault(),
-                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour.GetValueOrDefault()),
+                    Jour = ma.Jour,
+                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
                     Matricule = ma.worker.Matricule,
                     Affecter = ma.worker.Affecter,
                     DaysCount = ma.agent.Statut == "P"

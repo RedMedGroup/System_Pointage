@@ -97,14 +97,13 @@ namespace System_Pointage.Form
             gridView1.Columns["Name"].VisibleIndex = 1;
             gridView1.Columns["Poste"].VisibleIndex = 2;
             gridView1.Columns["Affecter"].VisibleIndex = 3;
-     //       gridView1.Columns["Date"].Visible = false;
             gridView1.Columns["Jour"].Visible = false;
             gridView1.Columns["CalculatedDate"].Visible = false;
             gridView1.Columns["DaysCount"].Visible = false;
             gridView1.Columns["Difference"].Visible = false;
             gridView1.Columns["Statut"].VisibleIndex = 9;
             gridView1.Columns["screenPosteD"].Visible = false;
-    //        gridView1.Columns["Date"].Visible = false;
+            gridView1.Columns["Date"].Visible = false;
             gridView1.Columns["CalculatedDate"].Visible = false;
             gridView1.Columns["DaysCount"].Visible = false;
 

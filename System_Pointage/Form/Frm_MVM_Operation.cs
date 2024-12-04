@@ -546,7 +546,7 @@ namespace System_Pointage.Classe
                       PosteName = poste.Name,
                       ma.agent.ScreenPosteD,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()),
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
@@ -566,11 +566,11 @@ namespace System_Pointage.Classe
                                 screenPosteD = x.ScreenPosteD ?? 0,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
-                                Jour = x.Jour ?? 0,
+                                Jour = x.Jour ,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
                                 Statut = x.Statut,
-                                Difference = (x.DaysCount - (x.Jour ?? 0))
+                                Difference = (x.DaysCount - (x.Jour ))
                             }).ToList()
                         );
 
@@ -608,7 +608,7 @@ namespace System_Pointage.Classe
                       PosteName = poste.Name,
                       ma.agent.ScreenPosteD,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour.GetValueOrDefault()),// حساب التاريخ
+                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),// حساب التاريخ
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
@@ -629,11 +629,11 @@ namespace System_Pointage.Classe
                                 screenPosteD = x.ScreenPosteD ?? 0,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
-                                Jour = x.Jour ?? 0,
+                                Jour = x.Jour,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
                                 Statut = x.Statut,
-                                Difference = (x.DaysCount - (x.Jour ?? 0))
+                                Difference = (x.DaysCount - (x.Jour))
                             }).ToList()
                         );
                         FilterGrid();

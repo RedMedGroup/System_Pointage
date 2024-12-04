@@ -105,5 +105,18 @@ namespace System_Pointage.Properties {
                 this["Mode_Globale"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SQL9001.site4now.net;Initial Catalog=db_ab02dc_systempointage;User Id" +
+            "=db_ab02dc_systempointage_admin;Password=aze12345")]
+        public string test {
+            get {
+                return ((string)(this["test"]));
+            }
+            set {
+                this["test"] = value;
+            }
+        }
     }
 }
