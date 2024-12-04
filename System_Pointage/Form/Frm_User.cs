@@ -131,15 +131,10 @@ namespace System_Pointage.Form
                 }
                 SetData();
                 dbc.SubmitChanges();
+                Classe.Master.MessageBox();
             }
         }
-        //public static string ErrorText
-        //{
-        //    get
-        //    {
-        //        return "Ce champ est obligatoire";
-        //    }
-        //}
+     
         private void btn_Save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Save();

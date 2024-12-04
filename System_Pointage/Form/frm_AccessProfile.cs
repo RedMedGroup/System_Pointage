@@ -143,7 +143,7 @@ namespace System_Pointage.Form
         {
             if (textEdit1.Text.Trim() == string.Empty)
             {
-                textEdit1.ErrorText = ErrorText;
+                textEdit1.ErrorText =Classe.Master.ErrorText;
                 return;
             }
             var db = new DAL.DataClasses1DataContext();
@@ -176,15 +176,15 @@ namespace System_Pointage.Form
             }).ToList();
             db.UserAccessProfileDetails.InsertAllOnSubmit(dbData);
             db.SubmitChanges();
-            XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Classe.Master.MessageBox();
         }
-        public static string ErrorText
-        {
-            get
-            {
-                return "Ce champ est obligatoire";
-            }
-        }
+        //public static string ErrorText
+        //{
+        //    get
+        //    {
+        //        return "Ce champ est obligatoire";
+        //    }
+        //}
 
         private void btn_Save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

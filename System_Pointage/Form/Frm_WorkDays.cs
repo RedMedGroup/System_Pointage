@@ -27,6 +27,8 @@ namespace System_Pointage.Form
         }
         private void Frm_WorkDays_Load(object sender, EventArgs e)
         {
+            gridView1.OptionsBehavior.Editable = false;
+            gridView1.GroupPanelText = " ";
             RefrecheData();
         }
         int selectedID;

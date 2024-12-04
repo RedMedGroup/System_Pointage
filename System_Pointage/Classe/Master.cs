@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace System_Pointage.Classe
 {
@@ -128,7 +129,12 @@ namespace System_Pointage.Classe
             //lkp.Properties.Columns[valuMember].Visible = false;
             lkp.Properties.NullText = "";
         }
-        public static string ErrorText
+             public static void MessageBox()
+        {
+            XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+    public static string ErrorText
         {
             get
             {

@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Heir));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.btn_liste = new DevExpress.XtraEditors.SimpleButton();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
@@ -44,10 +43,10 @@
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btn_print = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -65,7 +64,7 @@
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.comboBoxEdit1);
+            this.layoutControl1.Controls.Add(this.btn_print);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.btn_liste);
             this.layoutControl1.Controls.Add(this.dateEdit1);
@@ -78,25 +77,10 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // comboBoxEdit1
-            // 
-            this.comboBoxEdit1.Location = new System.Drawing.Point(461, 24);
-            this.comboBoxEdit1.Name = "comboBoxEdit1";
-            this.comboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.comboBoxEdit1.Properties.Items.AddRange(new object[] {
-            "P",
-            "CR",
-            "Tout"});
-            this.comboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.comboBoxEdit1.Size = new System.Drawing.Size(105, 26);
-            this.comboBoxEdit1.StyleController = this.layoutControl1;
-            this.comboBoxEdit1.TabIndex = 13;
-            // 
             // btnSearch
             // 
             this.btnSearch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSearch.ImageOptions.SvgImage")));
-            this.btnSearch.Location = new System.Drawing.Point(582, 12);
+            this.btnSearch.Location = new System.Drawing.Point(431, 12);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(56, 52);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -106,7 +90,7 @@
             // btn_liste
             // 
             this.btn_liste.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_liste.ImageOptions.SvgImage")));
-            this.btn_liste.Location = new System.Drawing.Point(642, 12);
+            this.btn_liste.Location = new System.Drawing.Point(491, 12);
             this.btn_liste.Name = "btn_liste";
             this.btn_liste.Size = new System.Drawing.Size(56, 52);
             this.btn_liste.StyleController = this.layoutControl1;
@@ -116,13 +100,13 @@
             // dateEdit1
             // 
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(123, 24);
+            this.dateEdit1.Location = new System.Drawing.Point(157, 24);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(235, 26);
+            this.dateEdit1.Size = new System.Drawing.Size(258, 26);
             this.dateEdit1.StyleController = this.layoutControl1;
             this.dateEdit1.TabIndex = 5;
             // 
@@ -150,7 +134,8 @@
             this.emptySpaceItem1,
             this.layoutControlGroup2,
             this.layoutControlItem3,
-            this.layoutControlItem4});
+            this.layoutControlItem4,
+            this.layoutControlItem5});
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(1023, 548);
             this.Root.TextVisible = false;
@@ -160,11 +145,10 @@
             this.layoutControlGroup1.AppearanceGroup.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
             this.layoutControlGroup1.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem2,
-            this.layoutControlItem5});
+            this.layoutControlItem2});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(570, 56);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(419, 56);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem2
@@ -172,16 +156,16 @@
             this.layoutControlItem2.Control = this.dateEdit1;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(338, 32);
-            this.layoutControlItem2.Text = "Date rentrée";
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(87, 19);
+            this.layoutControlItem2.Size = new System.Drawing.Size(395, 32);
+            this.layoutControlItem2.Text = "Date mouvement";
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(121, 19);
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(690, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(599, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(313, 56);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(404, 56);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup2
@@ -207,7 +191,7 @@
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(570, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(419, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(60, 56);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -216,20 +200,30 @@
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btn_liste;
-            this.layoutControlItem4.Location = new System.Drawing.Point(630, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(479, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(60, 56);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
+            // btn_print
+            // 
+            this.btn_print.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.btn_print.Location = new System.Drawing.Point(551, 12);
+            this.btn_print.Name = "btn_print";
+            this.btn_print.Size = new System.Drawing.Size(56, 52);
+            this.btn_print.StyleController = this.layoutControl1;
+            this.btn_print.TabIndex = 13;
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
+            // 
             // layoutControlItem5
             // 
-            this.layoutControlItem5.Control = this.comboBoxEdit1;
-            this.layoutControlItem5.Location = new System.Drawing.Point(338, 0);
+            this.layoutControlItem5.Control = this.btn_print;
+            this.layoutControlItem5.Location = new System.Drawing.Point(539, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(208, 32);
-            this.layoutControlItem5.Text = "Statut";
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(87, 19);
+            this.layoutControlItem5.Size = new System.Drawing.Size(60, 56);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
             // 
             // Frm_Heir
             // 
@@ -240,11 +234,10 @@
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Heir.IconOptions.SvgImage")));
             this.Name = "Frm_Heir";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Frm_Heir";
+            this.Text = "Mouvement";
             this.Load += new System.EventHandler(this.Frm_Heir_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -278,7 +271,7 @@
         private DevExpress.XtraEditors.SimpleButton btn_liste;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraEditors.ComboBoxEdit comboBoxEdit1;
+        private DevExpress.XtraEditors.SimpleButton btn_print;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }

@@ -263,7 +263,9 @@
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Operation.IconOptions.SvgImage")));
             this.Name = "Frm_Operation";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frm_Operation";
             this.Load += new System.EventHandler(this.Frm_Operation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();

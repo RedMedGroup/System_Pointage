@@ -435,6 +435,7 @@
             this.Controls.Add(this.barDockControlTop);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Pointage.IconOptions.SvgImage")));
             this.Name = "Frm_Pointage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pointage";
             this.Load += new System.EventHandler(this.Frm_Pointage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();

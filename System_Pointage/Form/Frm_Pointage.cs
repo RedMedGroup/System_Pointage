@@ -157,10 +157,7 @@ namespace System_Pointage.Form
                 }
             }
         }
-
-  
-
-
+      
         private DataTable CreateDataTable()
         {
             DataTable table = new DataTable();
@@ -487,6 +484,13 @@ namespace System_Pointage.Form
         {
             gridView1.ShowRibbonPrintPreview();
         }
+        #region date of report
+        public DateTime StartDate { get; set; }
+        private void SetStartDate()
+        {
+            StartDate = dateEdit1.DateTime;
+        }
+        #endregion
         private DataTable CreateDailyReport(DateTime reportDate)
         {
             DataTable table = new DataTable();
@@ -580,8 +584,9 @@ namespace System_Pointage.Form
 
         private void GenerateDailyReport()
         {
+            SetStartDate();
             DateTime reportDate = dateEdit1.DateTime;
-            rpt_DailyReport report = new rpt_DailyReport();
+            rpt_DailyReport report = new rpt_DailyReport(this);
             report.DataSource = CreateDailyReport(reportDate);
             report.ShowPreview();
         }
