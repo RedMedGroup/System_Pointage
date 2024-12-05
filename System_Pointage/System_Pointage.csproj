@@ -268,11 +268,23 @@
     <Compile Include="report\rpt_DailyReport.Designer.cs">
       <DependentUpon>rpt_DailyReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="report\rpt_EtatJournal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="report\rpt_EtatJournal.Designer.cs">
+      <DependentUpon>rpt_EtatJournal.cs</DependentUpon>
+    </Compile>
     <Compile Include="report\rpt_penalite.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="report\rpt_penalite.Designer.cs">
       <DependentUpon>rpt_penalite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="report\rpt_penalite_Materiel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="report\rpt_penalite_Materiel.Designer.cs">
+      <DependentUpon>rpt_penalite_Materiel.cs</DependentUpon>
     </Compile>
     <Compile Include="report\rpt_pointage.cs">
       <SubType>Component</SubType>
@@ -381,8 +393,14 @@
     <EmbeddedResource Include="report\rpt_DailyReport.resx">
       <DependentUpon>rpt_DailyReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="report\rpt_EtatJournal.resx">
+      <DependentUpon>rpt_EtatJournal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_penalite.resx">
       <DependentUpon>rpt_penalite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="report\rpt_penalite_Materiel.resx">
+      <DependentUpon>rpt_penalite_Materiel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_pointage.resx">
       <DependentUpon>rpt_pointage.cs</DependentUpon>

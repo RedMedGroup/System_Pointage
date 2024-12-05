@@ -28,7 +28,18 @@ namespace System_Pointage.Classe
 
             return false;
         }
+        public bool DoesMaterielRecordExist(string matricule, DateTime date)
+        {
+            var agentID = _context.Fiche_Matricules.FirstOrDefault(f => f.Matricule == matricule)?.ID;
 
+            if (agentID.HasValue)
+            {
+                return _context.MVMmaterielsDetails
+                               .Any(d => d.ItemID == agentID.Value && d.Date == date);
+            }
+
+            return false;
+        }
         public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
         {
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
@@ -285,41 +296,45 @@ namespace System_Pointage.Classe
         #endregion
 
         #region materiels roulon
-        public BindingList<Models.MaterielsStatus> GetMaterieltStatuses()
+        public BindingList<Models.MaterielsStatus> GetAgentMateriels(int? userAccessPosteID, bool isAdmin)
         {
             var agentsQueryF = _context.MVMmaterielsDetails.AsQueryable();
             IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
-      
+         
                 agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
             
+
+          
+                // استعلام أساسي
                 agentsQuery = agentsQueryF
                    .GroupBy(agent => agent.ItemID)
                    .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
                    .Where(agent => agent != null)
-                   .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+                   .Join(_context.Fiche_Matricules.Where(x => x.Statut == true),
                        agent => agent.ItemID,
                        worker => worker.ID,
                        (agent, worker) => new { agent, worker })
-                   .Join(_context.Fiche_Postes,
-                       ma => ma.worker.ID_Post,
+                   .Join(_context.Fiche_materiels,
+                       ma => ma.worker.ID_materiels,
                        poste => poste.ID,
                        (ma, poste) => new
                        {
                            ma.worker,
                            ma.agent,
                            poste.Name,
-                           ma.worker.Jour,
                        });
             
 
 
-                agentsQuery = agentsQuery;
+            // تطبيق الفلترة بناءً على userAccessPosteID إذا لم يكن المستخدم أدمن
+            if (!isAdmin && userAccessPosteID.HasValue)
+            {
+                agentsQuery = agentsQuery.Where(ma => ma.worker.ScreenPosteD == userAccessPosteID.Value);
+            }
+
 
             agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
 
-
-            // تصفية حسب النوع
-           
 
             // تحويل البيانات إلى الكلاس AgentStatus
             var agents = agentsQuery
@@ -329,18 +344,19 @@ namespace System_Pointage.Classe
                     Date = ma.agent.Date,
                     Statut = ma.agent.Statut,
                     Materiel = ma.Name,
-
-                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
+                    screenPosteD = ma.worker.ScreenPosteD ?? 0,
+                 //   CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
                     Matricule = ma.worker.Matricule,
                     Affecter = ma.worker.Affecter,
                     DaysCount = ma.agent.Statut == "P"
                   ? (DateTime.Now - ma.agent.Date).Days
                  : ma.agent.Statut == "CR"
                    ? (DateTime.Now - ma.agent.Date).Days
-                  : 0, // في الحالات الأخرى، القيمة 0
+                  : 0, 
+                    
                 })
                 .ToList();
-      
+            
             return new BindingList<Models.MaterielsStatus>(agents);
         }
         #endregion

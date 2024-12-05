@@ -90,7 +90,6 @@
             this.gridControl1.TabIndex = 21;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
-            this.gridControl1.Click += new System.EventHandler(this.gridControl1_Click);
             // 
             // gridView1
             // 
@@ -145,6 +144,7 @@
             this.btn_print_pinalite.StyleController = this.layoutControl1;
             this.btn_print_pinalite.TabIndex = 17;
             this.btn_print_pinalite.Text = "Pénalités";
+            this.btn_print_pinalite.Click += new System.EventHandler(this.btn_print_pinalite_Click);
             // 
             // btn_reportAparJour
             // 
@@ -156,6 +156,7 @@
             this.btn_reportAparJour.StyleController = this.layoutControl1;
             this.btn_reportAparJour.TabIndex = 22;
             this.btn_reportAparJour.Text = "Etat personnel";
+            this.btn_reportAparJour.Click += new System.EventHandler(this.btn_reportAparJour_Click);
             // 
             // Root
             // 

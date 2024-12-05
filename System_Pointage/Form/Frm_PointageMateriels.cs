@@ -2,6 +2,7 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.DAL;
+using System_Pointage.report;
 
 namespace System_Pointage.Form
 {
@@ -324,9 +326,235 @@ namespace System_Pointage.Form
             dateEdit1.DateTime = new DateTime(selectedDate.Year, selectedDate.Month, 1);
         }
 
-        private void gridControl1_Click(object sender, EventArgs e)
+        private void btn_print_pinalite_Click(object sender, EventArgs e)
         {
+            GenerateReport();
+        }
+        private void GenerateReport() // pénalité
+        {
+            DateTime startDate = dateEdit1.DateTime;
+            DateTime endDate = dateEdit2.DateTime;
+            int totalDays = (endDate - startDate).Days + 1;
 
+            rpt_penalite_Materiel report = new rpt_penalite_Materiel();
+            report.DataSource = CreateAbsenceReport(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
+            report.ShowPreview();
+        }
+        #region date of report
+        public DateTime StartDate { get; set; }
+        private void SetStartDate()
+        {
+            StartDate = dateEdit1.DateTime;
+        }
+        #endregion
+        private DataTable CreateAbsenceReport(int totalDays, DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+
+            table.Columns.Add("camion", typeof(string));
+            table.Columns.Add("TotalAbsences", typeof(int));
+            table.Columns.Add("M_Penalite", typeof(float));
+            table.Columns.Add("TotalPenalties", typeof(float));
+            table.Columns.Add("Nombre du personnel absent", typeof(int));
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var camions = context.Fiche_materiels.Select(post => new
+                {
+                    post.ID,
+                    camionName = post.Name,
+                    M_Penalite = post.M_Penalite
+                }).ToList();
+
+                foreach (var camion in camions)
+                {
+                    var agentAbsences = context.MVMmaterielsDetails
+                        .Where(x => x.Date >= startDate && x.Date <= endDate)
+                        .Join(context.Fiche_Matricules,
+                              agent => agent.ItemID,
+                              worker => worker.ID,
+                              (agent, worker) => new { agent, worker })
+                        .Where(x => x.worker.ID_materiels == camion.ID)
+                        .OrderBy(x => x.agent.Date)
+                        .ToList();
+
+                    // إنشاء مجموعة لتخزين الغيابات لكل موظف
+                    var absenceRecordsByAgent = new Dictionary<int, List<(DateTime Date, string Status)>>();
+                    var uniqueAbsentPersonnelSet = new HashSet<int>(); // مجموعة لتخزين IDs فريدة للموظفين الغائبين
+
+                    // ملء قائمة حالات الموظفين
+                    foreach (var record in agentAbsences)
+                    {
+                        if (!absenceRecordsByAgent.ContainsKey(record.worker.ID))
+                        {
+                            absenceRecordsByAgent[record.worker.ID] = new List<(DateTime, string)>();
+                        }
+                        absenceRecordsByAgent[record.worker.ID].Add((record.agent.Date, record.agent.Statut));
+                    }
+
+                    // حساب الغيابات لكل موظف
+                    int totalAbsences = 0;
+
+                    foreach (var agent in absenceRecordsByAgent)
+                    {
+                        var absenceRecords = agent.Value;
+
+                        for (int i = 0; i < absenceRecords.Count; i++)
+                        {
+                            if (absenceRecords[i].Status == "A")
+                            {
+                                uniqueAbsentPersonnelSet.Add(agent.Key); // إضافة ID الموظف إلى المجموعة
+
+                                DateTime absenceStart = absenceRecords[i].Date;
+
+                                // البحث عن أول تاريخ يتغير فيه الحالة
+                                DateTime absenceEnd = endDate; // افتراضياً نهاية الغياب هي نهاية الفترة
+                                for (int j = i + 1; j < absenceRecords.Count; j++)
+                                {
+                                    if (absenceRecords[j].Status != "A")
+                                    {
+                                        absenceEnd = absenceRecords[j].Date.AddDays(-1); // اليوم الذي يسبق حالة الحضور
+                                        break;
+                                    }
+                                }
+                                // التأكد من أن التواريخ تقع ضمن النطاق المحدد
+                                absenceStart = (absenceStart < startDate) ? startDate : absenceStart;
+                                absenceEnd = (absenceEnd > endDate) ? endDate : absenceEnd;
+
+                                // حساب عدد أيام الغياب ضمن الفترة
+                                int absenceCount = (absenceEnd - absenceStart).Days + 1;
+                                totalAbsences += absenceCount; // إضافة إلى الإجمالي
+
+                                // إذا انتهى الغياب بنهاية الفترة، لا حاجة للاستمرار
+                                if (absenceEnd == endDate)
+                                    break;
+                            }
+                        }
+                    }
+
+
+                    // إذا كان هناك غيابات في القسم، أضف الصف إلى التقرير
+                    if (totalAbsences > 0)
+                    {
+                        // حساب الغرامات الكلية
+                        float totalPenalties = (float)(totalAbsences * camion.M_Penalite);
+
+                        // إضافة صف جديد إلى الجدول
+                        DataRow row = table.NewRow();
+                        row["camion"] = camion.camionName;
+                        row["TotalAbsences"] = totalAbsences; // إجمالي الغيابات
+                        row["M_Penalite"] = camion.M_Penalite;
+                        row["TotalPenalties"] = totalPenalties;
+                        row["Nombre du personnel absent"] = uniqueAbsentPersonnelSet.Count; // عدد الموظفين الفريدين الغائبين
+
+                        table.Rows.Add(row);
+                    }
+                }
+            }
+            return table;
+        }
+
+        private void btn_reportAparJour_Click(object sender, EventArgs e)
+        {
+            GenerateDailyReport();
+        }
+        private void GenerateDailyReport()
+        {
+            SetStartDate();
+            DateTime reportDate = dateEdit1.DateTime;
+            rpt_EtatJournal report = new rpt_EtatJournal(this);
+            report.DataSource = CreateDailyReport(reportDate);
+            report.ShowPreview();
+        }
+        private DataTable CreateDailyReport(DateTime reportDate)
+        {
+            DataTable table = new DataTable();
+
+            // إضافة الأعمدة
+            table.Columns.Add("camion", typeof(string));
+            table.Columns.Add("RequiredEmployees", typeof(int));
+            table.Columns.Add("WorkerName", typeof(string));
+            table.Columns.Add("Status", typeof(string));
+            table.Columns.Add("PresentCount", typeof(int));
+            table.Columns.Add("cell_Ecart", typeof(int));
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                // استرجاع الأقسام
+                var camions = context.Fiche_materiels
+                    .Select(post => new
+                    {
+                        ID_Post = post.ID,
+                        camionName = post.Name,
+                        RequiredEmployees = post.Nembre_Contra
+                    })
+                    .ToList();
+
+                // استرجاع العمال وحالاتهم في التاريخ المحدد
+                var workers = context.Fiche_Matricules
+                    .Select(agent => new
+                    {
+                        WorkerName = agent.Matricule,
+                        camionID = agent.ID_materiels,
+                        LastStatus = context.MVMmaterielsDetails
+                            .Where(detail =>
+                                detail.ItemID == agent.ID &&
+                                detail.Date <= reportDate)
+                            .OrderByDescending(detail => detail.Date)
+                            .Select(detail => detail.Statut)
+                            .FirstOrDefault(), // أخذ آخر حالة قبل أو في التاريخ المحدد
+                        NextAbsenceDate = context.MVMmaterielsDetails
+                            .Where(detail =>
+                                detail.ItemID == agent.ID &&
+                                detail.Date > reportDate && // تحقق من وجود غياب بعد تاريخ التقرير
+                                detail.Statut == "CR")
+                            .OrderBy(detail => detail.Date)
+                            .Select(detail => (DateTime?)detail.Date) // تحويل إلى نوع Nullable<DateTime>
+                            .FirstOrDefault() // الحصول على أقرب تاريخ غياب بعد تاريخ التقرير
+                    })
+                    .Where(worker => worker.LastStatus != null && worker.LastStatus != "CR") // تجاهل العمال الذين لا حالة لهم
+                    .ToList();
+
+                // إضافة البيانات إلى الجدول
+                foreach (var camion in camions)
+                {
+                    // استرجاع عمال القسم
+                    var camionWorkers = workers.Where(w => w.camionID == camion.ID_Post).ToList();
+
+                    // حساب عدد الحضور
+                    int presentCount = camionWorkers.Count(w => w.LastStatus == "P" && (w.NextAbsenceDate == null || w.NextAbsenceDate > reportDate));
+
+                    // حساب الفارق
+                    int cellEcart = (int)(presentCount - camion.RequiredEmployees);
+
+                    foreach (var worker in camionWorkers)
+                    {
+                        DataRow row = table.NewRow();
+                        row["camion"] = camion.camionName;
+                        row["RequiredEmployees"] = camion.RequiredEmployees;
+                        row["WorkerName"] = worker.WorkerName;
+
+                        // تحديد الحالة النهائية
+                        string status = worker.LastStatus ?? "A"; // افتراض الحالة "A" عند عدم وجود حالة
+                        if (worker.LastStatus == "P" && (worker.NextAbsenceDate == null || worker.NextAbsenceDate > reportDate))
+                        {
+                            status = "P"; // العامل حاضر
+                        }
+                        else if (worker.LastStatus == "P" && worker.NextAbsenceDate <= reportDate)
+                        {
+                            status = "A"; // العامل غائب لأن لديه غياب مسجل بعد تاريخ التقرير
+                        }
+
+                        row["Status"] = status;
+                        row["PresentCount"] = presentCount;
+                        row["cell_Ecart"] = cellEcart;
+
+                        table.Rows.Add(row);
+                    }
+                }
+            }
+
+            return table;
         }
     }
 }

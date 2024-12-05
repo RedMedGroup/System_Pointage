@@ -29,7 +29,9 @@ namespace System_Pointage.Classe
             public DateTime Date { get; set; }
             public string Statut { get; set; }
             public string Materiel { get; set; }
-            public DateTime CalculatedDate { get; set; }
+            public int screenPosteD { get; set; }
+
+           // public DateTime CalculatedDate { get; set; }
             public int DaysCount { get; set; }
             public string Matricule { get; set; }
             public string Affecter { get; set; }

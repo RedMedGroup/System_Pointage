@@ -17,11 +17,13 @@ namespace System_Pointage.Form
     {
         private BindingList<Models.MaterielsStatus> activeAgentsList;
         private BindingList<Models.MaterielsStatus> transferredAgentsList;
-        public event EventHandler<BindingList<Models.AgentStatus>> AgentsTransferred;
+        private Frm_MVM_OP_Materiels otherForm;
+        public event EventHandler<BindingList<Models.MaterielsStatus>> AgentsTransferred;
 
-        public Frm_OP_Materiels()
+        public Frm_OP_Materiels(Frm_MVM_OP_Materiels formPrevu)
         {
             InitializeComponent();
+            otherForm = formPrevu;
         }
 
         private void Frm_OP_Materiels_Load(object sender, EventArgs e)
@@ -46,7 +48,7 @@ namespace System_Pointage.Form
 
                 // إزالة السطر من القائمة الأولى
                 activeAgentsList.Remove(selectedRow);
-              //  SomeMethod();
+               SomeMethod();
             }
         }
         private void RefrecheData()
@@ -60,12 +62,49 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             // جلب البيانات
-            activeAgentsList = agentDataService.GetMaterieltStatuses();
+            activeAgentsList = agentDataService.GetAgentMateriels(userAccessPosteID, isAdmin);
 
 
-            //SomeMethod();
+            SomeMethod();
 
             //GridName();
+        }
+        private void SomeMethod()
+        {
+            if (otherForm.ActiveAgentsList != null)
+            {
+                DateTime today = DateTime.Today;
+
+                var filteredList = new BindingList<Models.MaterielsStatus>(
+                     activeAgentsList.Where(agent =>
+                     !(otherForm.ActiveAgentsList.Any(existingAgent => existingAgent.Name == agent.Name) ||
+                       otherForm.TransferredAgentsList.Any(existingAgent => existingAgent.Name == agent.Name))
+                  ).ToList()
+                );
+                gridControl1.DataSource = filteredList;
+            }
+            else
+            {
+                gridControl1.DataSource = activeAgentsList;
+            }
+        }
+
+        private void btn_envoyer_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (transferredAgentsList.Count > 0)
+            {
+                var mainForm = this.Owner as Frm_MVM_OP_Materiels;
+                if (mainForm != null)
+                {
+                    
+                    mainForm.AddTransferredAgents(transferredAgentsList);
+                    this.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Il n'y a aucune donnée à envoyer.", "avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
