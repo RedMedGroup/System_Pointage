@@ -196,8 +196,8 @@ namespace System_Pointage.Classe
                         select new
                         {
                             agent.ID,
-                           AgentID = agent.ID,
-                           agent.Matricule,
+                            AgentID = agent.ID,
+                            agent.Matricule,
                             Name = agent.Name,
                             PostName = post.Name,
                             agent.Affecter,
@@ -282,10 +282,68 @@ namespace System_Pointage.Classe
             // الخطوة 5: إرجاع القائمة
             return agentsWithoutMovements.ToList<object>();
         }
-
-
         #endregion
 
+        #region materiels roulon
+        public BindingList<Models.MaterielsStatus> GetMaterieltStatuses()
+        {
+            var agentsQueryF = _context.MVMmaterielsDetails.AsQueryable();
+            IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
+      
+                agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
+            
+                agentsQuery = agentsQueryF
+                   .GroupBy(agent => agent.ItemID)
+                   .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
+                   .Where(agent => agent != null)
+                   .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+                       agent => agent.ItemID,
+                       worker => worker.ID,
+                       (agent, worker) => new { agent, worker })
+                   .Join(_context.Fiche_Postes,
+                       ma => ma.worker.ID_Post,
+                       poste => poste.ID,
+                       (ma, poste) => new
+                       {
+                           ma.worker,
+                           ma.agent,
+                           poste.Name,
+                           ma.worker.Jour,
+                       });
+            
+
+
+                agentsQuery = agentsQuery;
+
+            agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
+
+
+            // تصفية حسب النوع
+           
+
+            // تحويل البيانات إلى الكلاس AgentStatus
+            var agents = agentsQuery
+                .Select(ma => new Models.MaterielsStatus
+                {
+                    Name = ma.worker.Name,
+                    Date = ma.agent.Date,
+                    Statut = ma.agent.Statut,
+                    Materiel = ma.Name,
+
+                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
+                    Matricule = ma.worker.Matricule,
+                    Affecter = ma.worker.Affecter,
+                    DaysCount = ma.agent.Statut == "P"
+                  ? (DateTime.Now - ma.agent.Date).Days
+                 : ma.agent.Statut == "CR"
+                   ? (DateTime.Now - ma.agent.Date).Days
+                  : 0, // في الحالات الأخرى، القيمة 0
+                })
+                .ToList();
+      
+            return new BindingList<Models.MaterielsStatus>(agents);
+        }
+        #endregion
 
 
     }

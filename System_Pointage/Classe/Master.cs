@@ -141,5 +141,12 @@ namespace System_Pointage.Classe
                 return "Ce champ est obligatoire";
             }
         }
+        public static string ErrorTextadvance
+        {
+            get
+            {
+                return "Nom déjà enregistré";
+            }
+        }
     }
 }

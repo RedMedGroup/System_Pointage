@@ -92,6 +92,12 @@
     <Compile Include="Classe\Models.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
     <Compile Include="Classe\UserLogAction.cs" />
+    <Compile Include="Form\Fiche_Materiels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Fiche_Materiels.Designer.cs">
+      <DependentUpon>Fiche_Materiels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_AccessPosteHeder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +133,12 @@
     </Compile>
     <Compile Include="Form\Frm_Fiche_Ajent.Designer.cs">
       <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_Fiche_Matricule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Fiche_Matricule.Designer.cs">
+      <DependentUpon>Frm_Fiche_Matricule.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_Heir.cs">
       <SubType>Form</SubType>
@@ -164,17 +176,35 @@
     <Compile Include="Form\Frm_Main.Designer.cs">
       <DependentUpon>Frm_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_MVM_OP_Materiels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_MVM_OP_Materiels.Designer.cs">
+      <DependentUpon>Frm_MVM_OP_Materiels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Operation.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\Frm_Operation.Designer.cs">
       <DependentUpon>Frm_Operation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_OP_Materiels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_OP_Materiels.Designer.cs">
+      <DependentUpon>Frm_OP_Materiels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Pointage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\Frm_Pointage.Designer.cs">
       <DependentUpon>Frm_Pointage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_PointageMateriels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_PointageMateriels.Designer.cs">
+      <DependentUpon>Frm_PointageMateriels.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_Prevu.cs">
       <SubType>Form</SubType>
@@ -211,6 +241,12 @@
     </Compile>
     <Compile Include="Frm_List\Frm_Liste_AccessProfile.Designer.cs">
       <DependentUpon>Frm_Liste_AccessProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm_List\Frm_MaterielsListe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_List\Frm_MaterielsListe.Designer.cs">
+      <DependentUpon>Frm_MaterielsListe.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_List\frm_User_List.cs">
       <SubType>Form</SubType>
@@ -250,6 +286,9 @@
     <Compile Include="report\rpt_WorkDay.Designer.cs">
       <DependentUpon>rpt_WorkDay.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form\Fiche_Materiels.resx">
+      <DependentUpon>Fiche_Materiels.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_AccessPosteHeder.resx">
       <DependentUpon>Frm_AccessPosteHeder.cs</DependentUpon>
     </EmbeddedResource>
@@ -268,6 +307,9 @@
     <EmbeddedResource Include="Form\Frm_Fiche_Ajent.resx">
       <DependentUpon>Frm_Fiche_Ajent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Fiche_Matricule.resx">
+      <DependentUpon>Frm_Fiche_Matricule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Heir.resx">
       <DependentUpon>Frm_Heir.cs</DependentUpon>
     </EmbeddedResource>
@@ -283,11 +325,20 @@
     <EmbeddedResource Include="Form\Frm_Main.resx">
       <DependentUpon>Frm_Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_MVM_OP_Materiels.resx">
+      <DependentUpon>Frm_MVM_OP_Materiels.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Operation.resx">
       <DependentUpon>Frm_Operation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_OP_Materiels.resx">
+      <DependentUpon>Frm_OP_Materiels.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Pointage.resx">
       <DependentUpon>Frm_Pointage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_PointageMateriels.resx">
+      <DependentUpon>Frm_PointageMateriels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Prevu.resx">
       <DependentUpon>Frm_Prevu.cs</DependentUpon>
@@ -306,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\Frm_Liste_AccessProfile.resx">
       <DependentUpon>Frm_Liste_AccessProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_List\Frm_MaterielsListe.resx">
+      <DependentUpon>Frm_MaterielsListe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\frm_User_List.resx">
       <DependentUpon>frm_User_List.cs</DependentUpon>

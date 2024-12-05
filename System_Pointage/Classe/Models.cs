@@ -23,6 +23,17 @@ namespace System_Pointage.Classe
             public int Difference { get; set; }
 
         }
+        public class MaterielsStatus
+        {
+            public string Name { get; set; }
+            public DateTime Date { get; set; }
+            public string Statut { get; set; }
+            public string Materiel { get; set; }
+            public DateTime CalculatedDate { get; set; }
+            public int DaysCount { get; set; }
+            public string Matricule { get; set; }
+            public string Affecter { get; set; }
 
+        }
     }
 }
