@@ -320,6 +320,7 @@ namespace System_Pointage.Form
             report.DataSource = CreateAbsenceReport(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
             report.ShowPreview();
         }
+
         private DataTable CreateAbsenceReport(int totalDays, DateTime startDate, DateTime endDate)
         {
             DataTable table = new DataTable();
@@ -338,7 +339,8 @@ namespace System_Pointage.Form
                 {
                     post.ID,
                     DepartmentName = post.Name,
-                    M_Penalite = post.M_Penalite
+                    M_Penalite = post.M_Penalite,
+                    Nembre_Contra = post.Nembre_Contra // الحصول على Nembre_Contra من جدول Fiche_Postes
                 }).ToList();
 
                 // حساب الغيابات والمعلومات المطلوبة لكل قسم خلال الفترة المحددة
@@ -371,6 +373,7 @@ namespace System_Pointage.Form
 
                     // حساب الغيابات لكل موظف
                     int totalAbsences = 0;
+                    int totalPersonnelPresent = 0; // لحساب عدد الحضور الفعلي
 
                     foreach (var agent in absenceRecordsByAgent)
                     {
@@ -394,6 +397,7 @@ namespace System_Pointage.Form
                                         break;
                                     }
                                 }
+
                                 // التأكد من أن التواريخ تقع ضمن النطاق المحدد
                                 absenceStart = (absenceStart < startDate) ? startDate : absenceStart;
                                 absenceEnd = (absenceEnd > endDate) ? endDate : absenceEnd;
@@ -409,6 +413,23 @@ namespace System_Pointage.Form
                         }
                     }
 
+                    // حساب عدد الحضور الفعلي في القسم
+                    totalPersonnelPresent = absenceRecordsByAgent.Count;
+
+                    // إذا كان عدد الحضور الفعلي أقل من Nembre_Contra، حساب الفرق
+                    int missingPersonnel =(int) department.Nembre_Contra - totalPersonnelPresent;
+                    if (missingPersonnel > 0)
+                    {
+                        // إضافة الفرق كغيباب يومي
+                        totalAbsences += missingPersonnel * totalDays;
+
+                        // إضافة هؤلاء الأشخاص كغائبين أيضًا
+                        // نعتبر هؤلاء الأشخاص الغائبين بسبب النقص في الحضور
+                        for (int i = 0; i < missingPersonnel; i++)
+                        {
+                            uniqueAbsentPersonnelSet.Add(i); // إضافة أشخاص غائبين افتراضيين
+                        }
+                    }
 
                     // إذا كان هناك غيابات في القسم، أضف الصف إلى التقرير
                     if (totalAbsences > 0)
@@ -431,6 +452,244 @@ namespace System_Pointage.Form
             return table;
         }
 
+
+        //private DataTable CreateAbsenceReport(int totalDays, DateTime startDate, DateTime endDate)
+        //{
+        //    DataTable table = new DataTable();
+
+        //    // إضافة الأعمدة
+        //    table.Columns.Add("Department", typeof(string));
+        //    table.Columns.Add("TotalAbsences", typeof(int));
+        //    table.Columns.Add("M_Penalite", typeof(float));
+        //    table.Columns.Add("TotalPenalties", typeof(float));
+        //    table.Columns.Add("Nombre du personnel absent", typeof(int));
+
+        //    using (var context = new DAL.DataClasses1DataContext())
+        //    {
+        //        // استرجاع الأقسام من جدول Fiche_DePosts
+        //        var departments = context.Fiche_Postes.Select(post => new
+        //        {
+        //            post.ID,
+        //            DepartmentName = post.Name,
+        //            M_Penalite = post.M_Penalite,
+        //            Nembre_Contra = post.Nembre_Contra // الحصول على Nembre_Contra من جدول Fiche_Postes
+        //        }).ToList();
+
+        //        // حساب الغيابات والمعلومات المطلوبة لكل قسم خلال الفترة المحددة
+        //        foreach (var department in departments)
+        //        {
+        //            // استرجاع جميع السجلات للعاملين في هذا القسم خلال الفترة المحددة
+        //            var agentAbsences = context.MVMAgentDetails
+        //                .Where(x => x.Date >= startDate && x.Date <= endDate)
+        //                .Join(context.Fiche_Agents,
+        //                      agent => agent.ItemID,
+        //                      worker => worker.ID,
+        //                      (agent, worker) => new { agent, worker })
+        //                .Where(x => x.worker.ID_Post == department.ID)
+        //                .OrderBy(x => x.agent.Date)
+        //                .ToList();
+
+        //            // إنشاء مجموعة لتخزين الغيابات لكل موظف
+        //            var absenceRecordsByAgent = new Dictionary<int, List<(DateTime Date, string Status)>>();
+        //            var uniqueAbsentPersonnelSet = new HashSet<int>(); // مجموعة لتخزين IDs فريدة للموظفين الغائبين
+
+        //            // ملء قائمة حالات الموظفين
+        //            foreach (var record in agentAbsences)
+        //            {
+        //                if (!absenceRecordsByAgent.ContainsKey(record.worker.ID))
+        //                {
+        //                    absenceRecordsByAgent[record.worker.ID] = new List<(DateTime, string)>();
+        //                }
+        //                absenceRecordsByAgent[record.worker.ID].Add((record.agent.Date, record.agent.Statut));
+        //            }
+
+        //            // حساب الغيابات لكل موظف
+        //            int totalAbsences = 0;
+        //            int totalPersonnelPresent = 0; // لحساب عدد الحضور الفعلي
+
+        //            foreach (var agent in absenceRecordsByAgent)
+        //            {
+        //                var absenceRecords = agent.Value;
+
+        //                for (int i = 0; i < absenceRecords.Count; i++)
+        //                {
+        //                    if (absenceRecords[i].Status == "A")
+        //                    {
+        //                        uniqueAbsentPersonnelSet.Add(agent.Key); // إضافة ID الموظف إلى المجموعة
+
+        //                        DateTime absenceStart = absenceRecords[i].Date;
+
+        //                        // البحث عن أول تاريخ يتغير فيه الحالة
+        //                        DateTime absenceEnd = endDate; // افتراضياً نهاية الغياب هي نهاية الفترة
+        //                        for (int j = i + 1; j < absenceRecords.Count; j++)
+        //                        {
+        //                            if (absenceRecords[j].Status != "A")
+        //                            {
+        //                                absenceEnd = absenceRecords[j].Date.AddDays(-1); // اليوم الذي يسبق حالة الحضور
+        //                                break;
+        //                            }
+        //                        }
+
+        //                        // التأكد من أن التواريخ تقع ضمن النطاق المحدد
+        //                        absenceStart = (absenceStart < startDate) ? startDate : absenceStart;
+        //                        absenceEnd = (absenceEnd > endDate) ? endDate : absenceEnd;
+
+        //                        // حساب عدد أيام الغياب ضمن الفترة
+        //                        int absenceCount = (absenceEnd - absenceStart).Days + 1;
+        //                        totalAbsences += absenceCount; // إضافة إلى الإجمالي
+
+        //                        // إذا انتهى الغياب بنهاية الفترة، لا حاجة للاستمرار
+        //                        if (absenceEnd == endDate)
+        //                            break;
+        //                    }
+        //                }
+        //            }
+
+        //            // حساب عدد الحضور الفعلي في القسم
+        //            totalPersonnelPresent = absenceRecordsByAgent.Count;
+
+        //            // إذا كان عدد الحضور الفعلي أقل من Nembre_Contra، حساب الفرق
+        //            int missingPersonnel =(int) department.Nembre_Contra - totalPersonnelPresent;
+        //            if (missingPersonnel > 0)
+        //            {
+        //                // إضافة الفرق كغيباب يومي
+        //                totalAbsences += missingPersonnel * totalDays;
+        //            }
+
+        //            // إذا كان هناك غيابات في القسم، أضف الصف إلى التقرير
+        //            if (totalAbsences > 0)
+        //            {
+        //                // حساب الغرامات الكلية
+        //                float totalPenalties = (float)(totalAbsences * department.M_Penalite);
+
+        //                // إضافة صف جديد إلى الجدول
+        //                DataRow row = table.NewRow();
+        //                row["Department"] = department.DepartmentName;
+        //                row["TotalAbsences"] = totalAbsences; // إجمالي الغيابات
+        //                row["M_Penalite"] = department.M_Penalite;
+        //                row["TotalPenalties"] = totalPenalties;
+        //                row["Nombre du personnel absent"] = uniqueAbsentPersonnelSet.Count; // عدد الموظفين الفريدين الغائبين
+
+        //                table.Rows.Add(row);
+        //            }
+        //        }
+        //    }
+        //    return table;
+        //}
+
+
+        #region
+        //private DataTable CreateAbsenceReport(int totalDays, DateTime startDate, DateTime endDate)
+        //{
+        //    DataTable table = new DataTable();
+
+        //    // إضافة الأعمدة
+        //    table.Columns.Add("Department", typeof(string));
+        //    table.Columns.Add("TotalAbsences", typeof(int));
+        //    table.Columns.Add("M_Penalite", typeof(float));
+        //    table.Columns.Add("TotalPenalties", typeof(float));
+        //    table.Columns.Add("Nombre du personnel absent", typeof(int));
+
+        //    using (var context = new DAL.DataClasses1DataContext())
+        //    {
+        //        // استرجاع الأقسام من جدول Fiche_DePosts
+        //        var departments = context.Fiche_Postes.Select(post => new
+        //        {
+        //            post.ID,
+        //            DepartmentName = post.Name,
+        //            M_Penalite = post.M_Penalite
+        //        }).ToList();
+
+        //        // حساب الغيابات والمعلومات المطلوبة لكل قسم خلال الفترة المحددة
+        //        foreach (var department in departments)
+        //        {
+        //            // استرجاع جميع السجلات للعاملين في هذا القسم خلال الفترة المحددة
+        //            var agentAbsences = context.MVMAgentDetails
+        //                .Where(x => x.Date >= startDate && x.Date <= endDate)
+        //                .Join(context.Fiche_Agents,
+        //                      agent => agent.ItemID,
+        //                      worker => worker.ID,
+        //                      (agent, worker) => new { agent, worker })
+        //                .Where(x => x.worker.ID_Post == department.ID)
+        //                .OrderBy(x => x.agent.Date)
+        //                .ToList();
+
+        //            // إنشاء مجموعة لتخزين الغيابات لكل موظف
+        //            var absenceRecordsByAgent = new Dictionary<int, List<(DateTime Date, string Status)>>();
+        //            var uniqueAbsentPersonnelSet = new HashSet<int>(); // مجموعة لتخزين IDs فريدة للموظفين الغائبين
+
+        //            // ملء قائمة حالات الموظفين
+        //            foreach (var record in agentAbsences)
+        //            {
+        //                if (!absenceRecordsByAgent.ContainsKey(record.worker.ID))
+        //                {
+        //                    absenceRecordsByAgent[record.worker.ID] = new List<(DateTime, string)>();
+        //                }
+        //                absenceRecordsByAgent[record.worker.ID].Add((record.agent.Date, record.agent.Statut));
+        //            }
+
+        //            // حساب الغيابات لكل موظف
+        //            int totalAbsences = 0;
+
+        //            foreach (var agent in absenceRecordsByAgent)
+        //            {
+        //                var absenceRecords = agent.Value;
+
+        //                for (int i = 0; i < absenceRecords.Count; i++)
+        //                {
+        //                    if (absenceRecords[i].Status == "A")
+        //                    {
+        //                        uniqueAbsentPersonnelSet.Add(agent.Key); // إضافة ID الموظف إلى المجموعة
+
+        //                        DateTime absenceStart = absenceRecords[i].Date;
+
+        //                        // البحث عن أول تاريخ يتغير فيه الحالة
+        //                        DateTime absenceEnd = endDate; // افتراضياً نهاية الغياب هي نهاية الفترة
+        //                        for (int j = i + 1; j < absenceRecords.Count; j++)
+        //                        {
+        //                            if (absenceRecords[j].Status != "A")
+        //                            {
+        //                                absenceEnd = absenceRecords[j].Date.AddDays(-1); // اليوم الذي يسبق حالة الحضور
+        //                                break;
+        //                            }
+        //                        }
+        //                        // التأكد من أن التواريخ تقع ضمن النطاق المحدد
+        //                        absenceStart = (absenceStart < startDate) ? startDate : absenceStart;
+        //                        absenceEnd = (absenceEnd > endDate) ? endDate : absenceEnd;
+
+        //                        // حساب عدد أيام الغياب ضمن الفترة
+        //                        int absenceCount = (absenceEnd - absenceStart).Days + 1;
+        //                        totalAbsences += absenceCount; // إضافة إلى الإجمالي
+
+        //                        // إذا انتهى الغياب بنهاية الفترة، لا حاجة للاستمرار
+        //                        if (absenceEnd == endDate)
+        //                            break;
+        //                    }
+        //                }
+        //            }
+
+
+        //            // إذا كان هناك غيابات في القسم، أضف الصف إلى التقرير
+        //            if (totalAbsences > 0)
+        //            {
+        //                // حساب الغرامات الكلية
+        //                float totalPenalties = (float)(totalAbsences * department.M_Penalite);
+
+        //                // إضافة صف جديد إلى الجدول
+        //                DataRow row = table.NewRow();
+        //                row["Department"] = department.DepartmentName;
+        //                row["TotalAbsences"] = totalAbsences; // إجمالي الغيابات
+        //                row["M_Penalite"] = department.M_Penalite;
+        //                row["TotalPenalties"] = totalPenalties;
+        //                row["Nombre du personnel absent"] = uniqueAbsentPersonnelSet.Count; // عدد الموظفين الفريدين الغائبين
+
+        //                table.Rows.Add(row);
+        //            }
+        //        }
+        //    }
+        //    return table;
+        //}
+        #endregion
         private void btn_print_pinalite_Click(object sender, EventArgs e)
         {
             GenerateReport();
@@ -613,8 +872,8 @@ namespace System_Pointage.Form
             table.Columns.Add("POSTE", typeof(string));
             table.Columns.Add("EFECTIF/CONTRAT", typeof(int));
 
-            DateTime startDate = dateEdit1.DateTime;
-            DateTime endDate = dateEdit2.DateTime;
+            DateTime startDate = dateEdit1.DateTime.Date;
+            DateTime endDate = dateEdit2.DateTime.Date;
 
             if (startDate > endDate)
             {
@@ -622,19 +881,17 @@ namespace System_Pointage.Form
                 return table;
             }
 
-            TimeSpan dateRange = endDate - startDate;
-            int totalDays = dateRange.Days + 1;
+            int totalDays = (endDate - startDate).Days + 1;
 
-            // إضافة أعمدة التواريخ
             for (int i = 0; i < totalDays; i++)
             {
                 DateTime currentDay = startDate.AddDays(i);
                 table.Columns.Add($"{currentDay.Day}", typeof(int));
             }
 
-            table.Columns.Add("Total Absences", typeof(int)); // عدد الغيابات الإجمالي
-            table.Columns.Add("M_Penalite", typeof(float)); // إضافة عمود الغرامة
-            table.Columns.Add("Total Penalty", typeof(float)); // إضافة عمود قيمة الغرامة الإجمالية
+            table.Columns.Add("Total Absences", typeof(int));
+            table.Columns.Add("M_Penalite", typeof(float));
+            table.Columns.Add("Total Penalty", typeof(float));
 
             var context = new DAL.DataClasses1DataContext();
             var groups = FicheAgentList.Where(x => x.Statut == true)
@@ -643,7 +900,7 @@ namespace System_Pointage.Form
                 {
                     Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
                     RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
-                    Penalty = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.M_Penalite ?? 0, // الغرامة لكل قسم
+                    Penalty = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.M_Penalite ?? 0,
                     Agents = g.ToList()
                 });
 
@@ -656,39 +913,62 @@ namespace System_Pointage.Form
                 int[] absentCountPerDay = new int[totalDays];
                 int totalAbsent = 0;
 
-                foreach (var agent in group.Agents)
+                for (int i = 0; i < totalDays; i++)
                 {
-                    // جلب الحركات من جدول MVMAgentDetails
-                    var agentMovements = context.MVMAgentDetails
-                        .Where(m => m.ItemID == agent.ID)
-                        .OrderBy(m => m.Date)
-                        .ToList();
+                    DateTime currentDay = startDate.AddDays(i);
 
-                    string currentStatus = "-"; // الحالة الافتراضية
-
-                    for (int i = 0; i < totalDays; i++)
+                    if (currentDay > DateTime.Now)
                     {
-                        DateTime currentDay = startDate.AddDays(i);
-
-                        if (currentDay > DateTime.Now)
-                        {
-                            break; // إذا تجاوز اليوم تاريخ اليوم الحالي، توقف
-                        }
-
-                        var movement = agentMovements.FirstOrDefault(m => m.Date.Date == currentDay.Date);
-
-                        if (movement != null)
-                        {
-                            // إذا كانت هناك حركة في اليوم الحالي
-                            currentStatus = movement.Statut;
-                        }
-
-                        if (currentStatus == "A")
-                        {
-                            absentCountPerDay[i]++;
-                            totalAbsent++;
-                        }
+                        break; // إذا تجاوز اليوم تاريخ اليوم الحالي، توقف
                     }
+
+                    // **عدد الحاضرين الفعليين يوميًا**
+                    int dailyPresentCount = group.Agents.Count(agent =>
+                    {
+                        var movement = context.MVMAgentDetails
+                            .FirstOrDefault(m => m.ItemID == agent.ID /*&& m.Date.Date == currentDay.Date*/);
+                        return movement != null && movement.Statut == "P"; // عد فقط الحاضرين
+                    });
+                    // **عدد الغياب المسجل يدويًا (A)**
+                    int dailyAbsentAgentsManual = group.Agents.Count(agent =>
+                    {
+                        // إذا كان الشخص غائبًا في يوم معين (غاب في 10/11/2024)، نريد أن نعتبره غائبًا أيضًا في الأيام التالية
+                        bool isAbsent = false;
+                        var movements = context.MVMAgentDetails
+                            .Where(m => m.ItemID == agent.ID && m.Date.Date <= currentDay.Date) // تحقق من كل الحركات حتى التاريخ الحالي
+                            .OrderBy(m => m.Date) // ترتيب الحركات حسب التاريخ
+                            .ToList();
+
+                        // إذا كانت هناك حالة غياب في الأيام السابقة
+                        foreach (var movement in movements)
+                        {
+                            if (movement.Statut == "A")
+                            {
+                                isAbsent = true; // إذا كان هناك غياب، يعتبر الشخص غائبًا
+                            }
+                            // إذا تم العثور على حالة حضور (P)، لا نحتسب الأيام التالية غيابًا
+                            else if (movement.Statut == "P")
+                            {
+                                isAbsent = false; // إذا كانت هناك حالة حضور، نوقف احتساب الغياب
+                            }
+                        }
+
+                        return isAbsent; // إذا كان الشخص غائبًا في أي يوم من الأيام حتى الآن
+                    });
+
+                    // **عدد الغياب المسجل يدويًا (A)**
+                    //int dailyAbsentAgentsManual = group.Agents.Count(agent =>
+                    //{
+                    //    var movement = context.MVMAgentDetails
+                    //        .FirstOrDefault(m => m.ItemID == agent.ID && m.Date.Date == currentDay.Date);
+                    //    return movement != null && movement.Statut == "A"; // عد فقط الغائبين المسجلين
+                    //});
+
+                    // **إجمالي الغياب = العدد المطلوب - الحضور الفعلي + الغياب المسجل يدويًا**
+                    int totalDailyAbsences = Math.Max(0, (int)group.RequiredQuantity - dailyPresentCount) + dailyAbsentAgentsManual;
+
+                    absentCountPerDay[i] = totalDailyAbsences;
+                    totalAbsent += totalDailyAbsences;
                 }
 
                 // ملء بيانات الغيابات لكل يوم في الصف
@@ -703,7 +983,7 @@ namespace System_Pointage.Form
                 table.Rows.Add(specializationRow);
             }
 
-            // إضافة سطر المجموع
+            // Add total row
             DataRow totalRow = table.NewRow();
             totalRow["POSTE"] = "Total";
 
@@ -732,7 +1012,133 @@ namespace System_Pointage.Form
 
             return table;
         }
+        #region
+        //private DataTable CreateDataTableMensuel()
+        //{
+        //    DataTable table = new DataTable();
+        //    table.Columns.Add("POSTE", typeof(string));
+        //    table.Columns.Add("EFECTIF/CONTRAT", typeof(int));
 
+        //    DateTime startDate = dateEdit1.DateTime;
+        //    DateTime endDate = dateEdit2.DateTime;
+
+        //    if (startDate > endDate)
+        //    {
+        //        MessageBox.Show("La date de début doit être antérieure ou égale à la date de fin.");
+        //        return table;
+        //    }
+
+        //    TimeSpan dateRange = endDate - startDate;
+        //    int totalDays = dateRange.Days + 1;
+
+        //    // إضافة أعمدة التواريخ
+        //    for (int i = 0; i < totalDays; i++)
+        //    {
+        //        DateTime currentDay = startDate.AddDays(i);
+        //        table.Columns.Add($"{currentDay.Day}", typeof(int));
+        //    }
+
+        //    table.Columns.Add("Total Absences", typeof(int)); // عدد الغيابات الإجمالي
+        //    table.Columns.Add("M_Penalite", typeof(float)); // إضافة عمود الغرامة
+        //    table.Columns.Add("Total Penalty", typeof(float)); // إضافة عمود قيمة الغرامة الإجمالية
+
+        //    var context = new DAL.DataClasses1DataContext();
+        //    var groups = FicheAgentList.Where(x => x.Statut == true)
+        //        .GroupBy(agent => agent.ID_Post)
+        //        .Select(g => new
+        //        {
+        //            Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+        //            RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+        //            Penalty = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.M_Penalite ?? 0, // الغرامة لكل قسم
+        //            Agents = g.ToList()
+        //        });
+
+        //    foreach (var group in groups)
+        //    {
+        //        DataRow specializationRow = table.NewRow();
+        //        specializationRow["POSTE"] = group.Specialization;
+        //        specializationRow["EFECTIF/CONTRAT"] = group.RequiredQuantity;
+
+        //        int[] absentCountPerDay = new int[totalDays];
+        //        int totalAbsent = 0;
+
+        //        foreach (var agent in group.Agents)
+        //        {
+        //            // جلب الحركات من جدول MVMAgentDetails
+        //            var agentMovements = context.MVMAgentDetails
+        //                .Where(m => m.ItemID == agent.ID)
+        //                .OrderBy(m => m.Date)
+        //                .ToList();
+
+        //            string currentStatus = "-"; // الحالة الافتراضية
+
+        //            for (int i = 0; i < totalDays; i++)
+        //            {
+        //                DateTime currentDay = startDate.AddDays(i);
+
+        //                if (currentDay > DateTime.Now)
+        //                {
+        //                    break; // إذا تجاوز اليوم تاريخ اليوم الحالي، توقف
+        //                }
+
+        //                var movement = agentMovements.FirstOrDefault(m => m.Date.Date == currentDay.Date);
+
+        //                if (movement != null)
+        //                {
+        //                    // إذا كانت هناك حركة في اليوم الحالي
+        //                    currentStatus = movement.Statut;
+        //                }
+
+        //                if (currentStatus == "A")
+        //                {
+        //                    absentCountPerDay[i]++;
+        //                    totalAbsent++;
+        //                }
+        //            }
+        //        }
+
+        //        // ملء بيانات الغيابات لكل يوم في الصف
+        //        for (int i = 0; i < totalDays; i++)
+        //        {
+        //            specializationRow[$"{startDate.AddDays(i).Day}"] = absentCountPerDay[i];
+        //        }
+
+        //        specializationRow["Total Absences"] = totalAbsent;
+        //        specializationRow["M_Penalite"] = group.Penalty;
+        //        specializationRow["Total Penalty"] = totalAbsent * group.Penalty; // حساب الغرامة الإجمالية
+        //        table.Rows.Add(specializationRow);
+        //    }
+
+        //    // إضافة سطر المجموع
+        //    DataRow totalRow = table.NewRow();
+        //    totalRow["POSTE"] = "Total";
+
+        //    int[] dailyTotals = new int[totalDays];
+        //    int totalAbsencesSum = 0;
+        //    float totalPenaltySum = 0;
+
+        //    foreach (DataRow row in table.Rows)
+        //    {
+        //        for (int i = 0; i < totalDays; i++)
+        //        {
+        //            dailyTotals[i] += Convert.ToInt32(row[$"{startDate.AddDays(i).Day}"]);
+        //        }
+        //        totalAbsencesSum += Convert.ToInt32(row["Total Absences"]);
+        //        totalPenaltySum += Convert.ToSingle(row["Total Penalty"]);
+        //    }
+
+        //    for (int i = 0; i < totalDays; i++)
+        //    {
+        //        totalRow[$"{startDate.AddDays(i).Day}"] = dailyTotals[i];
+        //    }
+
+        //    totalRow["Total Absences"] = totalAbsencesSum;
+        //    totalRow["Total Penalty"] = totalPenaltySum;
+        //    table.Rows.Add(totalRow);
+
+        //    return table;
+        //}
+        #endregion
         #endregion
 
         private void btn_mensuel_Click(object sender, EventArgs e)

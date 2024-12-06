@@ -72,7 +72,7 @@ namespace System_Pointage.DAL
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.test, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
 		{
 			OnCreated();
 		}
