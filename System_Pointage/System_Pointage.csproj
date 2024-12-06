@@ -292,6 +292,12 @@
     <Compile Include="report\rpt_pointage.Designer.cs">
       <DependentUpon>rpt_pointage.cs</DependentUpon>
     </Compile>
+    <Compile Include="report\rpt_pointage_mensuel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="report\rpt_pointage_mensuel.Designer.cs">
+      <DependentUpon>rpt_pointage_mensuel.cs</DependentUpon>
+    </Compile>
     <Compile Include="report\rpt_WorkDay.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -404,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_pointage.resx">
       <DependentUpon>rpt_pointage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="report\rpt_pointage_mensuel.resx">
+      <DependentUpon>rpt_pointage_mensuel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_WorkDay.resx">
       <DependentUpon>rpt_WorkDay.cs</DependentUpon>
