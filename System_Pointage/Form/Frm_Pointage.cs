@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
+using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -186,9 +187,16 @@ namespace System_Pointage.Form
 
             table.Columns.Add("Total", typeof(int));
 
+            // التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
             var context = new DAL.DataClasses1DataContext();
             var groups = FicheAgentList.Where(x=>x.Statut==true)
                 .GroupBy(agent => agent.ID_Post)
+                .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
                 .Select(g => new
                 {
                     Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,

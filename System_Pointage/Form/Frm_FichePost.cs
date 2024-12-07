@@ -39,6 +39,7 @@ namespace System_Pointage.Form
                 un = db.Fiche_Postes.Single(x => x.ID == id);
 
                 GetData();
+                btn_save.Enabled = true;
             }
         }
         public static string ErrorText
