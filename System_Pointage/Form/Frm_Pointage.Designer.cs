@@ -57,13 +57,13 @@
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btn_print = new DevExpress.XtraBars.BarButtonItem();
             this.btn_print2 = new DevExpress.XtraBars.BarButtonItem();
+            this.btn_print_mensuel = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.btn_print_mensuel = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -99,21 +99,19 @@
             this.layoutControl1.Controls.Add(this.dateEdit1);
             this.layoutControl1.Controls.Add(this.dateEdit2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 45);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 55);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(911, 374);
+            this.layoutControl1.Size = new System.Drawing.Size(1366, 567);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btn_mensuel
             // 
             this.btn_mensuel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_mensuel.ImageOptions.SvgImage")));
-            this.btn_mensuel.Location = new System.Drawing.Point(149, 24);
-            this.btn_mensuel.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_mensuel.Location = new System.Drawing.Point(252, 35);
             this.btn_mensuel.Name = "btn_mensuel";
-            this.btn_mensuel.Size = new System.Drawing.Size(38, 36);
+            this.btn_mensuel.Size = new System.Drawing.Size(56, 52);
             this.btn_mensuel.StyleController = this.layoutControl1;
             this.btn_mensuel.TabIndex = 25;
             this.btn_mensuel.Click += new System.EventHandler(this.btn_mensuel_Click);
@@ -121,10 +119,9 @@
             // btn_mvm
             // 
             this.btn_mvm.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_mvm.ImageOptions.SvgImage")));
-            this.btn_mvm.Location = new System.Drawing.Point(622, 24);
-            this.btn_mvm.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_mvm.Location = new System.Drawing.Point(942, 35);
             this.btn_mvm.Name = "btn_mvm";
-            this.btn_mvm.Size = new System.Drawing.Size(154, 36);
+            this.btn_mvm.Size = new System.Drawing.Size(222, 52);
             this.btn_mvm.StyleController = this.layoutControl1;
             this.btn_mvm.TabIndex = 24;
             this.btn_mvm.Tag = "Frm_Chart";
@@ -134,9 +131,10 @@
             // btn_workdays
             // 
             this.btn_workdays.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_workdays.ImageOptions.SvgImage")));
-            this.btn_workdays.Location = new System.Drawing.Point(280, 24);
+            this.btn_workdays.Location = new System.Drawing.Point(442, 35);
+            this.btn_workdays.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_workdays.Name = "btn_workdays";
-            this.btn_workdays.Size = new System.Drawing.Size(338, 36);
+            this.btn_workdays.Size = new System.Drawing.Size(494, 52);
             this.btn_workdays.StyleController = this.layoutControl1;
             this.btn_workdays.TabIndex = 23;
             this.btn_workdays.Text = "Liste des agents qui travaillent plus dans le système de travail";
@@ -145,9 +143,10 @@
             // btn_reportAparJour
             // 
             this.btn_reportAparJour.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_reportAparJour.ImageOptions.SvgImage")));
-            this.btn_reportAparJour.Location = new System.Drawing.Point(780, 24);
+            this.btn_reportAparJour.Location = new System.Drawing.Point(1170, 35);
+            this.btn_reportAparJour.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_reportAparJour.Name = "btn_reportAparJour";
-            this.btn_reportAparJour.Size = new System.Drawing.Size(112, 36);
+            this.btn_reportAparJour.Size = new System.Drawing.Size(161, 52);
             this.btn_reportAparJour.StyleController = this.layoutControl1;
             this.btn_reportAparJour.TabIndex = 22;
             this.btn_reportAparJour.Text = "Etat personnel";
@@ -155,19 +154,18 @@
             // 
             // gridControl1
             // 
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(1);
-            this.gridControl1.Location = new System.Drawing.Point(24, 96);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.gridControl1.Location = new System.Drawing.Point(35, 133);
             this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(868, 237);
+            this.gridControl1.Size = new System.Drawing.Size(1296, 399);
             this.gridControl1.TabIndex = 21;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
             // gridView1
             // 
-            this.gridView1.DetailHeight = 239;
+            this.gridView1.DetailHeight = 349;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ShowGroupPanel = false;
@@ -175,10 +173,9 @@
             // btn_print_pinalite
             // 
             this.btn_print_pinalite.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_print_pinalite.ImageOptions.SvgImage")));
-            this.btn_print_pinalite.Location = new System.Drawing.Point(191, 24);
-            this.btn_print_pinalite.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_print_pinalite.Location = new System.Drawing.Point(314, 35);
             this.btn_print_pinalite.Name = "btn_print_pinalite";
-            this.btn_print_pinalite.Size = new System.Drawing.Size(85, 36);
+            this.btn_print_pinalite.Size = new System.Drawing.Size(122, 52);
             this.btn_print_pinalite.StyleController = this.layoutControl1;
             this.btn_print_pinalite.TabIndex = 17;
             this.btn_print_pinalite.Text = "Pénalités";
@@ -187,10 +184,9 @@
             // btn_recharch
             // 
             this.btn_recharch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_recharch.ImageOptions.SvgImage")));
-            this.btn_recharch.Location = new System.Drawing.Point(107, 24);
-            this.btn_recharch.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_recharch.Location = new System.Drawing.Point(190, 35);
             this.btn_recharch.Name = "btn_recharch";
-            this.btn_recharch.Size = new System.Drawing.Size(38, 36);
+            this.btn_recharch.Size = new System.Drawing.Size(56, 52);
             this.btn_recharch.StyleController = this.layoutControl1;
             this.btn_recharch.TabIndex = 16;
             this.btn_recharch.Click += new System.EventHandler(this.btn_recharch_Click);
@@ -198,14 +194,13 @@
             // dateEdit1
             // 
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(53, 24);
-            this.dateEdit1.Margin = new System.Windows.Forms.Padding(2);
+            this.dateEdit1.Location = new System.Drawing.Point(79, 35);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(50, 20);
+            this.dateEdit1.Size = new System.Drawing.Size(105, 26);
             this.dateEdit1.StyleController = this.layoutControl1;
             this.dateEdit1.TabIndex = 4;
             this.dateEdit1.EditValueChanged += new System.EventHandler(this.dateEdit1_EditValueChanged);
@@ -213,14 +208,13 @@
             // dateEdit2
             // 
             this.dateEdit2.EditValue = null;
-            this.dateEdit2.Location = new System.Drawing.Point(53, 48);
-            this.dateEdit2.Margin = new System.Windows.Forms.Padding(2);
+            this.dateEdit2.Location = new System.Drawing.Point(79, 67);
             this.dateEdit2.Name = "dateEdit2";
             this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit2.Size = new System.Drawing.Size(50, 20);
+            this.dateEdit2.Size = new System.Drawing.Size(105, 26);
             this.dateEdit2.StyleController = this.layoutControl1;
             this.dateEdit2.TabIndex = 5;
             this.dateEdit2.EditValueChanged += new System.EventHandler(this.dateEdit2_EditValueChanged);
@@ -233,7 +227,7 @@
             this.layoutControlGroup1,
             this.layoutControlGroup2});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(916, 357);
+            this.Root.Size = new System.Drawing.Size(1366, 567);
             this.Root.TextVisible = false;
             // 
             // layoutControlGroup1
@@ -242,9 +236,9 @@
             this.layoutControlGroup1.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem5});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 98);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(896, 265);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1336, 439);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem5
@@ -252,7 +246,7 @@
             this.layoutControlItem5.Control = this.gridControl1;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(872, 241);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1302, 405);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -271,7 +265,7 @@
             this.layoutControlItem9});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(896, 72);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1336, 98);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem1
@@ -283,9 +277,9 @@
             this.layoutControlItem1.CustomizationFormText = "Du";
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(83, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(155, 32);
             this.layoutControlItem1.Text = "Du";
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(17, 14);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(26, 22);
             // 
             // layoutControlItem2
             // 
@@ -294,63 +288,63 @@
             this.layoutControlItem2.Control = this.dateEdit2;
             this.layoutControlItem2.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.layoutControlItem2.CustomizationFormText = "Ou";
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 32);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(83, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(155, 32);
             this.layoutControlItem2.Text = "Ou";
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(17, 14);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(26, 22);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btn_recharch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(83, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(155, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(42, 48);
+            this.layoutControlItem3.Size = new System.Drawing.Size(62, 64);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btn_print_pinalite;
-            this.layoutControlItem4.Location = new System.Drawing.Point(167, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(279, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(89, 48);
+            this.layoutControlItem4.Size = new System.Drawing.Size(128, 64);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btn_workdays;
-            this.layoutControlItem7.Location = new System.Drawing.Point(256, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(407, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(342, 48);
+            this.layoutControlItem7.Size = new System.Drawing.Size(500, 64);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btn_mvm;
-            this.layoutControlItem8.Location = new System.Drawing.Point(598, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(907, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(158, 48);
+            this.layoutControlItem8.Size = new System.Drawing.Size(228, 64);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btn_reportAparJour;
-            this.layoutControlItem6.Location = new System.Drawing.Point(756, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(1135, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(116, 48);
+            this.layoutControlItem6.Size = new System.Drawing.Size(167, 64);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btn_mensuel;
-            this.layoutControlItem9.Location = new System.Drawing.Point(125, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(217, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(42, 48);
+            this.layoutControlItem9.Size = new System.Drawing.Size(62, 64);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -402,6 +396,13 @@
             this.btn_print2.Name = "btn_print2";
             this.btn_print2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print2_ItemClick);
             // 
+            // btn_print_mensuel
+            // 
+            this.btn_print_mensuel.Caption = "barButtonItem1";
+            this.btn_print_mensuel.Id = 2;
+            this.btn_print_mensuel.Name = "btn_print_mensuel";
+            this.btn_print_mensuel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print_mensuel_ItemClick);
+            // 
             // bar2
             // 
             this.bar2.BarName = "Main menu";
@@ -430,55 +431,43 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlTop.Size = new System.Drawing.Size(911, 45);
+            this.barDockControlTop.Size = new System.Drawing.Size(1366, 55);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 419);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 622);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(911, 20);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1366, 20);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 45);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 55);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 374);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 567);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(911, 45);
+            this.barDockControlRight.Location = new System.Drawing.Point(1366, 55);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 374);
-            // 
-            // btn_print_mensuel
-            // 
-            this.btn_print_mensuel.Caption = "barButtonItem1";
-            this.btn_print_mensuel.Id = 2;
-            this.btn_print_mensuel.Name = "btn_print_mensuel";
-            this.btn_print_mensuel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print_mensuel_ItemClick);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 567);
             // 
             // Frm_Pointage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(911, 439);
+            this.ClientSize = new System.Drawing.Size(1366, 642);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Pointage.IconOptions.SvgImage")));
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Frm_Pointage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pointage";

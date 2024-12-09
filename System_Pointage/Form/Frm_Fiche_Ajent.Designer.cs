@@ -57,6 +57,8 @@
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btn_delete = new System.Windows.Forms.Button();
+            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.txt_efectif.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -86,6 +88,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             this.SuspendLayout();
             // 
             // txt_efectif
@@ -100,6 +103,7 @@
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btn_delete);
             this.layoutControl1.Controls.Add(this.btn_valid);
             this.layoutControl1.Controls.Add(this.lkp_ScreanPoste);
             this.layoutControl1.Controls.Add(this.lkp_post);
@@ -115,15 +119,15 @@
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(682, 415);
+            this.layoutControl1.Size = new System.Drawing.Size(682, 409);
             this.layoutControl1.TabIndex = 35;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btn_valid
             // 
-            this.btn_valid.Location = new System.Drawing.Point(12, 368);
+            this.btn_valid.Location = new System.Drawing.Point(12, 366);
             this.btn_valid.Name = "btn_valid";
-            this.btn_valid.Size = new System.Drawing.Size(658, 35);
+            this.btn_valid.Size = new System.Drawing.Size(327, 31);
             this.btn_valid.TabIndex = 10;
             this.btn_valid.Text = "Valider";
             this.btn_valid.UseVisualStyleBackColor = true;
@@ -260,9 +264,10 @@
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.emptySpaceItem1,
             this.layoutControlItem10,
-            this.layoutControlGroup1});
+            this.layoutControlGroup1,
+            this.layoutControlItem12});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(682, 415);
+            this.Root.Size = new System.Drawing.Size(682, 409);
             this.Root.TextVisible = false;
             // 
             // emptySpaceItem1
@@ -270,15 +275,15 @@
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 344);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(662, 12);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(662, 10);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btn_valid;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 356);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 354);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(662, 39);
+            this.layoutControlItem10.Size = new System.Drawing.Size(331, 35);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -403,11 +408,30 @@
             this.layoutControlItem11.Text = "Matricule :";
             this.layoutControlItem11.TextSize = new System.Drawing.Size(162, 19);
             // 
+            // btn_delete
+            // 
+            this.btn_delete.Location = new System.Drawing.Point(343, 366);
+            this.btn_delete.Name = "btn_delete";
+            this.btn_delete.Size = new System.Drawing.Size(327, 31);
+            this.btn_delete.TabIndex = 11;
+            this.btn_delete.Text = "sup";
+            this.btn_delete.UseVisualStyleBackColor = true;
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
+            // 
+            // layoutControlItem12
+            // 
+            this.layoutControlItem12.Control = this.btn_delete;
+            this.layoutControlItem12.Location = new System.Drawing.Point(331, 354);
+            this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.Size = new System.Drawing.Size(331, 35);
+            this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem12.TextVisible = false;
+            // 
             // Frm_Fiche_Ajent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(682, 415);
+            this.ClientSize = new System.Drawing.Size(682, 409);
             this.Controls.Add(this.layoutControl1);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Fiche_Ajent.IconOptions.SvgImage")));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -445,6 +469,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -478,5 +503,7 @@
         private DevExpress.XtraEditors.TextEdit txt_matricule;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraEditors.ComboBoxEdit cmb_affecte;
+        private System.Windows.Forms.Button btn_delete;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
     }
 }

@@ -238,5 +238,25 @@ namespace System_Pointage.Form
                 return "Ce champ est obligatoire";
             }
         }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            var db = new DAL.DataClasses1DataContext();
+
+            if (XtraMessageBox.Show(text: "Voulez-vous supprimer?", caption: "Confirmer la suppression", buttons: MessageBoxButtons.YesNo, icon: MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                var log = db.MVMAgentDetails.Where(x => x.ItemID == agent.ID).Count();
+                if (log > 0)
+                {
+                    XtraMessageBox.Show(text: "Chambre ne peut pas etre supprimé ou il a été utilisé danns le systéme"
+                        , caption: "", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                    return;
+                }
+                db.Fiche_Agents.Attach(agent);
+                db.Fiche_Agents.DeleteOnSubmit(agent);
+                db.SubmitChanges();
+                New();
+            }
+        }
     }
 }
