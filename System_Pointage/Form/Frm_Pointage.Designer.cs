@@ -109,7 +109,7 @@
             // btn_mensuel
             // 
             this.btn_mensuel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_mensuel.ImageOptions.SvgImage")));
-            this.btn_mensuel.Location = new System.Drawing.Point(252, 35);
+            this.btn_mensuel.Location = new System.Drawing.Point(272, 24);
             this.btn_mensuel.Name = "btn_mensuel";
             this.btn_mensuel.Size = new System.Drawing.Size(56, 52);
             this.btn_mensuel.StyleController = this.layoutControl1;
@@ -119,7 +119,7 @@
             // btn_mvm
             // 
             this.btn_mvm.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_mvm.ImageOptions.SvgImage")));
-            this.btn_mvm.Location = new System.Drawing.Point(942, 35);
+            this.btn_mvm.Location = new System.Drawing.Point(1120, 24);
             this.btn_mvm.Name = "btn_mvm";
             this.btn_mvm.Size = new System.Drawing.Size(222, 52);
             this.btn_mvm.StyleController = this.layoutControl1;
@@ -131,8 +131,8 @@
             // btn_workdays
             // 
             this.btn_workdays.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_workdays.ImageOptions.SvgImage")));
-            this.btn_workdays.Location = new System.Drawing.Point(442, 35);
-            this.btn_workdays.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_workdays.Location = new System.Drawing.Point(622, 24);
+            this.btn_workdays.Margin = new System.Windows.Forms.Padding(4);
             this.btn_workdays.Name = "btn_workdays";
             this.btn_workdays.Size = new System.Drawing.Size(494, 52);
             this.btn_workdays.StyleController = this.layoutControl1;
@@ -143,22 +143,22 @@
             // btn_reportAparJour
             // 
             this.btn_reportAparJour.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_reportAparJour.ImageOptions.SvgImage")));
-            this.btn_reportAparJour.Location = new System.Drawing.Point(1170, 35);
-            this.btn_reportAparJour.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_reportAparJour.Location = new System.Drawing.Point(458, 24);
+            this.btn_reportAparJour.Margin = new System.Windows.Forms.Padding(4);
             this.btn_reportAparJour.Name = "btn_reportAparJour";
-            this.btn_reportAparJour.Size = new System.Drawing.Size(161, 52);
+            this.btn_reportAparJour.Size = new System.Drawing.Size(160, 52);
             this.btn_reportAparJour.StyleController = this.layoutControl1;
             this.btn_reportAparJour.TabIndex = 22;
-            this.btn_reportAparJour.Text = "Etat personnel";
+            this.btn_reportAparJour.Text = "Etat journalier";
             this.btn_reportAparJour.Click += new System.EventHandler(this.btn_reportAparJour_Click);
             // 
             // gridControl1
             // 
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.gridControl1.Location = new System.Drawing.Point(35, 133);
+            this.gridControl1.Location = new System.Drawing.Point(24, 108);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1296, 399);
+            this.gridControl1.Size = new System.Drawing.Size(1318, 435);
             this.gridControl1.TabIndex = 21;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -173,7 +173,7 @@
             // btn_print_pinalite
             // 
             this.btn_print_pinalite.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_print_pinalite.ImageOptions.SvgImage")));
-            this.btn_print_pinalite.Location = new System.Drawing.Point(314, 35);
+            this.btn_print_pinalite.Location = new System.Drawing.Point(332, 24);
             this.btn_print_pinalite.Name = "btn_print_pinalite";
             this.btn_print_pinalite.Size = new System.Drawing.Size(122, 52);
             this.btn_print_pinalite.StyleController = this.layoutControl1;
@@ -184,7 +184,7 @@
             // btn_recharch
             // 
             this.btn_recharch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_recharch.ImageOptions.SvgImage")));
-            this.btn_recharch.Location = new System.Drawing.Point(190, 35);
+            this.btn_recharch.Location = new System.Drawing.Point(212, 24);
             this.btn_recharch.Name = "btn_recharch";
             this.btn_recharch.Size = new System.Drawing.Size(56, 52);
             this.btn_recharch.StyleController = this.layoutControl1;
@@ -194,13 +194,13 @@
             // dateEdit1
             // 
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(79, 35);
+            this.dateEdit1.Location = new System.Drawing.Point(62, 24);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(105, 26);
+            this.dateEdit1.Size = new System.Drawing.Size(146, 26);
             this.dateEdit1.StyleController = this.layoutControl1;
             this.dateEdit1.TabIndex = 4;
             this.dateEdit1.EditValueChanged += new System.EventHandler(this.dateEdit1_EditValueChanged);
@@ -208,13 +208,13 @@
             // dateEdit2
             // 
             this.dateEdit2.EditValue = null;
-            this.dateEdit2.Location = new System.Drawing.Point(79, 67);
+            this.dateEdit2.Location = new System.Drawing.Point(62, 54);
             this.dateEdit2.Name = "dateEdit2";
             this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit2.Size = new System.Drawing.Size(105, 26);
+            this.dateEdit2.Size = new System.Drawing.Size(146, 26);
             this.dateEdit2.StyleController = this.layoutControl1;
             this.dateEdit2.TabIndex = 5;
             this.dateEdit2.EditValueChanged += new System.EventHandler(this.dateEdit2_EditValueChanged);
@@ -236,9 +236,9 @@
             this.layoutControlGroup1.AppearanceGroup.Options.UseBorderColor = true;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem5});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 98);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 84);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1336, 439);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1346, 463);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem5
@@ -246,7 +246,7 @@
             this.layoutControlItem5.Control = this.gridControl1;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1302, 405);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1322, 439);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -261,11 +261,11 @@
             this.layoutControlItem4,
             this.layoutControlItem7,
             this.layoutControlItem8,
-            this.layoutControlItem6,
-            this.layoutControlItem9});
+            this.layoutControlItem9,
+            this.layoutControlItem6});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1336, 98);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1346, 84);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem1
@@ -277,7 +277,7 @@
             this.layoutControlItem1.CustomizationFormText = "Du";
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(155, 32);
+            this.layoutControlItem1.Size = new System.Drawing.Size(188, 30);
             this.layoutControlItem1.Text = "Du";
             this.layoutControlItem1.TextSize = new System.Drawing.Size(26, 22);
             // 
@@ -288,63 +288,63 @@
             this.layoutControlItem2.Control = this.dateEdit2;
             this.layoutControlItem2.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.layoutControlItem2.CustomizationFormText = "Ou";
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 32);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 30);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(155, 32);
+            this.layoutControlItem2.Size = new System.Drawing.Size(188, 30);
             this.layoutControlItem2.Text = "Ou";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(26, 22);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btn_recharch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(155, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(188, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(62, 64);
+            this.layoutControlItem3.Size = new System.Drawing.Size(60, 60);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btn_print_pinalite;
-            this.layoutControlItem4.Location = new System.Drawing.Point(279, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(308, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(128, 64);
+            this.layoutControlItem4.Size = new System.Drawing.Size(126, 60);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btn_workdays;
-            this.layoutControlItem7.Location = new System.Drawing.Point(407, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(598, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(500, 64);
+            this.layoutControlItem7.Size = new System.Drawing.Size(498, 60);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btn_mvm;
-            this.layoutControlItem8.Location = new System.Drawing.Point(907, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(1096, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(228, 64);
+            this.layoutControlItem8.Size = new System.Drawing.Size(226, 60);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btn_reportAparJour;
-            this.layoutControlItem6.Location = new System.Drawing.Point(1135, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(434, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(167, 64);
+            this.layoutControlItem6.Size = new System.Drawing.Size(164, 60);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btn_mensuel;
-            this.layoutControlItem9.Location = new System.Drawing.Point(217, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(248, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(62, 64);
+            this.layoutControlItem9.Size = new System.Drawing.Size(60, 60);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -375,13 +375,13 @@
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_print),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_mensuel)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_mensuel),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2)});
             this.bar1.Text = "Tools";
             // 
             // btn_print
             // 
-            this.btn_print.Caption = "Imprimer";
+            this.btn_print.Caption = "Etat Mensuel (personnel)";
             this.btn_print.Id = 0;
             this.btn_print.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_print.ImageOptions.SvgImage")));
             this.btn_print.Name = "btn_print";
@@ -398,9 +398,11 @@
             // 
             // btn_print_mensuel
             // 
-            this.btn_print_mensuel.Caption = "barButtonItem1";
+            this.btn_print_mensuel.Caption = "Etat Mensuel (Ecart)";
             this.btn_print_mensuel.Id = 2;
+            this.btn_print_mensuel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_print_mensuel.ImageOptions.SvgImage")));
             this.btn_print_mensuel.Name = "btn_print_mensuel";
+            this.btn_print_mensuel.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             this.btn_print_mensuel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print_mensuel_ItemClick);
             // 
             // bar2

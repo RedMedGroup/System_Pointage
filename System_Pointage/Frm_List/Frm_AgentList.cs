@@ -179,5 +179,10 @@ namespace System_Pointage.Frm_List
             Frm_Fiche_Agent_Import frm = new Frm_Fiche_Agent_Import();
             frm.ShowDialog();
         }
+
+        private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gridView1.ShowPrintPreview();
+        }
     }
 }

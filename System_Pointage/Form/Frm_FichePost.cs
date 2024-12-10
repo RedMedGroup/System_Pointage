@@ -30,6 +30,7 @@ namespace System_Pointage.Form
             treeList1.Columns[nameof(un.Nembre_Contra)].Caption = "Efectif contra";
             treeList1.Columns[nameof(un.M_Penalite)].Caption = "Pénalité";
         }
+
         private void TreeList1_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e)
         {
             int id = 0;

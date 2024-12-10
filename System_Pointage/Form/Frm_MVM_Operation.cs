@@ -207,7 +207,7 @@ namespace System_Pointage.Classe
             var agentDataService = new AgentDataService();
             bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
-            var agentData = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin, selectedID, false);
+            var agentData = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin, selectedID, false, "frm_op");
 
             gridControl1_mvm.DataSource = agentData;
             activeAgentsList = agentData;

@@ -370,6 +370,9 @@ namespace System_Pointage.Form
                         .OrderBy(x => x.agent.Date)
                         .ToList();
 
+                    // تأكد من أن هناك موظفين في هذا القسم
+                    if (!agentDetails.Any()) continue;
+
                     // إنشاء مجموعة لتخزين فترات الحضور لكل موظف
                     var agentPresencePeriods = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
 
@@ -1156,7 +1159,14 @@ namespace System_Pointage.Form
             table.Columns.Add("Total Penalty", typeof(float));
 
             var context = new DAL.DataClasses1DataContext();
-            var groups = FicheAgentList.Where(x => x.Statut == true)
+
+            // التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+            var groups = FicheAgentList.Where(x => x.Statut == true&&(isAdmin || x.ScreenPosteD == userAccessPosteID))
                 .GroupBy(agent => agent.ID_Post)
                 .Select(g => new
                 {
