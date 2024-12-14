@@ -21,7 +21,9 @@ namespace System_Pointage
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Frm_LogIn());
+          Application.Run(new Frm_LogIn());
+          //  Application.Run(new Frm_MVMAgentDetails());
+
         }
     }
 }

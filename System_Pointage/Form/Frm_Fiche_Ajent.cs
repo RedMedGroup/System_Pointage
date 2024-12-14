@@ -36,6 +36,7 @@ namespace System_Pointage.Form
 
         private void Frm_Fiche_Ajent_Load(object sender, EventArgs e)
         {
+         
             dt_embouch.DateTime = DateTime.Now;
             using (var db = new DAL.DataClasses1DataContext())
             {
@@ -114,6 +115,7 @@ namespace System_Pointage.Form
         {
             agent = new DAL.Fiche_Agent();
             GetData();
+            agent.Statut = true;
         }
         bool IsValidit()
         {

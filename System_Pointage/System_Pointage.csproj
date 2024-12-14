@@ -92,6 +92,12 @@
     <Compile Include="Classe\Models.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
     <Compile Include="Classe\UserLogAction.cs" />
+    <Compile Include="Form\BackUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\BackUp.Designer.cs">
+      <DependentUpon>BackUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Fiche_Materiels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,12 @@
     </Compile>
     <Compile Include="Form\Frm_LogIn.Designer.cs">
       <DependentUpon>Frm_LogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_MVMAgentDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_MVMAgentDetails.Designer.cs">
+      <DependentUpon>Frm_MVMAgentDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_MVM_Operation.cs">
       <SubType>Form</SubType>
@@ -304,6 +316,9 @@
     <Compile Include="report\rpt_WorkDay.Designer.cs">
       <DependentUpon>rpt_WorkDay.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form\BackUp.resx">
+      <DependentUpon>BackUp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Fiche_Materiels.resx">
       <DependentUpon>Fiche_Materiels.cs</DependentUpon>
     </EmbeddedResource>
@@ -333,6 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_LogIn.resx">
       <DependentUpon>Frm_LogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_MVMAgentDetails.resx">
+      <DependentUpon>Frm_MVMAgentDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_MVM_Operation.resx">
       <DependentUpon>Frm_MVM_Operation.cs</DependentUpon>

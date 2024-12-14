@@ -205,11 +205,11 @@ namespace System_Pointage.Form
                     try
                     {
                         SqlConn.Open();
-                        MessageBox.Show("تم الأتصال بالسيرفر بنجاح", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Connexion au serveur réussie", "Message d'alerte", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception)
                     {
-                        XtraMessageBox.Show("فشل الأتصال بالسيرفر\nمن فضلك أعد المحاولة مرة أخرى", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        XtraMessageBox.Show("Échec de la connexion au serveur\nVeuillez réessayer", "Message d'alerte", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace System_Pointage.Form
             {
                 if (TextEdit1.Text == "" || TextEdit2.Text == "")
                 {
-                    XtraMessageBox.Show("الرجاء الإلتزام بتعبئة الحقول الإجبارية", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    XtraMessageBox.Show("Veuillez remplir les champs obligatoires", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     TextEdit1.BackColor = Color.Red;
                     TextEdit2.BackColor = Color.Red;
                     return;
@@ -273,8 +273,7 @@ namespace System_Pointage.Form
             Properties.Settings.Default.CON_STRING = txtCon_Setring.Text;
             Properties.Settings.Default.Save();
 
-            XtraMessageBox.Show("Server = " + Properties.Settings.Default.Server_Globale + " قاعدة البيانات = " + Properties.Settings.Default.Database_Globale + " اسم المستخدم = " + Properties.Settings.Default.Utilisateur_Globale + " كلمة المرور = " + Properties.Settings.Default.Password_Globale);
-            XtraMessageBox.Show("تمت بنجاح عملية حفظ بيانات الإتصال بإعدادات المشروع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            XtraMessageBox.Show("Serveur = " + Properties.Settings.Default.Server_Globale + " Base de données = " + Properties.Settings.Default.Database_Globale + " Nom d'utilisateur = " + Properties.Settings.Default.Utilisateur_Globale + " Mot de passe = " + Properties.Settings.Default.Password_Globale); XtraMessageBox.Show("تمت بنجاح عملية حفظ بيانات الإتصال بإعدادات المشروع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             Application.Restart();
         }

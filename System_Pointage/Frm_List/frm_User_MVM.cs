@@ -27,7 +27,7 @@ namespace System_Pointage.Frm_List
            
             using (var db = new DAL.DataClasses1DataContext())
             {
-                var data = db.UserLogs;//.Where(x => x.PartID == Invoice.ID && (x.ScreenID == mainSecrinID || x.ScreenID == listScreenID));
+                var data = db.UserLogs.Where(x=>x.ActionDate.Date==DateTime.Now.Date);//.Where(x => x.PartID == Invoice.ID && (x.ScreenID == mainSecrinID || x.ScreenID == listScreenID));
                 gridControl1.DataSource = (from d in data
                                            join u in db.Users on d.UserID equals u.ID
                                            select new

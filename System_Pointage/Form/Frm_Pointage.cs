@@ -362,7 +362,7 @@ namespace System_Pointage.Form
                     // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة
                     var agentDetails = context.MVMAgentDetails
                         .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
-                        .Join(context.Fiche_Agents,
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true),
                               agent => agent.ItemID,
                               worker => worker.ID,
                               (agent, worker) => new { agent, worker })
@@ -1028,6 +1028,12 @@ namespace System_Pointage.Form
 
             using (var context = new DAL.DataClasses1DataContext())
             {
+                // التحقق مما إذا كان المستخدم أدمن
+                bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+                // إذا لم يكن أدمن، استخدم userAccessPosteID
+                int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
                 // استرجاع الأقسام
                 var departments = context.Fiche_Postes
                     .Select(post => new
@@ -1039,7 +1045,7 @@ namespace System_Pointage.Form
                     .ToList();
 
                 // استرجاع العمال وحالاتهم في التاريخ المحدد
-                var workers = context.Fiche_Agents
+                var workers = context.Fiche_Agents.Where(agent => isAdmin || agent.ScreenPosteD == userAccessPosteID)
                     .Select(agent => new
                     {
                         WorkerName = agent.Name,
