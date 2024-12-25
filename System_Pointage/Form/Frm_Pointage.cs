@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Utils.Extensions;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraRichEdit.Model;
@@ -194,9 +195,9 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             var context = new DAL.DataClasses1DataContext();
-            var groups = FicheAgentList.Where(x=>x.Statut==true)
+            var groups = FicheAgentList.Where(x=>x.Statut==true && x.Affecter == cmb_base.Text)//new
                 .GroupBy(agent => agent.ID_Post)
-                .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
+                .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID ))
                 .Select(g => new
                 {
                     Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
@@ -348,21 +349,28 @@ namespace System_Pointage.Form
 
             using (var context = new DAL.DataClasses1DataContext())
             {
+  
+
+
                 // استرجاع الأقسام من جدول Fiche_DePosts
                 var departments = context.Fiche_Postes.Select(post => new
                 {
                     post.ID,
                     DepartmentName = post.Name,
                     M_Penalite = post.M_Penalite,
-                    Nembre_Contra = post.Nembre_Contra
+                    Nembre_Contra = post.Nembre_Contra,
+                    EmployeeCount_tfw=post.EmployeeCount_tfw,
+                    Nembre_Contra_tfw=post.Nembre_Contra_tfw,
                 }).ToList();
+
+
 
                 foreach (var department in departments)
                 {
                     // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة
                     var agentDetails = context.MVMAgentDetails
                         .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
-                        .Join(context.Fiche_Agents.Where(x => x.Statut == true),
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true&&x.Affecter==cmb_base.Text),
                               agent => agent.ItemID,
                               worker => worker.ID,
                               (agent, worker) => new { agent, worker })
@@ -423,7 +431,13 @@ namespace System_Pointage.Form
                             }
                         }
 
-                        int dailyAbsences = Math.Max(0, (int)department.Nembre_Contra - dailyPresenceCount);
+                        //    int dailyAbsences = Math.Max(0, (int)department.Nembre_Contra - dailyPresenceCount);
+                        // حساب الغيابات اليومية بناءً على القاعدة
+                        int dailyAbsences = Math.Max(0, (int)(cmb_base.Text == "TFT"
+                            ? department.Nembre_Contra
+                            : department.Nembre_Contra_tfw) - dailyPresenceCount);
+                       
+
                         totalAbsences += dailyAbsences;
                     }
 
@@ -431,13 +445,17 @@ namespace System_Pointage.Form
                     if (totalAbsences > 0)
                     {
                         // حساب إجمالي الغرامات
-                        float totalPenalties = (float)(totalAbsences * department.M_Penalite);
-
+                        //float totalPenalties = (float)(totalAbsences * department.M_Penalite);
+                        // حساب إجمالي الغرامات بناءً على القاعدة
+                        float totalPenalties = (float)(totalAbsences * (cmb_base.Text == "TFT"
+                            ? department.M_Penalite
+                            : department.EmployeeCount_tfw));
                         // إضافة سطر جديد للتقرير
                         DataRow row = table.NewRow();
                         row["Department"] = department.DepartmentName;
                         row["TotalAbsences"] = totalAbsences;
-                        row["M_Penalite"] = department.M_Penalite;
+                        row["M_Penalite"] = (cmb_base.Text == "TFT") ? department.M_Penalite : department.EmployeeCount_tfw;
+                   //     row["M_Penalite"] = department.M_Penalite;
                         row["TotalPenalties"] = totalPenalties;
                         row["Nombre du personnel absent"] = absentAgents.Count; // حساب عدد الموظفين الغائبين
 

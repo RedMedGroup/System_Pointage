@@ -30,9 +30,6 @@ namespace System_Pointage.DAL
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertFiche_Poste(Fiche_Poste instance);
-    partial void UpdateFiche_Poste(Fiche_Poste instance);
-    partial void DeleteFiche_Poste(Fiche_Poste instance);
     partial void InsertUserAccessProfileDetail(UserAccessProfileDetail instance);
     partial void UpdateUserAccessProfileDetail(UserAccessProfileDetail instance);
     partial void DeleteUserAccessProfileDetail(UserAccessProfileDetail instance);
@@ -69,10 +66,13 @@ namespace System_Pointage.DAL
     partial void InsertFiche_materiel(Fiche_materiel instance);
     partial void UpdateFiche_materiel(Fiche_materiel instance);
     partial void DeleteFiche_materiel(Fiche_materiel instance);
+    partial void InsertFiche_Poste(Fiche_Poste instance);
+    partial void UpdateFiche_Poste(Fiche_Poste instance);
+    partial void DeleteFiche_Poste(Fiche_Poste instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.System_PointageConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -99,14 +99,6 @@ namespace System_Pointage.DAL
 				base(connection, mappingSource)
 		{
 			OnCreated();
-		}
-		
-		public System.Data.Linq.Table<Fiche_Poste> Fiche_Postes
-		{
-			get
-			{
-				return this.GetTable<Fiche_Poste>();
-			}
 		}
 		
 		public System.Data.Linq.Table<UserAccessProfileDetail> UserAccessProfileDetails
@@ -204,138 +196,12 @@ namespace System_Pointage.DAL
 				return this.GetTable<Fiche_materiel>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Poste")]
-	public partial class Fiche_Poste : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Name;
-		
-		private double _Nembre_Contra;
-		
-		private double _M_Penalite;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnNembre_ContraChanging(double value);
-    partial void OnNembre_ContraChanged();
-    partial void OnM_PenaliteChanging(double value);
-    partial void OnM_PenaliteChanged();
-    #endregion
-		
-		public Fiche_Poste()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
+		public System.Data.Linq.Table<Fiche_Poste> Fiche_Postes
 		{
 			get
 			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra", DbType="Float NOT NULL")]
-		public double Nembre_Contra
-		{
-			get
-			{
-				return this._Nembre_Contra;
-			}
-			set
-			{
-				if ((this._Nembre_Contra != value))
-				{
-					this.OnNembre_ContraChanging(value);
-					this.SendPropertyChanging();
-					this._Nembre_Contra = value;
-					this.SendPropertyChanged("Nembre_Contra");
-					this.OnNembre_ContraChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_M_Penalite", DbType="Float NOT NULL")]
-		public double M_Penalite
-		{
-			get
-			{
-				return this._M_Penalite;
-			}
-			set
-			{
-				if ((this._M_Penalite != value))
-				{
-					this.OnM_PenaliteChanging(value);
-					this.SendPropertyChanging();
-					this._M_Penalite = value;
-					this.SendPropertyChanged("M_Penalite");
-					this.OnM_PenaliteChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<Fiche_Poste>();
 			}
 		}
 	}
@@ -2331,6 +2197,188 @@ namespace System_Pointage.DAL
 					this._M_Penalite = value;
 					this.SendPropertyChanged("M_Penalite");
 					this.OnM_PenaliteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Poste")]
+	public partial class Fiche_Poste : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private double _Nembre_Contra;
+		
+		private double _M_Penalite;
+		
+		private System.Nullable<double> _EmployeeCount_tfw;
+		
+		private System.Nullable<double> _Nembre_Contra_tfw;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnNembre_ContraChanging(double value);
+    partial void OnNembre_ContraChanged();
+    partial void OnM_PenaliteChanging(double value);
+    partial void OnM_PenaliteChanged();
+    partial void OnEmployeeCount_tfwChanging(System.Nullable<double> value);
+    partial void OnEmployeeCount_tfwChanged();
+    partial void OnNembre_Contra_tfwChanging(System.Nullable<double> value);
+    partial void OnNembre_Contra_tfwChanged();
+    #endregion
+		
+		public Fiche_Poste()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra", DbType="Float NOT NULL")]
+		public double Nembre_Contra
+		{
+			get
+			{
+				return this._Nembre_Contra;
+			}
+			set
+			{
+				if ((this._Nembre_Contra != value))
+				{
+					this.OnNembre_ContraChanging(value);
+					this.SendPropertyChanging();
+					this._Nembre_Contra = value;
+					this.SendPropertyChanged("Nembre_Contra");
+					this.OnNembre_ContraChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_M_Penalite", DbType="Float NOT NULL")]
+		public double M_Penalite
+		{
+			get
+			{
+				return this._M_Penalite;
+			}
+			set
+			{
+				if ((this._M_Penalite != value))
+				{
+					this.OnM_PenaliteChanging(value);
+					this.SendPropertyChanging();
+					this._M_Penalite = value;
+					this.SendPropertyChanged("M_Penalite");
+					this.OnM_PenaliteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployeeCount_tfw", DbType="Float")]
+		public System.Nullable<double> EmployeeCount_tfw
+		{
+			get
+			{
+				return this._EmployeeCount_tfw;
+			}
+			set
+			{
+				if ((this._EmployeeCount_tfw != value))
+				{
+					this.OnEmployeeCount_tfwChanging(value);
+					this.SendPropertyChanging();
+					this._EmployeeCount_tfw = value;
+					this.SendPropertyChanged("EmployeeCount_tfw");
+					this.OnEmployeeCount_tfwChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra_tfw", DbType="Float")]
+		public System.Nullable<double> Nembre_Contra_tfw
+		{
+			get
+			{
+				return this._Nembre_Contra_tfw;
+			}
+			set
+			{
+				if ((this._Nembre_Contra_tfw != value))
+				{
+					this.OnNembre_Contra_tfwChanging(value);
+					this.SendPropertyChanging();
+					this._Nembre_Contra_tfw = value;
+					this.SendPropertyChanged("Nembre_Contra_tfw");
+					this.OnNembre_Contra_tfwChanged();
 				}
 			}
 		}

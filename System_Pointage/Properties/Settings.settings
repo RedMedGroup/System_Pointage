@@ -31,5 +31,13 @@
     <Setting Name="test" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=SQL9001.site4now.net;Initial Catalog=db_ab02dc_systempointage;User Id=db_ab02dc_systempointage_admin;Password=aze12345</Value>
     </Setting>
+    <Setting Name="System_PointageConnectionString1" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;ConnectionString&gt;Data Source=DESKTOP-G2HKEA1;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=DESKTOP-G2HKEA1;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

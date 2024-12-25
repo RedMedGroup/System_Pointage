@@ -316,6 +316,11 @@
     <Compile Include="report\rpt_WorkDay.Designer.cs">
       <DependentUpon>rpt_WorkDay.cs</DependentUpon>
     </Compile>
+    <Compile Include="System_PointageDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>System_PointageDataSet.xsd</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form\BackUp.resx">
       <DependentUpon>BackUp.cs</DependentUpon>
     </EmbeddedResource>
@@ -454,6 +459,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="System_PointageDataSet.xsc">
+      <DependentUpon>System_PointageDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="System_PointageDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>System_PointageDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="System_PointageDataSet.xss">
+      <DependentUpon>System_PointageDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

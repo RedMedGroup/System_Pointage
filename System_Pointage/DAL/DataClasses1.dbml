@@ -1,13 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="System_Pointage" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.\;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False" SettingsObjectName="System_Pointage.Properties.Settings" SettingsPropertyName="System_PointageConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Fiche_Poste" Member="Fiche_Postes">
-    <Type Name="Fiche_Poste">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-G2HKEA1;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="System_Pointage.Properties.Settings" SettingsPropertyName="System_PointageConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.UserAccessProfileDetails" Member="UserAccessProfileDetails">
     <Type Name="UserAccessProfileDetail">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -119,6 +111,16 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fiche_Poste" Member="Fiche_Postes">
+    <Type Name="Fiche_Poste">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="EmployeeCount_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Nembre_Contra_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
     </Type>
   </Table>
 </Database>
