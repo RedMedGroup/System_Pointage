@@ -195,15 +195,28 @@ namespace System_Pointage.Form
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             var context = new DAL.DataClasses1DataContext();
-            var groups = FicheAgentList.Where(x=>x.Statut==true && x.Affecter == cmb_base.Text)//new
-                .GroupBy(agent => agent.ID_Post)
-                .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID ))
-                .Select(g => new
-                {
-                    Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-                    RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
-                    Agents = g.ToList()
-                });
+            var groups = FicheAgentList
+    .Where(x => x.Statut == true && x.Affecter == cmb_base.Text) // التأكد من الحقول المطلوبة
+    .GroupBy(agent => agent.ID_Post)
+    .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
+    .Select(g => new
+    {
+        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+        RequiredQuantity = cmb_base.Text == "TFT"
+            ? context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0
+            : context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra_tfw ?? 0,
+        Agents = g.ToList()
+    });
+
+            //var groups = FicheAgentList.Where(x=>x.Statut==true && x.Affecter == cmb_base.Text)//new
+            //    .GroupBy(agent => agent.ID_Post)
+            //    .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID ))
+            //    .Select(g => new
+            //    {
+            //        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+            //        RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+            //        Agents = g.ToList()
+            //    });
 
             foreach (var group in groups)
             {
@@ -415,6 +428,19 @@ namespace System_Pointage.Form
                             absentAgents.Add(agentId);
                         }
                     }
+                    #region new 08/01
+                    // تحقق من العدد الأقصى للغائبين بناءً على القاعدة
+                    int maxAllowedAbsences = cmb_base.Text == "TFT"
+                        ? (int)department.Nembre_Contra
+                        : (int)department.Nembre_Contra_tfw;
+
+                    // إذا كان عدد الغائبين أكبر من العدد المسموح به، قم بضبطه
+                    int validAbsentCount = Math.Min(absentAgents.Count, maxAllowedAbsences);
+
+                    // النتيجة النهائية لعدد الغائبين
+                    absentAgents = absentAgents.Take(validAbsentCount).ToHashSet();
+                    #endregion
+
 
                     // حساب إجمالي الغيابات
                     int totalAbsences = 0;
@@ -431,7 +457,6 @@ namespace System_Pointage.Form
                             }
                         }
 
-                        //    int dailyAbsences = Math.Max(0, (int)department.Nembre_Contra - dailyPresenceCount);
                         // حساب الغيابات اليومية بناءً على القاعدة
                         int dailyAbsences = Math.Max(0, (int)(cmb_base.Text == "TFT"
                             ? department.Nembre_Contra
@@ -1054,16 +1079,28 @@ namespace System_Pointage.Form
 
                 // استرجاع الأقسام
                 var departments = context.Fiche_Postes
-                    .Select(post => new
-                    {
-                        ID_Post = post.ID,
-                        DepartmentName = post.Name,
-                        RequiredEmployees = post.Nembre_Contra
-                    })
-                    .ToList();
+    .Select(post => new
+    {
+        ID_Post = post.ID,
+        DepartmentName = post.Name,
+        RequiredEmployees = cmb_base.Text == "TFT"
+            ? post.Nembre_Contra // إذا كانت القيمة "tft"
+            : post.Nembre_Contra_tfw // إذا لم تكن "tft"
+    })
+    .ToList();
+
+                //var departments = context.Fiche_Postes
+                //    .Select(post => new
+                //    {
+                //        ID_Post = post.ID,
+                //        DepartmentName = post.Name,
+                //        RequiredEmployees = post.Nembre_Contra
+                //    })
+                //    .ToList();
 
                 // استرجاع العمال وحالاتهم في التاريخ المحدد
-                var workers = context.Fiche_Agents.Where(agent => isAdmin || agent.ScreenPosteD == userAccessPosteID)
+                //var workers = context.Fiche_Agents.Where( agent => isAdmin || agent.ScreenPosteD == userAccessPosteID)
+                var workers = context.Fiche_Agents .Where(agent => (isAdmin || agent.ScreenPosteD == userAccessPosteID) && agent.Affecter == cmb_base.Text)
                     .Select(agent => new
                     {
                         WorkerName = agent.Name,
@@ -1189,16 +1226,36 @@ namespace System_Pointage.Form
 
             // إذا لم يكن أدمن، استخدم userAccessPosteID
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+            var groups = FicheAgentList
+    .Where(x => x.Statut == true && x.Affecter == cmb_base.Text && (isAdmin || x.ScreenPosteD == userAccessPosteID))
+    .GroupBy(agent => agent.ID_Post)
+    .Select(g =>
+    {
+        // استرجاع القسم المرتبط بـ ID_Post
+        var fichePost = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key);
 
-            var groups = FicheAgentList.Where(x => x.Statut == true&&(isAdmin || x.ScreenPosteD == userAccessPosteID))
-                .GroupBy(agent => agent.ID_Post)
-                .Select(g => new
-                {
-                    Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-                    RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
-                    Penalty = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.M_Penalite ?? 0,
-                    Agents = g.ToList()
-                });
+        return new
+        {
+            Specialization = fichePost?.Name,
+            RequiredQuantity = cmb_base.Text == "TFT"
+                ? fichePost?.Nembre_Contra ?? 0
+                : fichePost?.Nembre_Contra_tfw ?? 0,
+            Penalty = cmb_base.Text == "TFT"
+                ? fichePost?.M_Penalite ?? 0
+                : fichePost?.EmployeeCount_tfw ?? 0,
+            Agents = g.ToList()
+        };
+    });
+
+            //var groups = FicheAgentList.Where(x => x.Statut == true && x.Affecter == cmb_base.Text && (isAdmin || x.ScreenPosteD == userAccessPosteID))
+            //    .GroupBy(agent => agent.ID_Post)
+            //    .Select(g => new
+            //    {
+            //        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+            //        RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+            //        Penalty = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.M_Penalite ?? 0,
+            //        Agents = g.ToList()
+            //    });
 
             foreach (var group in groups)
             {

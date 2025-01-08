@@ -190,6 +190,7 @@ namespace System_Pointage.Form
             gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
+            gridView1.Columns["Difference"].Caption = "Ecart";
             gridView1.Columns["Matricule"].VisibleIndex = 0;
             gridView1.Columns["Name"].VisibleIndex = 1;
             gridView1.Columns["Poste"].VisibleIndex = 2;

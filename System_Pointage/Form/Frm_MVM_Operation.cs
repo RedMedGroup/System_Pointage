@@ -97,6 +97,7 @@ namespace System_Pointage.Classe
           //  var agentDataService = new AgentDataService();
             var selectedRow = gridView2.GetFocusedRow() as DAL.Attent_Heder;
             ATH.ID = selectedRow.ID;
+            dateEdit1.DateTime = selectedRow.Date;
             if (selectedRow != null)
             {
                  selectedID = selectedRow.ID;
@@ -480,6 +481,7 @@ namespace System_Pointage.Classe
             gridView1.GroupPanelText = " ";
             gridView1.Columns["Name"].Caption = "Nom et prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
+            gridView1.Columns["Difference"].Caption = "Ecart";
             gridView1.Columns["Matricule"].VisibleIndex = 1;
             gridView1.Columns["Name"].VisibleIndex = 2;
             gridView1.Columns["Poste"].VisibleIndex = 3;

@@ -101,12 +101,16 @@ namespace System_Pointage.Form
             txt_name.Text = un.Name;
             spn_contra.EditValue = un.Nembre_Contra;
             spn_penalite.EditValue = un.M_Penalite;
+            spn_contra1.EditValue = un.Nembre_Contra_tfw;
+            spn_penalite1.EditValue = un.EmployeeCount_tfw;
         }
         void SetData()
         {
             un.Name = txt_name.Text;
             un.Nembre_Contra = Convert.ToInt32(spn_contra.EditValue);
             un.M_Penalite = Convert.ToInt32(spn_penalite.EditValue);
+             un.Nembre_Contra_tfw= Convert.ToInt32(spn_contra1.EditValue );
+            un.EmployeeCount_tfw = Convert.ToInt32(spn_penalite1.EditValue) ;
         }
 
         private void btn_save_Click(object sender, EventArgs e)
