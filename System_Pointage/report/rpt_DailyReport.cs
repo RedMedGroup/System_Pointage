@@ -205,6 +205,7 @@ namespace System_Pointage.report
             DateTime reportDate = _frmPointage.StartDate;
             string formattedDate = reportDate.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
             lbl_date.Text = formattedDate;
+            xrLabel6.Text = formattedDate;
         }
 
     }

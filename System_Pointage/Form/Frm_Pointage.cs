@@ -29,6 +29,7 @@ namespace System_Pointage.Form
 
         private void Frm_Pointage_Load(object sender, EventArgs e)
         {
+            btn_print.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             DateTime today = DateTime.Today;
             dateEdit1.DateTime = new DateTime(today.Year, today.Month, 1);
             dateEdit2.DateTime = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
@@ -41,30 +42,30 @@ namespace System_Pointage.Form
 
         private void GridView1_CellMerge(object sender, CellMergeEventArgs e)
         {
-            //GridView view = sender as GridView;
+            GridView view = sender as GridView;
 
-            //if (e.Column.FieldName == "POSTE" || e.Column.FieldName == "EFECTIF/CONTRAT")
-            //{
-            //    string value1 = view.GetRowCellDisplayText(e.RowHandle1, e.Column);
-            //    string value2 = view.GetRowCellDisplayText(e.RowHandle2, e.Column);
+            if (e.Column.FieldName == "POSTE" || e.Column.FieldName == "EFECTIF/CONTRAT")
+            {
+                string value1 = view.GetRowCellDisplayText(e.RowHandle1, e.Column);
+                string value2 = view.GetRowCellDisplayText(e.RowHandle2, e.Column);
 
-            //    // دمج الخلايا إذا كانت القيم متساوية أو إذا كانت القيم فارغة تحت نفس الـ 
-            //    if (value1 == value2 || string.IsNullOrEmpty(value2))
-            //    {
-            //        e.Merge = true;
-            //    }
-            //    else
-            //    {
-            //        e.Merge = false;
-            //    }
+                // دمج الخلايا إذا كانت القيم متساوية أو إذا كانت القيم فارغة تحت نفس الـ 
+                if (value1 == value2 || string.IsNullOrEmpty(value2))
+                {
+                    e.Merge = true;
+                }
+                else
+                {
+                    e.Merge = false;
+                }
 
-            //    e.Handled = true;
-            //}
-            //else
-            //{
-            //    e.Merge = false;
-            //}
-            //e.Handled = true;
+                e.Handled = true;
+            }
+            else
+            {
+                e.Merge = false;
+            }
+            e.Handled = true;
         }
 
         private void btn_recharch_Click(object sender, EventArgs e)
@@ -208,15 +209,7 @@ namespace System_Pointage.Form
         Agents = g.ToList()
     });
 
-            //var groups = FicheAgentList.Where(x=>x.Statut==true && x.Affecter == cmb_base.Text)//new
-            //    .GroupBy(agent => agent.ID_Post)
-            //    .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID ))
-            //    .Select(g => new
-            //    {
-            //        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-            //        RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
-            //        Agents = g.ToList()
-            //    });
+            
 
             foreach (var group in groups)
             {
@@ -346,6 +339,7 @@ namespace System_Pointage.Form
             report.ReportTitle = reportTitle;
             report.BindAttendanceDataToCells();
             report.DataSource = CreateAbsenceReport(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
+            report.SumPinality = Sum;
             report.ShowPreviewDialog();
 
        
@@ -385,7 +379,7 @@ namespace System_Pointage.Form
                 }).ToList();
 
 
-
+                float totalSum = 0;
                 foreach (var department in departments)
                 {
                     // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة
@@ -492,6 +486,8 @@ namespace System_Pointage.Form
                         row["TotalPenalties"] = totalPenalties;
                         row["Nombre du personnel absent"] = absentAgents.Count; // حساب عدد الموظفين الغائبين
 
+                        totalSum += totalPenalties;
+                        Sum = (decimal)totalSum;
                         table.Rows.Add(row);
                     }
                 }
@@ -501,10 +497,7 @@ namespace System_Pointage.Form
         }
 
   
-        private void btn_print_pinalite_Click(object sender, EventArgs e)
-        {
-            GenerateReport();
-        }
+
 
         private void dateEdit1_EditValueChanged(object sender, EventArgs e)
         {
@@ -986,8 +979,7 @@ namespace System_Pointage.Form
 
             // إضافة عمود "Total Présent" لكل فرد
             table.Columns.Add("S/TOTAL", typeof(int));
-            // إضافة عمود "IsTotalRow" لتحديد لون السطر
-            table.Columns.Add("IsTotalRow", typeof(bool));
+       
 
             // التحقق مما إذا كان المستخدم أدمن
             bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
@@ -1073,7 +1065,6 @@ namespace System_Pointage.Form
 
                     // إضافة عدد الأيام الحاضرة للفرد في العمود "Total Présent"
                     row["S/TOTAL"] = individualPresentCount;
-                    row["IsTotalRow"] = false;
                     table.Rows.Add(row);
                 }
 
@@ -1086,7 +1077,6 @@ namespace System_Pointage.Form
                     presentCountRow[$"{startDate.AddDays(i).Day}"] = presentCountPerDay[i].ToString();
                 }
                 presentCountRow["S/TOTAL"] = totalPresent;
-                presentCountRow["IsTotalRow"] = true;
                 table.Rows.Add(presentCountRow);
             }
 
@@ -1107,10 +1097,12 @@ namespace System_Pointage.Form
             int totalDays = (endDate - startDate).Days + 1;
             rpt_penalite2 report = new rpt_penalite2();
             report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
+            
             string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
             int annee = startDate.Year;
             report.lbl_mois.Text = $"Mois de {mois} {annee}";
             report.DataSource = CreateAbsenceReport2(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
+            report.SumPinality = Sum;
             report.BindAttendanceDataToCells();
             report.ShowPreviewDialog();
 
@@ -1118,6 +1110,7 @@ namespace System_Pointage.Form
          
             
         }
+        decimal Sum;
         private DataTable CreateAbsenceReport2(int totalDays, DateTime startDate, DateTime endDate)
         {
             DataTable table = new DataTable();
@@ -1149,6 +1142,9 @@ namespace System_Pointage.Form
                     Nembre_Contra_tfw = post.Nembre_Contra_tfw,
                     EmployeeCount_tfw = post.EmployeeCount_tfw
                 }).ToList();
+
+                // متغير لحساب مجموع TotalPenalties
+                float totalSum = 0;
 
                 foreach (var department in departments)
                 {
@@ -1264,16 +1260,24 @@ namespace System_Pointage.Form
                     row["M_Penalite"] = cmb_base.Text == "TFT" ? department.M_Penalite : department.EmployeeCount_tfw;
                     row["TotalPenalties"] = totalPenalties;
 
+                    // إضافة القيمة إلى المجموع
+                    totalSum += totalPenalties;
+                    Sum = (decimal) totalSum;
                     table.Rows.Add(row);
                 }
             }
 
             return table;
         }
-
+       
         private void btn_penality2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             GenerateReport2();
+        }
+
+        private void btn_print_pinalite2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            GenerateReport();
         }
     }
 }
