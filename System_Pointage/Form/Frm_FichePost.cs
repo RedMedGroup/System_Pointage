@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,13 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System_Pointage.Classe;
 
 namespace System_Pointage.Form
 {
     public partial class Frm_FichePost : DevExpress.XtraEditors.XtraForm
     {
         DAL.Fiche_Poste un;
-
+         
         public Frm_FichePost()
         {
             InitializeComponent();
@@ -26,9 +28,9 @@ namespace System_Pointage.Form
             RefrechData();
             treeList1.OptionsBehavior.Editable = false;
             treeList1.FocusedNodeChanged += TreeList1_FocusedNodeChanged;
-            treeList1.Columns[nameof(un.Name)].Caption = "Poste";
-            treeList1.Columns[nameof(un.Nembre_Contra)].Caption = "Efectif contra";
-            treeList1.Columns[nameof(un.M_Penalite)].Caption = "Pénalité";
+            //treeList1.Columns[nameof(un.Name)].Caption = "Poste";
+            //treeList1.Columns[nameof(un.Nembre_Contra)].Caption = "Efectif contra";
+            //treeList1.Columns[nameof(un.M_Penalite)].Caption = "Pénalité";
         }
 
         private void TreeList1_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e)
@@ -64,6 +66,11 @@ namespace System_Pointage.Form
                 txt_name.ErrorText = ErrorText;
                 return false;
             }
+            if (lkp_ScreanPoste.Text.Trim() == string.Empty)
+            {
+                lkp_ScreanPoste.ErrorText = ErrorText;
+                return false;
+            }
             var db = new DAL.DataClasses1DataContext();
             var OL = db.Fiche_Postes.Where(x => x.Name.Trim() == txt_name.Text.Trim() && x.ID != un.ID);
             if (OL.Count() > 0)
@@ -88,9 +95,16 @@ namespace System_Pointage.Form
         void RefrechData()
         {
             var db = new DAL.DataClasses1DataContext();
-
+            lkp_ScreanPoste.IntializeData(db.UserAccessProfilePostes.Select(x => new { x.ID, x.Name }).ToList());
             treeList1.DataSource = db.Fiche_Postes;
             treeList1.ExpandAll();
+            treeList1.Columns["Name"].Caption= "Poste";
+            treeList1.Columns["Nembre_Contra"].Caption = "CONTRACTUEL(TFT)";
+            treeList1.Columns["M_Penalite"].Caption = "Pénalité(TFT)";
+            treeList1.Columns["EmployeeCount_tfw"].Caption = "Pénalité(TFY)";
+            treeList1.Columns["Nembre_Contra_tfw"].Caption = "CONTRACTUEL(TFY)";
+            treeList1.Columns["Departement"].Visible =false;
+
         }
         void New()
         {
@@ -99,6 +113,7 @@ namespace System_Pointage.Form
         void GetData()
         {
             txt_name.Text = un.Name;
+            lkp_ScreanPoste.EditValue = un.Departement;
             spn_contra.EditValue = un.Nembre_Contra;
             spn_penalite.EditValue = un.M_Penalite;
             spn_contra1.EditValue = un.Nembre_Contra_tfw;
@@ -107,6 +122,7 @@ namespace System_Pointage.Form
         void SetData()
         {
             un.Name = txt_name.Text;
+            un.Departement = Convert.ToInt32(lkp_ScreanPoste.EditValue);
             un.Nembre_Contra = Convert.ToInt32(spn_contra.EditValue);
             un.M_Penalite = Convert.ToInt32(spn_penalite.EditValue);
              un.Nembre_Contra_tfw= Convert.ToInt32(spn_contra1.EditValue );

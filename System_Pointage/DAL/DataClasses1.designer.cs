@@ -72,7 +72,7 @@ namespace System_Pointage.DAL
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.System_PointageConnectionString1, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
 		{
 			OnCreated();
 		}
@@ -2240,6 +2240,8 @@ namespace System_Pointage.DAL
 		
 		private System.Nullable<double> _Nembre_Contra_tfw;
 		
+		private System.Nullable<int> _Departement;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2256,6 +2258,8 @@ namespace System_Pointage.DAL
     partial void OnEmployeeCount_tfwChanged();
     partial void OnNembre_Contra_tfwChanging(System.Nullable<double> value);
     partial void OnNembre_Contra_tfwChanged();
+    partial void OnDepartementChanging(System.Nullable<int> value);
+    partial void OnDepartementChanged();
     #endregion
 		
 		public Fiche_Poste()
@@ -2379,6 +2383,26 @@ namespace System_Pointage.DAL
 					this._Nembre_Contra_tfw = value;
 					this.SendPropertyChanged("Nembre_Contra_tfw");
 					this.OnNembre_Contra_tfwChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Departement", DbType="Int")]
+		public System.Nullable<int> Departement
+		{
+			get
+			{
+				return this._Departement;
+			}
+			set
+			{
+				if ((this._Departement != value))
+				{
+					this.OnDepartementChanging(value);
+					this.SendPropertyChanging();
+					this._Departement = value;
+					this.SendPropertyChanged("Departement");
+					this.OnDepartementChanged();
 				}
 			}
 		}

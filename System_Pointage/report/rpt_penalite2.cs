@@ -2,15 +2,16 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Globalization;
 
 namespace System_Pointage.report
 {
-    public partial class rpt_penalite : DevExpress.XtraReports.UI.XtraReport
+    public partial class rpt_penalite2 : DevExpress.XtraReports.UI.XtraReport
     {
         public string ReportTitle { get; set; }
-        public rpt_penalite()
+        public rpt_penalite2()
         {
             InitializeComponent();
             BindData();
@@ -21,14 +22,16 @@ namespace System_Pointage.report
         {
             cell_n.Text = (index++).ToString();
         }
-
         public void BindData()
         {
+            
             cell_Department.DataBindings.Add("Text", this.DataSource, "Department");
-            cell_TotalAbsences.DataBindings.Add("Text", this.DataSource, "TotalAbsences");
+            cell_effc.DataBindings.Add("Text", this.DataSource, "Nembre_Contra");
+            cell_Totaljourcontra.DataBindings.Add("Text", this.DataSource, "CalculatedField3");
+            cell_totaljourpresent.DataBindings.Add("Text", this.DataSource, "AttendanceDays");
+            cell_jour_absent.DataBindings.Add("Text", this.DataSource, "CalculatedField5");
             cell_M_Penalite.DataBindings.Add("Text", this.DataSource, "M_Penalite");
             cell_TotalPenalties.DataBindings.Add("Text", this.DataSource, "TotalPenalties");
-            cell_nP.DataBindings.Add("Text", this.DataSource, "Nombre du personnel absent");
 
             string formattedDate = DateTime.Now.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
             //lbl_date.Text = formattedDate;

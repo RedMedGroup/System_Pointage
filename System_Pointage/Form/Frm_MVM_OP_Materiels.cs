@@ -167,7 +167,7 @@ namespace System_Pointage.Form
                                 userLogAction = new UserLogAction
                                 {
                                     PartID = newAgentDetail.ItemID,
-                                    PartName = $"Absence la Agent: {agent.Name} A-",
+                                    PartName = $"Absence camions: {agent.Name} A-",
                                     Name = "Frm_MVM_Operation_A",
                                 };
                             }
@@ -177,7 +177,7 @@ namespace System_Pointage.Form
                                 userLogAction = new UserLogAction
                                 {
                                     PartID = newAgentDetail.ItemID,
-                                    PartName = $"Maladie la Agent: {agent.Name} M-",
+                                    PartName = $"Présent camions: {agent.Name} P-",
                                     Name = "Frm_MVM_Operation_A",
                                 };
                             }

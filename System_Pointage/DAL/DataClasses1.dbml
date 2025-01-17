@@ -121,6 +121,7 @@
       <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="EmployeeCount_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="Nembre_Contra_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Departement" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

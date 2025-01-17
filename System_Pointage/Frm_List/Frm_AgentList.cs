@@ -80,6 +80,8 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["NamePosteDetail"].Visible = false;
                 gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
+            gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
+
         }
 
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)

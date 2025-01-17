@@ -29,13 +29,31 @@ namespace System_Pointage.Form
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
             RefrechDate();
+            gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
         }
-        void RefrechDate()
+
+      
+        //void RefrechDate()
+        //{
+        //    using(var db = new DAL.DataClasses1DataContext())
+        //    {
+        //        gridControl1.DataSource = db.Fiche_Postes;
+        //    }
+        //}
+        public void RefrechDate()
         {
-            using(var db = new DAL.DataClasses1DataContext())
-            {
-                gridControl1.DataSource = db.Fiche_Postes;
-            }
+            var db = new DAL.DataClasses1DataContext();
+            var data = from us in db.Fiche_Postes
+                       join c in db.UserAccessProfilePostes on us.Departement equals c.ID
+                       select new
+                       {
+                           us.ID,
+                           us.Name,                         
+                           Département = c.Name,
+                       };
+            gridControl1.DataSource = data;
+            gridView1.Columns["Name"].Caption = "Poste";
+            gridView1.Columns["ID"].Visible = false;
         }
         void SetData()
         {
@@ -57,7 +75,7 @@ namespace System_Pointage.Form
         {
             if (txt_Name.Text.Trim() == string.Empty)
             {
-                txt_Name.Text = ErrorText;
+                txt_Name.ErrorText = ErrorText;
                 return false;
             }
             

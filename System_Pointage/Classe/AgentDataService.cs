@@ -53,59 +53,62 @@ namespace System_Pointage.Classe
             {
                 agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == idAttentListe);
             }
-            if (formName == "Frm_Heir" || formName == "Frm_WorkDays")
-            {
+            //if (formName == "Frm_Heir" /*|| formName == "Frm_WorkDays"*/)
+            //{
                 #region
-                 agentsQuery = agentsQueryF
-    .GroupBy(agent => agent.ItemID)
-    .ToList() // تحميل البيانات إلى الذاكرة
-    .Select(g =>
-    {
-        var orderedRecords = g.OrderBy(x => x.Date).ToList();
+   //             agentsQuery = agentsQueryF
+   //.GroupBy(agent => agent.ItemID)
+   //.ToList() // تحميل البيانات إلى الذاكرة
+   //.Select(g =>
+   //{
+   //    var orderedRecords = g.OrderBy(x => x.Date).ToList();
 
-        // البحث عن أول حالة "P" بعد "CR"
-        bool foundCR = false; // هل وجدنا "CR"
-        foreach (var record in orderedRecords)
-        {
-            if (record.Statut == "CR")
-            {
-                foundCR = true; // وجدنا عطلة
-            }
-            else if (record.Statut == "P" && foundCR)
-            {
-                return record; // أول حضور بعد عطلة
-            }
-        }
-        foreach (var record in orderedRecords)
-        {
-            if (record.Statut == "CR")
-            {
-                return record;// وجدنا عطلة
-            }
-        }
-        // إذا لم يتم العثور على الحضور بعد "CR"، ارجع إلى أول سجل
-        return orderedRecords.FirstOrDefault();
-    })
-    .Where(agent => agent != null)
-    .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
-    agent => agent.ItemID,
-    worker => worker.ID,
-    (agent, worker) => new { agent, worker })
-    .Join(_context.Fiche_Postes,
-    ma => ma.worker.ID_Post,
-    poste => poste.ID,
-    (ma, poste) => new
-    {
-        ma.worker,
-        ma.agent,
-        poste.Name,
-        ma.worker.Jour,
-    });
+   //    // البحث عن أول حالة "P" بعد "CR"
+   //    bool foundCR = false; // هل وجدنا "CR"
+   //    foreach (var record in orderedRecords)
+   //    {
+   //        if (record.Statut == "CR")
+   //        {
+   //            foundCR = true; // وجدنا عطلة
+   //        }
+   //        else if (record.Statut == "P" && foundCR)
+   //        {
+   //            return record; // أول حضور بعد عطلة
+   //        }
+   //    }
+   //    foreach (var record in orderedRecords)
+   //    {
+   //        if (record.Statut == "CR")
+   //        {
+   //            return record;// وجدنا عطلة
+   //        }
+   //    }
+   //    // إذا لم يتم العثور على الحضور بعد "CR"، ارجع إلى أول سجل
+   //    return orderedRecords.FirstOrDefault();
+   //})
+   //.Where(agent => agent != null)
+   //.Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+   //agent => agent.ItemID,
+   //worker => worker.ID,
+   //(agent, worker) => new { agent, worker })
+   //.Join(_context.Fiche_Postes,
+   //ma => ma.worker.ID_Post,
+   //poste => poste.ID,
+   //(ma, poste) => new
+   //{
+   //    ma.worker,
+   //    ma.agent,
+   //    poste.Name,
+   //    ma.worker.Jour,
+   //});
                 #endregion
-            }
 
 
-            if (formName == "frm_op")
+
+            //}
+
+
+            if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir")
             {
                 // استعلام أساسي
                  agentsQuery = agentsQueryF
@@ -150,8 +153,10 @@ namespace System_Pointage.Classe
                     break;
 
                 case Master.MVMType.CR:
-                    if (formName == "Frm_Heir"|| formName == "Frm_WorkDays")
+                    if (formName == "Frm_Heir"/*|| formName == "Frm_WorkDays"*/)
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "P");
+                    else if ( formName == "Frm_WorkDays")
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" );
                     else// frm_operation partant/
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
 
@@ -360,7 +365,55 @@ namespace System_Pointage.Classe
             return new BindingList<Models.MaterielsStatus>(agents);
         }
         #endregion
+        #region ////////////////////////   agent liste 2
+        public List<object> GetAgentsWithoutMovementMateriels(int? userAccessPosteID, bool isAdmin)
+        {
+            // الخطوة 1: جلب جميع السجلات من Fiche_Agents وربطها بالجداول الأخرى
+            var query = from agent in _dbContext.Fiche_Matricules
+                        join post in _dbContext.Fiche_materiels on agent.ID_materiels equals post.ID
+                        //join userAccess in _dbContext.UserAccessProfilePostes on agent.ScreenPosteD equals userAccess.ID
+                        //join accessDetails in _dbContext.UserAccessProfilePosteDetails on userAccess.ID equals accessDetails.ID_AccessPoste
+                        select new
+                        {
+                            agent.ID,
+                            AgentID = agent.ID,
+                            agent.Matricule,
+                            Name = agent.Name,
+                            PostName = post.Name,
+                            agent.Affecter,
+                            agent.Date_Embauche,
+                            agent.Statut,
+                            ScreenPosteD = agent.ScreenPosteD,
+                            //AccessPosteID = accessDetails.ID_AccessPoste,
+                            //NamePosteDetail = accessDetails.ID_Name_Poste
+                        };
 
+            // الخطوة 2: إزالة التكرار باستخدام GroupBy
+            var groupedQuery = query
+                .GroupBy(q => new { q.AgentID, q.Name, q.PostName, q.ScreenPosteD })
+                .Select(g => g.First());
+
+            // الخطوة 3: تصفية الأشخاص الذين ليست لديهم حركة في MVMAgentDetails
+            var agentsWithoutMovements = groupedQuery.Where(agent =>
+                !_dbContext.MVMmaterielsDetails.Any(movement => movement.ItemID == agent.AgentID));
+
+            // الخطوة 4: تطبيق الفلترة بناءً على حالة المستخدم
+            if (!isAdmin) // إذا لم يكن المستخدم Admin
+            {
+                if (userAccessPosteID.HasValue)
+                {
+                    agentsWithoutMovements = agentsWithoutMovements;/*.Where(q => q.AccessPosteID == userAccessPosteID.Value);*/
+                }
+                else
+                {
+                    return new List<object>(); // إرجاع قائمة فارغة إذا لم يتم تمرير userAccessPosteID
+                }
+            }
+
+            // الخطوة 5: إرجاع القائمة
+            return agentsWithoutMovements.ToList<object>();
+        }
+        #endregion
 
     }
 }

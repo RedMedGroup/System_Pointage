@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System_Pointage.Classe;
 
 namespace System_Pointage.report
 {
     public partial class rpt_pointage_mensuel : DevExpress.XtraReports.UI.XtraReport
     {
+        public string ReportTitle { get; set; }
         public List<DateTime> ListOfDays { get; set; }
         public rpt_pointage_mensuel()
         {
@@ -55,6 +57,11 @@ namespace System_Pointage.report
                 XRControl absenceCell = FindControl("cell_absence", true);
                 XRControl pinaliteCell = FindControl("cell_penality", true);
                 XRControl totalpinaliteCell = FindControl("cell_totalpinality", true);
+                XRLabel lblBase = (XRLabel)FindControl("lbl_base", true);
+                if (lblBase != null)
+                {
+                    lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
+                }
 
 
                 if (posteCell != null)
@@ -105,6 +112,36 @@ namespace System_Pointage.report
                     }
                 }
             }
+
+        private void rpt_pointage_mensuel_BeforePrint(object sender, CancelEventArgs e)
+        {
+            // التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+            // تعيين نص xrLabel2 بناءً على نوع المستخدم و userAccessPosteID
+            if (isAdmin)
+            {
+                xrLabel2.Text = "Etat récapitulatif du personnel Hôtelier (restauration/hébergement) SARL MULTICATERING ALGERIA présent sur site";
+            }
+            else
+            {
+                if (userAccessPosteID == 1)
+                {
+                    xrLabel2.Text = "Etat récapitulatif du personnel Hôtelier (hébergement) SARL MULTICATERING ALGERIA présent sur site";
+                }
+                else if (userAccessPosteID == 2)
+                {
+                    xrLabel2.Text = "Etat récapitulatif du personnel Hôtelier (restauration) SARL MULTICATERING ALGERIA présent sur site";
+                }
+                else
+                {
+                    xrLabel2.Text = "Etat récapitulatif du personnel Hôtelier SARL MULTICATERING ALGERIA présent sur site"; // حالة افتراضية
+                }
+            }
         }
+    }
     }
 

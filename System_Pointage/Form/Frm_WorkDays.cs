@@ -60,7 +60,8 @@ namespace System_Pointage.Form
             gridView1.Columns["CalculatedDate"].Caption = "Date prévue Congé";
             gridView1.Columns["DaysCount"].Caption = "Nombre de jours de travail";
             gridView1.Columns["Date"].Caption = "Date de rentrée";
-            gridView1.Columns["Matricule"].VisibleIndex = 0;
+            gridView1.Columns["Difference"].Caption = "écart";
+            gridView1.Columns["Matricule"].VisibleIndex = 0; 
             gridView1.Columns["Name"].VisibleIndex = 1;
             gridView1.Columns["Poste"].VisibleIndex = 2;
             gridView1.Columns["Affecter"].VisibleIndex = 3;

@@ -116,6 +116,12 @@
     <Compile Include="Form\frm_AccessProfile.Designer.cs">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Frm_Debut_MTR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Debut_MTR.Designer.cs">
+      <DependentUpon>Frm_Debut_MTR.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\Frm_Debut_Present.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +298,12 @@
     <Compile Include="report\rpt_penalite.Designer.cs">
       <DependentUpon>rpt_penalite.cs</DependentUpon>
     </Compile>
+    <Compile Include="report\rpt_penalite2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="report\rpt_penalite2.Designer.cs">
+      <DependentUpon>rpt_penalite2.cs</DependentUpon>
+    </Compile>
     <Compile Include="report\rpt_penalite_Materiel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -303,6 +315,12 @@
     </Compile>
     <Compile Include="report\rpt_pointage.Designer.cs">
       <DependentUpon>rpt_pointage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="report\rpt_pointage2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="report\rpt_pointage2.Designer.cs">
+      <DependentUpon>rpt_pointage2.cs</DependentUpon>
     </Compile>
     <Compile Include="report\rpt_pointage_mensuel.cs">
       <SubType>Component</SubType>
@@ -332,6 +350,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frm_AccessProfile.resx">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Debut_MTR.resx">
+      <DependentUpon>Frm_Debut_MTR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Debut_Present.resx">
       <DependentUpon>Frm_Debut_Present.cs</DependentUpon>
@@ -428,11 +449,17 @@
     <EmbeddedResource Include="report\rpt_penalite.resx">
       <DependentUpon>rpt_penalite.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="report\rpt_penalite2.resx">
+      <DependentUpon>rpt_penalite2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_penalite_Materiel.resx">
       <DependentUpon>rpt_penalite_Materiel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_pointage.resx">
       <DependentUpon>rpt_pointage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="report\rpt_pointage2.resx">
+      <DependentUpon>rpt_pointage2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="report\rpt_pointage_mensuel.resx">
       <DependentUpon>rpt_pointage_mensuel.cs</DependentUpon>

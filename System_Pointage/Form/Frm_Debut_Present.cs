@@ -119,7 +119,6 @@ namespace System_Pointage.Form
                 XtraMessageBox.Show("Veuillez sélectionner au moins une ligne.", "Attention", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             using (var db = new DAL.DataClasses1DataContext())
             {
                 // قائمة لتخزين القيم المكررة

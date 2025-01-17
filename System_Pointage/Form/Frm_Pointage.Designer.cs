@@ -31,12 +31,14 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Pointage));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.cmb_base = new DevExpress.XtraEditors.ComboBoxEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btn_print = new DevExpress.XtraBars.BarButtonItem();
             this.btn_print_mensuel = new DevExpress.XtraBars.BarButtonItem();
             this.btn_print2 = new DevExpress.XtraBars.BarButtonItem();
+            this.btn_print_personell_monsuelle = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -66,6 +68,8 @@
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btn_penality2 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cmb_base.Properties)).BeginInit();
@@ -89,10 +93,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.simpleButton1);
             this.layoutControl1.Controls.Add(this.cmb_base);
             this.layoutControl1.Controls.Add(this.btn_mensuel);
             this.layoutControl1.Controls.Add(this.btn_mvm);
@@ -112,6 +118,17 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // simpleButton1
+            // 
+            this.simpleButton1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.simpleButton1.Location = new System.Drawing.Point(231, 24);
+            this.simpleButton1.Margin = new System.Windows.Forms.Padding(2);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(38, 36);
+            this.simpleButton1.StyleController = this.layoutControl1;
+            this.simpleButton1.TabIndex = 27;
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            // 
             // cmb_base
             // 
             this.cmb_base.Location = new System.Drawing.Point(64, 72);
@@ -122,7 +139,7 @@
             this.cmb_base.Properties.Items.AddRange(new object[] {
             "TFT",
             "TFY"});
-            this.cmb_base.Size = new System.Drawing.Size(121, 20);
+            this.cmb_base.Size = new System.Drawing.Size(79, 20);
             this.cmb_base.StyleController = this.layoutControl1;
             this.cmb_base.TabIndex = 26;
             // 
@@ -140,9 +157,11 @@
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.btn_print,
             this.btn_print2,
-            this.btn_print_mensuel});
+            this.btn_print_mensuel,
+            this.btn_print_personell_monsuelle,
+            this.btn_penality2});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 3;
+            this.barManager1.MaxItemId = 5;
             this.barManager1.StatusBar = this.bar3;
             // 
             // bar1
@@ -154,7 +173,9 @@
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_print),
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_mensuel),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_personell_monsuelle),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_penality2)});
             this.bar1.Text = "Tools";
             // 
             // btn_print
@@ -182,6 +203,13 @@
             this.btn_print2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_print2.ImageOptions.SvgImage")));
             this.btn_print2.Name = "btn_print2";
             this.btn_print2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print2_ItemClick);
+            // 
+            // btn_print_personell_monsuelle
+            // 
+            this.btn_print_personell_monsuelle.Caption = "barButtonItem1";
+            this.btn_print_personell_monsuelle.Id = 3;
+            this.btn_print_personell_monsuelle.Name = "btn_print_personell_monsuelle";
+            this.btn_print_personell_monsuelle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_print_personell_monsuelle_ItemClick);
             // 
             // bar2
             // 
@@ -244,7 +272,7 @@
             // btn_mensuel
             // 
             this.btn_mensuel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_mensuel.ImageOptions.SvgImage")));
-            this.btn_mensuel.Location = new System.Drawing.Point(231, 24);
+            this.btn_mensuel.Location = new System.Drawing.Point(189, 24);
             this.btn_mensuel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_mensuel.Name = "btn_mensuel";
             this.btn_mensuel.Size = new System.Drawing.Size(38, 36);
@@ -321,7 +349,7 @@
             // btn_recharch
             // 
             this.btn_recharch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_recharch.ImageOptions.SvgImage")));
-            this.btn_recharch.Location = new System.Drawing.Point(189, 24);
+            this.btn_recharch.Location = new System.Drawing.Point(147, 24);
             this.btn_recharch.Margin = new System.Windows.Forms.Padding(2);
             this.btn_recharch.Name = "btn_recharch";
             this.btn_recharch.Size = new System.Drawing.Size(38, 36);
@@ -339,7 +367,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(121, 20);
+            this.dateEdit1.Size = new System.Drawing.Size(79, 20);
             this.dateEdit1.StyleController = this.layoutControl1;
             this.dateEdit1.TabIndex = 4;
             this.dateEdit1.EditValueChanged += new System.EventHandler(this.dateEdit1_EditValueChanged);
@@ -354,7 +382,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit2.Size = new System.Drawing.Size(121, 20);
+            this.dateEdit2.Size = new System.Drawing.Size(79, 20);
             this.dateEdit2.StyleController = this.layoutControl1;
             this.dateEdit2.TabIndex = 5;
             this.dateEdit2.EditValueChanged += new System.EventHandler(this.dateEdit2_EditValueChanged);
@@ -403,7 +431,8 @@
             this.layoutControlItem8,
             this.layoutControlItem9,
             this.layoutControlItem6,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.layoutControlItem11});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Size = new System.Drawing.Size(978, 96);
@@ -418,7 +447,7 @@
             this.layoutControlItem1.CustomizationFormText = "Du";
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(165, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(123, 24);
             this.layoutControlItem1.Text = "Du";
             this.layoutControlItem1.TextSize = new System.Drawing.Size(28, 14);
             // 
@@ -431,14 +460,14 @@
             this.layoutControlItem2.CustomizationFormText = "Ou";
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(165, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(123, 24);
             this.layoutControlItem2.Text = "Ou";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(28, 14);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btn_recharch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(165, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(123, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(42, 72);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -474,7 +503,7 @@
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btn_mensuel;
-            this.layoutControlItem9.Location = new System.Drawing.Point(207, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(165, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(42, 72);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -496,9 +525,25 @@
             this.layoutControlItem10.Control = this.cmb_base;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(165, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(123, 24);
             this.layoutControlItem10.Text = "BASE";
             this.layoutControlItem10.TextSize = new System.Drawing.Size(28, 13);
+            // 
+            // layoutControlItem11
+            // 
+            this.layoutControlItem11.Control = this.simpleButton1;
+            this.layoutControlItem11.Location = new System.Drawing.Point(207, 0);
+            this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.Size = new System.Drawing.Size(42, 72);
+            this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem11.TextVisible = false;
+            // 
+            // btn_penality2
+            // 
+            this.btn_penality2.Caption = "barButtonItem1";
+            this.btn_penality2.Id = 4;
+            this.btn_penality2.Name = "btn_penality2";
+            this.btn_penality2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_penality2_ItemClick);
             // 
             // Frm_Pointage
             // 
@@ -539,6 +584,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -582,5 +628,9 @@
         private DevExpress.XtraBars.BarButtonItem btn_print_mensuel;
         private DevExpress.XtraEditors.ComboBoxEdit cmb_base;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
+        private DevExpress.XtraBars.BarButtonItem btn_print_personell_monsuelle;
+        private DevExpress.XtraBars.BarButtonItem btn_penality2;
     }
 }

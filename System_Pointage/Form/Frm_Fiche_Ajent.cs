@@ -250,7 +250,7 @@ namespace System_Pointage.Form
                 var log = db.MVMAgentDetails.Where(x => x.ItemID == agent.ID).Count();
                 if (log > 0)
                 {
-                    XtraMessageBox.Show(text: "Chambre ne peut pas etre supprimé ou il a été utilisé danns le systéme"
+                    XtraMessageBox.Show(text: "La gent ne peut pas etre supprimé ou il a été utilisé danns le systéme"
                         , caption: "", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     return;
                 }

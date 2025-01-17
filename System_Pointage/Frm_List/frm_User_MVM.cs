@@ -20,14 +20,15 @@ namespace System_Pointage.Frm_List
 
         private void frm_User_MVM_Load(object sender, EventArgs e)
         {
-            GetHistory();
+            dateEdit1.DateTime = DateTime.Now;
+            GetHistory();          
         }
         public void GetHistory() //mvm user
         {
            
             using (var db = new DAL.DataClasses1DataContext())
             {
-                var data = db.UserLogs.Where(x=>x.ActionDate.Date==DateTime.Now.Date);//.Where(x => x.PartID == Invoice.ID && (x.ScreenID == mainSecrinID || x.ScreenID == listScreenID));
+                var data = db.UserLogs.Where(x=>x.ActionDate.Date==dateEdit1.DateTime.Date);//.Where(x => x.PartID == Invoice.ID && (x.ScreenID == mainSecrinID || x.ScreenID == listScreenID));
                 gridControl1.DataSource = (from d in data
                                            join u in db.Users on d.UserID equals u.ID
                                            select new
@@ -93,6 +94,11 @@ namespace System_Pointage.Frm_List
                 if (action.ToString() == "Absent")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             }
+        }
+
+        private void dateEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            GetHistory();
         }
     }
     
