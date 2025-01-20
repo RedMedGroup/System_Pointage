@@ -265,7 +265,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cmb_affecte.Properties.Items.AddRange(new object[] {
             "TFT",
-            "TFW"});
+            "TFY"});
             this.cmb_affecte.Properties.PopupSizeable = true;
             this.cmb_affecte.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.cmb_affecte.Size = new System.Drawing.Size(282, 20);

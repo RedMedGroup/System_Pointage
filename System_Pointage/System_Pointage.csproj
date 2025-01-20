@@ -245,6 +245,12 @@
     <Compile Include="Form\Frm_WorkDays.Designer.cs">
       <DependentUpon>Frm_WorkDays.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\ProgressBarControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\ProgressBarControl.Designer.cs">
+      <DependentUpon>ProgressBarControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\SQL_Server_Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -413,6 +419,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_WorkDays.resx">
       <DependentUpon>Frm_WorkDays.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\ProgressBarControl.resx">
+      <DependentUpon>ProgressBarControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\SQL_Server_Config.resx">
       <DependentUpon>SQL_Server_Config.cs</DependentUpon>

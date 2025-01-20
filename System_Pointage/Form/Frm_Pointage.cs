@@ -3,6 +3,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraRichEdit.Model;
+using DevExpress.XtraSplashScreen;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -315,12 +316,10 @@ namespace System_Pointage.Form
             using (var context = new DAL.DataClasses1DataContext())
             {
                 listOfDays = context.MVMAgentDetails.ToList();
-                // تحميل قائمة الوكلاء من جدول Fich_Agents
                 FicheAgentList = context.Fiche_Agents
 
                     .ToList();
 
-                // تحميل قائمة التخصصات من جدول Fiche_DePosts
                 FichePOSTE = context.Fiche_Postes.ToList();
             }
         }
@@ -726,9 +725,11 @@ namespace System_Pointage.Form
         }
         #region ETAT MENSEALLE
 
-        private DataTable CreateDataTableMensuel()
+        private async Task<DataTable> CreateDataTableMensuel()
         {
-            DataTable table = new DataTable();
+            return await Task.Run(() =>
+            {
+                DataTable table = new DataTable();
             table.Columns.Add("POSTE", typeof(string));
             table.Columns.Add("EFECTIF/CONTRAT", typeof(int));
 
@@ -898,18 +899,42 @@ namespace System_Pointage.Form
             table.Rows.Add(totalRow);
 
             return table;
+            });
         }
- 
-   
+
+
         #endregion
-
-        private void btn_mensuel_Click(object sender, EventArgs e)
+   
+        private async void btn_mensuel_Click(object sender, EventArgs e)
         {
-            LoadData();
-            gridControl1.DataSource = CreateDataTableMensuel();
+            //LoadData();
+            //gridControl1.DataSource = CreateDataTableMensuel();
 
-            gridView1.PopulateColumns();
-            gridView1.BestFitColumns();
+            //gridView1.PopulateColumns();
+            //gridView1.BestFitColumns();
+
+            //btn_mensuel.Enabled = false;
+            SplashScreenManager.ShowDefaultWaitForm("Chargement en cours", "Veuillez patienter...");
+
+            try
+            {
+                await Task.Run(() => LoadData());
+                var dataTable = await CreateDataTableMensuel();
+                gridControl1.DataSource = dataTable;
+                gridView1.PopulateColumns();
+                gridView1.BestFitColumns();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"حدث خطأ: {ex.Message}");
+            }
+            finally
+            {
+                SplashScreenManager.CloseDefaultWaitForm();
+                btn_mensuel.Enabled = true;
+            }
+
+
         }
 
         private void btn_print_mensuel_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -921,29 +946,68 @@ namespace System_Pointage.Form
            
             PrintReportMensuel(report);
         }
-        private void PrintReportMensuel(report.rpt_pointage_mensuel report)
+     
+
+        private async void btn_print_Click(object sender, EventArgs e)
         {
-
-           // report.rpt_pointage_mensuel report = new report.rpt_pointage_mensuel();
-
-            DateTime startDate = dateEdit1.DateTime;
-            DateTime endDate = dateEdit2.DateTime;
-
-            // تعيين اسم الشهر والسنة
-            string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
-            int annee = startDate.Year;
-            report.lbl_mois.Text = $"Mois de {mois} {annee}";
-
-            report.AddDateColumnsToReport(report, startDate, endDate);
-            DataTable table = CreateDataTableMensuel();
-            report.DataSource = table;
-
-            report.BindAttendanceDataToCells(table);
-
-            ReportPrintTool printTool = new ReportPrintTool(report);
-            printTool.ShowPreview();
+            report.rpt_pointage_mensuel report = new report.rpt_pointage_mensuel();
+            await PrintReportMensuel(report);
         }
+        private async Task PrintReportMensuel(report.rpt_pointage_mensuel report)
+        {
+            SplashScreenManager.ShowDefaultWaitForm("Chargement en cours", "Veuillez patienter...");
 
+            try
+            {
+                DateTime startDate = dateEdit1.DateTime;
+                DateTime endDate = dateEdit2.DateTime;
+
+                string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
+                int annee = startDate.Year;
+                report.lbl_mois.Text = $"Mois de {mois} {annee}";
+
+                report.AddDateColumnsToReport(report, startDate, endDate);
+                DataTable table = await CreateDataTableMensuel();
+                report.DataSource = table;
+
+                report.BindAttendanceDataToCells(table);
+
+                ReportPrintTool printTool = new ReportPrintTool(report);
+                printTool.ShowPreview();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Une erreur s'est produite : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                SplashScreenManager.CloseDefaultWaitForm();
+            }
+        }
+        #region
+        //private async Task PrintReportMensuel(report.rpt_pointage_mensuel report)
+        //{
+
+        //   // report.rpt_pointage_mensuel report = new report.rpt_pointage_mensuel();
+
+        //    DateTime startDate = dateEdit1.DateTime;
+        //    DateTime endDate = dateEdit2.DateTime;
+
+        //    // تعيين اسم الشهر والسنة
+        //    string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
+        //    int annee = startDate.Year;
+        //    report.lbl_mois.Text = $"Mois de {mois} {annee}";
+
+        //    report.AddDateColumnsToReport(report, startDate, endDate);
+        //    DataTable table = await CreateDataTableMensuel();
+        //    report.DataSource = table;
+
+        //    report.BindAttendanceDataToCells(table);
+
+        //    ReportPrintTool printTool = new ReportPrintTool(report);
+        //    printTool.ShowPreview();
+        //}
+        #endregion
         private void simpleButton1_Click(object sender, EventArgs e)
         {
             LoadData();
@@ -1104,30 +1168,23 @@ namespace System_Pointage.Form
             report.DataSource = CreateAbsenceReport2(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
             report.SumPinality = Sum;
             report.BindAttendanceDataToCells();
-            report.ShowPreviewDialog();
-
-            
-         
-            
+            report.ShowPreviewDialog(); 
         }
         decimal Sum;
         private DataTable CreateAbsenceReport2(int totalDays, DateTime startDate, DateTime endDate)
         {
             DataTable table = new DataTable();
 
-            // إضافة الأعمدة
             table.Columns.Add("Department", typeof(string));
-            table.Columns.Add("Nembre_Contra", typeof(int)); // الحقل 2: Nembre_Contra أو Nembre_Contra_tfw
+            table.Columns.Add("Nembre_Contra", typeof(int)); 
             table.Columns.Add("CalculatedField3", typeof(int)); // الحقل 3: Nembre_Contra أو Nembre_Contra_tfw مضروب في عدد أيام الشهر
             table.Columns.Add("AttendanceDays", typeof(int)); // الحقل 4: عدد أيام الحضور لكل قسم
-            table.Columns.Add("CalculatedField5", typeof(int)); // الحقل 5: حقل 3 - حقل 2
+            table.Columns.Add("CalculatedField5", typeof(int));
             table.Columns.Add("M_Penalite", typeof(float)); // الحقل 6: M_Penalite
             table.Columns.Add("TotalPenalties", typeof(float)); // الحقل 7: TotalPenalties
 
-            // التحقق مما إذا كان المستخدم أدمن
             bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
 
-            // إذا لم يكن أدمن، استخدم userAccessPosteID
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
             using (var context = new DAL.DataClasses1DataContext())
@@ -1272,12 +1329,599 @@ namespace System_Pointage.Form
        
         private void btn_penality2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            GenerateReport2();
+            XtraForm dialog = new XtraForm
+            {
+                Text = "Choisissez le modèle de pénalité",
+                Size = new System.Drawing.Size(300, 180),
+                 FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+            };
+
+            CheckBox checkBox1 = new CheckBox
+            {
+                Text = "Impression selon la base sélectionnée",
+                Location = new System.Drawing.Point(20, 20),
+                AutoSize = true
+            };
+            dialog.Controls.Add(checkBox1);
+
+            CheckBox checkBox2 = new CheckBox
+            {
+                Text = "Impression de la base TFT et TFY ensemble",
+                Location = new System.Drawing.Point(20, 50),
+                AutoSize = true
+            };
+            dialog.Controls.Add(checkBox2);
+
+            Button button = new Button
+            {
+                Text = "Impression",
+                Location = new System.Drawing.Point(100, 80)
+            };
+            button.Click += (s, args) =>
+            {
+                if (checkBox1.Checked == true) { GenerateReport2(); }
+                if (checkBox2.Checked == true) { GenerateReport3(); }
+                
+                dialog.Close();
+            };
+            dialog.Controls.Add(button);
+
+            dialog.ShowDialog();
+
+           // GenerateReport2();
         }
 
         private void btn_print_pinalite2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             GenerateReport();
         }
+        private void GenerateReport3() // pénalité
+        {
+            DateTime startDate = dateEdit1.DateTime;
+            DateTime endDate = dateEdit2.DateTime;
+
+            // تعيين عنوان التقرير بشكل ثابت (يمكن تغييره حسب الحاجة)
+            string reportTitle = "tft+tfy";
+
+            int totalDays = (endDate - startDate).Days + 1;
+
+            rpt_penalite2 report = new rpt_penalite2();
+            report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
+
+            // تعيين نص الشهر والسنة
+            string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
+            int annee = startDate.Year;
+            report.lbl_mois.Text = $"Mois de {mois} {annee}";
+
+            // تعيين مصدر البيانات للتقرير باستخدام الدالة المعدلة CreateAbsenceReport2
+            report.DataSource = CreateAbsenceReport3(totalDays, startDate, endDate);
+
+            // تعيين مجموع الغرامات
+            report.SumPinality = Sum;
+
+            // ربط البيانات وعرض التقرير
+            report.BindAttendanceDataToCells();
+            report.ShowPreviewDialog();
+        }
+        private DataTable CreateAbsenceReport3(int totalDays, DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+
+            // إضافة الأعمدة
+            table.Columns.Add("Department", typeof(string));
+            table.Columns.Add("Nembre_Contra", typeof(int)); // الحقل 2: Nembre_Contra + Nembre_Contra_tfw
+            table.Columns.Add("CalculatedField3", typeof(int)); // الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+            table.Columns.Add("AttendanceDays", typeof(int)); // الحقل 4: عدد أيام الحضور لكل قسم (TFT + TFY)
+            table.Columns.Add("CalculatedField5", typeof(int)); // الحقل 5: حقل 3 - حقل 4
+            table.Columns.Add("M_Penalite", typeof(float)); // الحقل 6: M_Penalite
+            table.Columns.Add("TotalPenalties", typeof(float)); // الحقل 7: TotalPenalties
+
+            // التحقق مما إذا كان المستخدم أدمن
+            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+            // إذا لم يكن أدمن، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                // استرجاع الأقسام من جدول Fiche_DePosts
+                var departments = context.Fiche_Postes.Select(post => new
+                {
+                    post.ID,
+                    DepartmentName = post.Name,
+                    M_Penalite = post.M_Penalite,
+                    Nembre_Contra = post.Nembre_Contra,
+                    Nembre_Contra_tfw = post.Nembre_Contra_tfw,
+                    EmployeeCount_tfw = post.EmployeeCount_tfw
+                }).ToList();
+
+                // متغير لحساب مجموع TotalPenalties
+                float totalSum = 0;
+
+                foreach (var department in departments)
+                {
+                    // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFT)
+                    var agentDetailsTFT = context.MVMAgentDetails
+                        .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFT"),
+                              agent => agent.ItemID,
+                              worker => worker.ID,
+                              (agent, worker) => new { agent, worker })
+                        .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+                        .OrderBy(x => x.agent.Date)
+                        .ToList();
+
+                    // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFY)
+                    var agentDetailsTFY = context.MVMAgentDetails
+                        .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFY"),
+                              agent => agent.ItemID,
+                              worker => worker.ID,
+                              (agent, worker) => new { agent, worker })
+                        .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+                        .OrderBy(x => x.agent.Date)
+                        .ToList();
+
+                    // تأكد من أن هناك موظفين في هذا القسم
+                    if (!agentDetailsTFT.Any() && !agentDetailsTFY.Any()) continue;
+
+                    // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFT)
+                    var agentPresencePeriodsTFT = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+                    // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFY)
+                    var agentPresencePeriodsTFY = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+                    // حساب أيام الحضور لكل قسم (TFT)
+                    int attendanceDaysTFT = CalculateAttendanceDays(agentDetailsTFT, startDate, endDate, agentPresencePeriodsTFT, (int)department.Nembre_Contra);
+
+                    // حساب أيام الحضور لكل قسم (TFY)
+                    int attendanceDaysTFY = CalculateAttendanceDays(agentDetailsTFY, startDate, endDate, agentPresencePeriodsTFY, (int)department.Nembre_Contra_tfw);
+
+                    // جمع أيام الحضور لكل قسم (TFT + TFY)
+                    int totalAttendanceDays = attendanceDaysTFT + attendanceDaysTFY;
+
+                    // جمع Nembre_Contra و Nembre_Contra_tfw
+                    int totalNembreContra = (int)(department.Nembre_Contra + department.Nembre_Contra_tfw);
+
+                    // حساب الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+                    int calculatedField3 = totalNembreContra * totalDays;
+
+                    // حساب الحقل 5: حقل 3 - عدد أيام الحضور
+                    int calculatedField5 = Math.Max(0, calculatedField3 - totalAttendanceDays);
+
+                    // حساب إجمالي الغرامات بناءً على M_Penalite فقط
+                    float totalPenalties = (float)((totalNembreContra * totalDays - totalAttendanceDays) * department.M_Penalite);
+                    if (totalPenalties < 0)
+                    {
+                        totalPenalties = 0;
+                    }
+
+                    // إضافة سطر جديد للتقرير
+                    DataRow row = table.NewRow();
+                    row["Department"] = department.DepartmentName;
+                    row["Nembre_Contra"] = totalNembreContra; // جمع Nembre_Contra و Nembre_Contra_tfw
+                    row["CalculatedField3"] = calculatedField3;
+                    row["AttendanceDays"] = totalAttendanceDays; // جمع أيام الحضور لكل قسم (TFT + TFY)
+                    row["CalculatedField5"] = calculatedField5;
+                    row["M_Penalite"] = department.M_Penalite;
+                    row["TotalPenalties"] = totalPenalties;
+
+                    // إضافة القيمة إلى المجموع
+                    totalSum += totalPenalties;
+                    Sum = (decimal)totalSum;
+                    table.Rows.Add(row);
+                }
+            }
+
+            return table;
+        }
+
+        // دالة مساعدة لحساب أيام الحضور مع مراعاة الحد الأقصى المسموح به
+        private int CalculateAttendanceDays<T>(List<T> agentDetails, DateTime startDate, DateTime endDate, Dictionary<int, List<(DateTime Start, DateTime End)>> agentPresencePeriods, int maxAllowedPresence)
+            where T : class
+        {
+            int attendanceDays = 0;
+
+            foreach (var record in agentDetails)
+            {
+                // استخدام الانعكاس للحصول على خصائص الكائن
+                var agentId = (int)record.GetType().GetProperty("worker").GetValue(record).GetType().GetProperty("ID").GetValue(record.GetType().GetProperty("worker").GetValue(record));
+                var agentStatut = (string)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Statut").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+                var agentDate = (DateTime)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Date").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+
+                if (!agentPresencePeriods.ContainsKey(agentId))
+                {
+                    agentPresencePeriods[agentId] = new List<(DateTime, DateTime)>();
+                }
+
+                // إذا كانت الحالة حضور أو عطلة
+                if (agentStatut == "P")
+                {
+                    agentPresencePeriods[agentId].Add((agentDate, endDate)); // افتراض نهاية الفترة
+                }
+                else if (agentStatut == "CR" || agentStatut == "A")
+                {
+                    var lastPeriod = agentPresencePeriods[agentId].LastOrDefault();
+                    if (lastPeriod != default)
+                    {
+                        // تحديث نهاية فترة الحضور
+                        agentPresencePeriods[agentId][agentPresencePeriods[agentId].Count - 1] =
+                            (lastPeriod.Start, agentDate.AddDays(-1));
+                    }
+                }
+            }
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                int dailyPresenceCount = 0;
+
+                foreach (var periods in agentPresencePeriods.Values)
+                {
+                    if (periods.Any(p => date >= p.Start && date <= p.End))
+                    {
+                        dailyPresenceCount++;
+                    }
+                }
+
+                // تقييد الحضور اليومي بالحد الأقصى المسموح به
+                attendanceDays += Math.Min(dailyPresenceCount, maxAllowedPresence);
+            }
+
+            return attendanceDays;
+        }
+        #region 02
+        //    private DataTable CreateAbsenceReport3(int totalDays, DateTime startDate, DateTime endDate)
+        //    {
+        //        DataTable table = new DataTable();
+
+        //        // إضافة الأعمدة
+        //        table.Columns.Add("Department", typeof(string));
+        //        table.Columns.Add("Nembre_Contra", typeof(int)); // الحقل 2: Nembre_Contra + Nembre_Contra_tfw
+        //        table.Columns.Add("CalculatedField3", typeof(int)); // الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+        //        table.Columns.Add("AttendanceDays", typeof(int)); // الحقل 4: عدد أيام الحضور لكل قسم (TFT + TFY)
+        //        table.Columns.Add("CalculatedField5", typeof(int)); // الحقل 5: حقل 3 - حقل 4
+        //        table.Columns.Add("M_Penalite", typeof(float)); // الحقل 6: M_Penalite
+        //        table.Columns.Add("TotalPenalties", typeof(float)); // الحقل 7: TotalPenalties
+
+        //        // التحقق مما إذا كان المستخدم أدمن
+        //        bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+        //        // إذا لم يكن أدمن، استخدم userAccessPosteID
+        //        int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+        //        using (var context = new DAL.DataClasses1DataContext())
+        //        {
+        //            // استرجاع الأقسام من جدول Fiche_DePosts
+        //            var departments = context.Fiche_Postes.Select(post => new
+        //            {
+        //                post.ID,
+        //                DepartmentName = post.Name,
+        //                M_Penalite = post.M_Penalite,
+        //                Nembre_Contra = post.Nembre_Contra,
+        //                Nembre_Contra_tfw = post.Nembre_Contra_tfw,
+        //                EmployeeCount_tfw = post.EmployeeCount_tfw
+        //            }).ToList();
+
+        //            // متغير لحساب مجموع TotalPenalties
+        //            float totalSum = 0;
+
+        //            foreach (var department in departments)
+        //            {
+        //                // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFT)
+        //                var agentDetailsTFT = context.MVMAgentDetails
+        //                    .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+        //                    .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFT"),
+        //                          agent => agent.ItemID,
+        //                          worker => worker.ID,
+        //                          (agent, worker) => new { agent, worker })
+        //                    .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+        //                    .OrderBy(x => x.agent.Date)
+        //                    .ToList();
+
+        //                // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFY)
+        //                var agentDetailsTFY = context.MVMAgentDetails
+        //                    .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+        //                    .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFY"),
+        //                          agent => agent.ItemID,
+        //                          worker => worker.ID,
+        //                          (agent, worker) => new { agent, worker })
+        //                    .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+        //                    .OrderBy(x => x.agent.Date)
+        //                    .ToList();
+
+        //                // تأكد من أن هناك موظفين في هذا القسم
+        //                if (!agentDetailsTFT.Any() && !agentDetailsTFY.Any()) continue;
+
+        //                // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFT)
+        //                var agentPresencePeriodsTFT = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+        //                // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFY)
+        //                var agentPresencePeriodsTFY = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+        //                // حساب أيام الحضور لكل قسم (TFT)
+        //                int attendanceDaysTFT = CalculateAttendanceDays(agentDetailsTFT, startDate, endDate, agentPresencePeriodsTFT);
+
+        //                // حساب أيام الحضور لكل قسم (TFY)
+        //                int attendanceDaysTFY = CalculateAttendanceDays(agentDetailsTFY, startDate, endDate, agentPresencePeriodsTFY);
+
+        //                // جمع أيام الحضور لكل قسم (TFT + TFY)
+        //                int totalAttendanceDays = attendanceDaysTFT + attendanceDaysTFY;
+
+        //                // جمع Nembre_Contra و Nembre_Contra_tfw
+        //                int totalNembreContra = (int)(department.Nembre_Contra + department.Nembre_Contra_tfw);
+
+        //                // حساب الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+        //                int calculatedField3 = totalNembreContra * totalDays;
+
+        //                // حساب الحقل 5: حقل 3 - عدد أيام الحضور
+        //                int calculatedField5 = Math.Max(0, calculatedField3 - totalAttendanceDays);
+
+        //                // حساب إجمالي الغيابات
+        //                int totalAbsences = 0;
+        //                int attendanceDays = 0;
+
+        //                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        //                {
+        //                    int dailyPresenceCount = 0;
+
+        //                    foreach (var periods in agentPresencePeriodsTFT.Values.Concat(agentPresencePeriodsTFY.Values))
+        //                    {
+        //                        if (periods.Any(p => date >= p.Start && date <= p.End))
+        //                        {
+        //                            dailyPresenceCount++;
+        //                        }
+        //                    }
+
+        //                    // حساب الغيابات اليومية بناءً على القاعدة
+        //                    int dailyAbsences = Math.Max(0, totalNembreContra - dailyPresenceCount);
+
+        //                    totalAbsences += dailyAbsences;
+        //                    attendanceDays += dailyPresenceCount;
+        //                }
+
+        //                // حساب إجمالي الغرامات بناءً على M_Penalite فقط
+        //                float totalPenalties = (float)(totalAbsences * department.M_Penalite);
+
+        //                // إضافة سطر جديد للتقرير
+        //                DataRow row = table.NewRow();
+        //                row["Department"] = department.DepartmentName;
+        //                row["Nembre_Contra"] = totalNembreContra; // جمع Nembre_Contra و Nembre_Contra_tfw
+        //                row["CalculatedField3"] = calculatedField3;
+        //                row["AttendanceDays"] = totalAttendanceDays; // جمع أيام الحضور لكل قسم (TFT + TFY)
+        //                row["CalculatedField5"] = calculatedField5;
+        //                row["M_Penalite"] = department.M_Penalite;
+        //                row["TotalPenalties"] = totalPenalties;
+
+        //                // إضافة القيمة إلى المجموع
+        //                totalSum += totalPenalties;
+        //                Sum = (decimal)totalSum;
+        //                table.Rows.Add(row);
+        //            }
+        //        }
+
+        //        return table;
+        //    }
+        //    private int CalculateAttendanceDays<T>(List<T> agentDetails, DateTime startDate, DateTime endDate, Dictionary<int, List<(DateTime Start, DateTime End)>> agentPresencePeriods)
+        //where T : class
+        //    {
+        //        int attendanceDays = 0;
+
+        //        foreach (var record in agentDetails)
+        //        {
+        //            // استخدام الانعكاس للحصول على خصائص الكائن
+        //            var agentId = (int)record.GetType().GetProperty("worker").GetValue(record).GetType().GetProperty("ID").GetValue(record.GetType().GetProperty("worker").GetValue(record));
+        //            var agentStatut = (string)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Statut").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+        //            var agentDate = (DateTime)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Date").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+
+        //            if (!agentPresencePeriods.ContainsKey(agentId))
+        //            {
+        //                agentPresencePeriods[agentId] = new List<(DateTime, DateTime)>();
+        //            }
+
+        //            // إذا كانت الحالة حضور أو عطلة
+        //            if (agentStatut == "P")
+        //            {
+        //                agentPresencePeriods[agentId].Add((agentDate, endDate)); // افتراض نهاية الفترة
+        //            }
+        //            else if (agentStatut == "CR" || agentStatut == "A")
+        //            {
+        //                var lastPeriod = agentPresencePeriods[agentId].LastOrDefault();
+        //                if (lastPeriod != default)
+        //                {
+        //                    // تحديث نهاية فترة الحضور
+        //                    agentPresencePeriods[agentId][agentPresencePeriods[agentId].Count - 1] =
+        //                        (lastPeriod.Start, agentDate.AddDays(-1));
+        //                }
+        //            }
+        //        }
+
+        //        for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        //        {
+        //            int dailyPresenceCount = 0;
+
+        //            foreach (var periods in agentPresencePeriods.Values)
+        //            {
+        //                if (periods.Any(p => date >= p.Start && date <= p.End))
+        //                {
+        //                    dailyPresenceCount++;
+        //                }
+        //            }
+
+        //            attendanceDays += dailyPresenceCount;
+        //        }
+
+        //        return attendanceDays;
+        //    }
+        #endregion
+        #region 01
+        //private DataTable CreateAbsenceReport3(int totalDays, DateTime startDate, DateTime endDate)
+        //{
+        //    DataTable table = new DataTable();
+
+        //    // إضافة الأعمدة
+        //    table.Columns.Add("Department", typeof(string));
+        //    table.Columns.Add("Nembre_Contra", typeof(int)); // الحقل 2: Nembre_Contra + Nembre_Contra_tfw
+        //    table.Columns.Add("CalculatedField3", typeof(int)); // الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+        //    table.Columns.Add("AttendanceDays", typeof(int)); // الحقل 4: عدد أيام الحضور لكل قسم (TFT + TFY)
+        //    table.Columns.Add("CalculatedField5", typeof(int)); // الحقل 5: حقل 3 - حقل 4
+        //    table.Columns.Add("M_Penalite", typeof(float)); // الحقل 6: M_Penalite
+        //    table.Columns.Add("TotalPenalties", typeof(float)); // الحقل 7: TotalPenalties
+
+        //    // التحقق مما إذا كان المستخدم أدمن
+        //    bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+
+        //    // إذا لم يكن أدمن، استخدم userAccessPosteID
+        //    int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+
+        //    using (var context = new DAL.DataClasses1DataContext())
+        //    {
+        //        // استرجاع الأقسام من جدول Fiche_DePosts
+        //        var departments = context.Fiche_Postes.Select(post => new
+        //        {
+        //            post.ID,
+        //            DepartmentName = post.Name,
+        //            M_Penalite = post.M_Penalite,
+        //            Nembre_Contra = post.Nembre_Contra,
+        //            Nembre_Contra_tfw = post.Nembre_Contra_tfw,
+        //            EmployeeCount_tfw = post.EmployeeCount_tfw
+        //        }).ToList();
+
+        //        // متغير لحساب مجموع TotalPenalties
+        //        float totalSum = 0;
+
+        //        foreach (var department in departments)
+        //        {
+        //            // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFT)
+        //            var agentDetailsTFT = context.MVMAgentDetails
+        //                .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+        //                .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFT"),
+        //                      agent => agent.ItemID,
+        //                      worker => worker.ID,
+        //                      (agent, worker) => new { agent, worker })
+        //                .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+        //                .OrderBy(x => x.agent.Date)
+        //                .ToList();
+
+        //            // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة (TFY)
+        //            var agentDetailsTFY = context.MVMAgentDetails
+        //                .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
+        //                .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == "TFY"),
+        //                      agent => agent.ItemID,
+        //                      worker => worker.ID,
+        //                      (agent, worker) => new { agent, worker })
+        //                .Where(x => x.worker.ID_Post == department.ID && (isAdmin || x.worker.ScreenPosteD == userAccessPosteID))
+        //                .OrderBy(x => x.agent.Date)
+        //                .ToList();
+
+        //            // تأكد من أن هناك موظفين في هذا القسم
+        //            if (!agentDetailsTFT.Any() && !agentDetailsTFY.Any()) continue;
+
+        //            // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFT)
+        //            var agentPresencePeriodsTFT = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+        //            // إنشاء مجموعة لتخزين فترات الحضور لكل موظف (TFY)
+        //            var agentPresencePeriodsTFY = new Dictionary<int, List<(DateTime Start, DateTime End)>>();
+
+        //            // حساب أيام الحضور لكل قسم (TFT)
+        //            int attendanceDaysTFT = CalculateAttendanceDays(agentDetailsTFT, startDate, endDate, agentPresencePeriodsTFT);
+
+        //            // حساب أيام الحضور لكل قسم (TFY)
+        //            int attendanceDaysTFY = CalculateAttendanceDays(agentDetailsTFY, startDate, endDate, agentPresencePeriodsTFY);
+
+        //            // جمع أيام الحضور لكل قسم (TFT + TFY)
+        //            int totalAttendanceDays = attendanceDaysTFT + attendanceDaysTFY;
+
+        //            // جمع Nembre_Contra و Nembre_Contra_tfw
+        //            int totalNembreContra = (int)(department.Nembre_Contra + department.Nembre_Contra_tfw);
+
+        //            // حساب الحقل 3: (Nembre_Contra + Nembre_Contra_tfw) مضروب في عدد أيام الشهر
+        //            int calculatedField3 = totalNembreContra * totalDays;
+
+        //            // حساب الحقل 5: حقل 3 - عدد أيام الحضور
+        //            int calculatedField5 = Math.Max(0, calculatedField3 - totalAttendanceDays);
+
+        //            // حساب إجمالي الغرامات بناءً على M_Penalite فقط
+        //            float totalPenalties = (float)((totalNembreContra * totalDays - totalAttendanceDays) * department.M_Penalite);
+        //            if (totalPenalties < 0)
+        //            {
+        //                totalPenalties = 0;
+        //            }
+        //            // إضافة سطر جديد للتقرير
+        //            DataRow row = table.NewRow();
+        //            row["Department"] = department.DepartmentName;
+        //            row["Nembre_Contra"] = totalNembreContra; // جمع Nembre_Contra و Nembre_Contra_tfw
+        //            row["CalculatedField3"] = calculatedField3;
+        //            row["AttendanceDays"] = totalAttendanceDays; // جمع أيام الحضور لكل قسم (TFT + TFY)
+        //            row["CalculatedField5"] = calculatedField5;
+        //            row["M_Penalite"] = department.M_Penalite;
+        //            row["TotalPenalties"] = totalPenalties;
+
+        //            // إضافة القيمة إلى المجموع
+        //            totalSum += totalPenalties;
+        //            Sum = (decimal)totalSum;
+        //            table.Rows.Add(row);
+        //        }
+        //    }
+
+        //    return table;
+        //}
+
+        //// دالة مساعدة لحساب أيام الحضور
+        //private int CalculateAttendanceDays<T>(List<T> agentDetails, DateTime startDate, DateTime endDate, Dictionary<int, List<(DateTime Start, DateTime End)>> agentPresencePeriods)
+        //    where T : class
+        //{
+        //    int attendanceDays = 0;
+
+        //    foreach (var record in agentDetails)
+        //    {
+        //        // استخدام الانعكاس للحصول على خصائص الكائن
+        //        var agentId = (int)record.GetType().GetProperty("worker").GetValue(record).GetType().GetProperty("ID").GetValue(record.GetType().GetProperty("worker").GetValue(record));
+        //        var agentStatut = (string)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Statut").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+        //        var agentDate = (DateTime)record.GetType().GetProperty("agent").GetValue(record).GetType().GetProperty("Date").GetValue(record.GetType().GetProperty("agent").GetValue(record));
+
+        //        if (!agentPresencePeriods.ContainsKey(agentId))
+        //        {
+        //            agentPresencePeriods[agentId] = new List<(DateTime, DateTime)>();
+        //        }
+
+        //        // إذا كانت الحالة حضور أو عطلة
+        //        if (agentStatut == "P")
+        //        {
+        //            agentPresencePeriods[agentId].Add((agentDate, endDate)); // افتراض نهاية الفترة
+        //        }
+        //        else if (agentStatut == "CR" || agentStatut == "A")
+        //        {
+        //            var lastPeriod = agentPresencePeriods[agentId].LastOrDefault();
+        //            if (lastPeriod != default)
+        //            {
+        //                // تحديث نهاية فترة الحضور
+        //                agentPresencePeriods[agentId][agentPresencePeriods[agentId].Count - 1] =
+        //                    (lastPeriod.Start, agentDate.AddDays(-1));
+        //            }
+        //        }
+        //    }
+
+        //    for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        //    {
+        //        int dailyPresenceCount = 0;
+
+        //        foreach (var periods in agentPresencePeriods.Values)
+        //        {
+        //            if (periods.Any(p => date >= p.Start && date <= p.End))
+        //            {
+        //                dailyPresenceCount++;
+        //            }
+        //        }
+
+        //        attendanceDays += dailyPresenceCount;
+        //    }
+
+        //    return attendanceDays;
+        //}
+
+        #endregion
     }
 }

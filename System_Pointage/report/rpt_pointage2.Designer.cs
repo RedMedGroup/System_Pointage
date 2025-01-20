@@ -71,6 +71,7 @@
             this.cell_31 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell35 = new DevExpress.XtraReports.UI.XRTableCell();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
+            this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.lbl_mois = new DevExpress.XtraReports.UI.XRLabel();
             this.lbl_base = new DevExpress.XtraReports.UI.XRLabel();
@@ -119,11 +120,10 @@
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
-            this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
             ((System.ComponentModel.ISupportInitialize)(this.xrTableDetail)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTableHeader)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -228,7 +228,7 @@
             // 
             this.cell_name.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Name]")});
-            this.cell_name.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_name.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_name.ForeColor = System.Drawing.Color.Black;
             this.cell_name.Multiline = true;
             this.cell_name.Name = "cell_name";
@@ -236,12 +236,12 @@
             this.cell_name.StylePriority.UseForeColor = false;
             this.cell_name.StylePriority.UseTextAlignment = false;
             this.cell_name.Text = "cell_name";
-            this.cell_name.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.cell_name.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.cell_name.Weight = 1.2563383020214935D;
             // 
             // cell_1
             // 
-            this.cell_1.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_1.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_1.ForeColor = System.Drawing.Color.Black;
             this.cell_1.Multiline = true;
             this.cell_1.Name = "cell_1";
@@ -254,7 +254,7 @@
             // 
             // cell_2
             // 
-            this.cell_2.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_2.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_2.ForeColor = System.Drawing.Color.Black;
             this.cell_2.Multiline = true;
             this.cell_2.Name = "cell_2";
@@ -267,7 +267,7 @@
             // 
             // cell_3
             // 
-            this.cell_3.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_3.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_3.ForeColor = System.Drawing.Color.Black;
             this.cell_3.Multiline = true;
             this.cell_3.Name = "cell_3";
@@ -280,7 +280,7 @@
             // 
             // cell_4
             // 
-            this.cell_4.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_4.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_4.ForeColor = System.Drawing.Color.Black;
             this.cell_4.Multiline = true;
             this.cell_4.Name = "cell_4";
@@ -293,7 +293,7 @@
             // 
             // cell_5
             // 
-            this.cell_5.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_5.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_5.ForeColor = System.Drawing.Color.Black;
             this.cell_5.Multiline = true;
             this.cell_5.Name = "cell_5";
@@ -306,7 +306,7 @@
             // 
             // cell_6
             // 
-            this.cell_6.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_6.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_6.ForeColor = System.Drawing.Color.Black;
             this.cell_6.Multiline = true;
             this.cell_6.Name = "cell_6";
@@ -319,7 +319,7 @@
             // 
             // cell_7
             // 
-            this.cell_7.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_7.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_7.ForeColor = System.Drawing.Color.Black;
             this.cell_7.Multiline = true;
             this.cell_7.Name = "cell_7";
@@ -332,7 +332,7 @@
             // 
             // cell_8
             // 
-            this.cell_8.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_8.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_8.ForeColor = System.Drawing.Color.Black;
             this.cell_8.Multiline = true;
             this.cell_8.Name = "cell_8";
@@ -345,7 +345,7 @@
             // 
             // cell_9
             // 
-            this.cell_9.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_9.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_9.ForeColor = System.Drawing.Color.Black;
             this.cell_9.Multiline = true;
             this.cell_9.Name = "cell_9";
@@ -358,7 +358,7 @@
             // 
             // cell_10
             // 
-            this.cell_10.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_10.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_10.ForeColor = System.Drawing.Color.Black;
             this.cell_10.Multiline = true;
             this.cell_10.Name = "cell_10";
@@ -371,7 +371,7 @@
             // 
             // cell_11
             // 
-            this.cell_11.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_11.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_11.ForeColor = System.Drawing.Color.Black;
             this.cell_11.Multiline = true;
             this.cell_11.Name = "cell_11";
@@ -384,7 +384,7 @@
             // 
             // cell_12
             // 
-            this.cell_12.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_12.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_12.ForeColor = System.Drawing.Color.Black;
             this.cell_12.Multiline = true;
             this.cell_12.Name = "cell_12";
@@ -397,7 +397,7 @@
             // 
             // cell_13
             // 
-            this.cell_13.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_13.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_13.ForeColor = System.Drawing.Color.Black;
             this.cell_13.Multiline = true;
             this.cell_13.Name = "cell_13";
@@ -410,7 +410,7 @@
             // 
             // cell_14
             // 
-            this.cell_14.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_14.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_14.ForeColor = System.Drawing.Color.Black;
             this.cell_14.Multiline = true;
             this.cell_14.Name = "cell_14";
@@ -423,7 +423,7 @@
             // 
             // cell_15
             // 
-            this.cell_15.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_15.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_15.ForeColor = System.Drawing.Color.Black;
             this.cell_15.Multiline = true;
             this.cell_15.Name = "cell_15";
@@ -436,7 +436,7 @@
             // 
             // cell_16
             // 
-            this.cell_16.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_16.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_16.ForeColor = System.Drawing.Color.Black;
             this.cell_16.Multiline = true;
             this.cell_16.Name = "cell_16";
@@ -449,7 +449,7 @@
             // 
             // cell_17
             // 
-            this.cell_17.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_17.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_17.ForeColor = System.Drawing.Color.Black;
             this.cell_17.Multiline = true;
             this.cell_17.Name = "cell_17";
@@ -462,7 +462,7 @@
             // 
             // cell_18
             // 
-            this.cell_18.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_18.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_18.ForeColor = System.Drawing.Color.Black;
             this.cell_18.Multiline = true;
             this.cell_18.Name = "cell_18";
@@ -475,7 +475,7 @@
             // 
             // cell_19
             // 
-            this.cell_19.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_19.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_19.ForeColor = System.Drawing.Color.Black;
             this.cell_19.Multiline = true;
             this.cell_19.Name = "cell_19";
@@ -488,7 +488,7 @@
             // 
             // cell_20
             // 
-            this.cell_20.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_20.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_20.ForeColor = System.Drawing.Color.Black;
             this.cell_20.Multiline = true;
             this.cell_20.Name = "cell_20";
@@ -501,7 +501,7 @@
             // 
             // cell_21
             // 
-            this.cell_21.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_21.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_21.ForeColor = System.Drawing.Color.Black;
             this.cell_21.Multiline = true;
             this.cell_21.Name = "cell_21";
@@ -514,7 +514,7 @@
             // 
             // cell_22
             // 
-            this.cell_22.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_22.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_22.ForeColor = System.Drawing.Color.Black;
             this.cell_22.Multiline = true;
             this.cell_22.Name = "cell_22";
@@ -527,7 +527,7 @@
             // 
             // cell_23
             // 
-            this.cell_23.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_23.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_23.ForeColor = System.Drawing.Color.Black;
             this.cell_23.Multiline = true;
             this.cell_23.Name = "cell_23";
@@ -540,7 +540,7 @@
             // 
             // cell_24
             // 
-            this.cell_24.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_24.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_24.ForeColor = System.Drawing.Color.Black;
             this.cell_24.Multiline = true;
             this.cell_24.Name = "cell_24";
@@ -553,7 +553,7 @@
             // 
             // cell_25
             // 
-            this.cell_25.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_25.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_25.ForeColor = System.Drawing.Color.Black;
             this.cell_25.Multiline = true;
             this.cell_25.Name = "cell_25";
@@ -566,7 +566,7 @@
             // 
             // cell_26
             // 
-            this.cell_26.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_26.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_26.ForeColor = System.Drawing.Color.Black;
             this.cell_26.Multiline = true;
             this.cell_26.Name = "cell_26";
@@ -579,7 +579,7 @@
             // 
             // cell_27
             // 
-            this.cell_27.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_27.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_27.ForeColor = System.Drawing.Color.Black;
             this.cell_27.Multiline = true;
             this.cell_27.Name = "cell_27";
@@ -592,7 +592,7 @@
             // 
             // cell_28
             // 
-            this.cell_28.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_28.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_28.ForeColor = System.Drawing.Color.Black;
             this.cell_28.Multiline = true;
             this.cell_28.Name = "cell_28";
@@ -605,7 +605,7 @@
             // 
             // cell_29
             // 
-            this.cell_29.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_29.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_29.ForeColor = System.Drawing.Color.Black;
             this.cell_29.Multiline = true;
             this.cell_29.Name = "cell_29";
@@ -618,7 +618,7 @@
             // 
             // cell_30
             // 
-            this.cell_30.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_30.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_30.ForeColor = System.Drawing.Color.Black;
             this.cell_30.Multiline = true;
             this.cell_30.Name = "cell_30";
@@ -631,7 +631,7 @@
             // 
             // cell_31
             // 
-            this.cell_31.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.cell_31.Font = new DevExpress.Drawing.DXFont("Arial", 7.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.cell_31.ForeColor = System.Drawing.Color.Black;
             this.cell_31.Multiline = true;
             this.cell_31.Name = "cell_31";
@@ -667,6 +667,15 @@
             this.xrPictureBox1});
             this.ReportHeader.HeightF = 272.5695F;
             this.ReportHeader.Name = "ReportHeader";
+            // 
+            // xrRichText1
+            // 
+            this.xrRichText1.Font = new DevExpress.Drawing.DXFont("Times New Roman", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.xrRichText1.LocationFloat = new DevExpress.Utils.PointFloat(148.2707F, 10.00001F);
+            this.xrRichText1.Name = "xrRichText1";
+            this.xrRichText1.SerializableRtfString = resources.GetString("xrRichText1.SerializableRtfString");
+            this.xrRichText1.SizeF = new System.Drawing.SizeF(208.2386F, 66.66667F);
+            this.xrRichText1.StylePriority.UseFont = false;
             // 
             // xrLabel1
             // 
@@ -1223,15 +1232,6 @@
             // 
             this.xtraTabbedMdiManager1.MdiParent = null;
             // 
-            // xrRichText1
-            // 
-            this.xrRichText1.Font = new DevExpress.Drawing.DXFont("Times New Roman", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
-            this.xrRichText1.LocationFloat = new DevExpress.Utils.PointFloat(148.2707F, 10.00001F);
-            this.xrRichText1.Name = "xrRichText1";
-            this.xrRichText1.SerializableRtfString = resources.GetString("xrRichText1.SerializableRtfString");
-            this.xrRichText1.SizeF = new System.Drawing.SizeF(208.2386F, 66.66667F);
-            this.xrRichText1.StylePriority.UseFont = false;
-            // 
             // rpt_pointage2
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1249,9 +1249,9 @@
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
             this.Version = "22.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTableDetail)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTableHeader)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
