@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System_Pointage.Classe.Models;
 
 namespace System_Pointage.Classe
 {
@@ -108,7 +109,7 @@ namespace System_Pointage.Classe
             //}
 
 
-            if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir")
+            if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir" )
             {
                 // استعلام أساسي
                  agentsQuery = agentsQueryF
@@ -161,7 +162,9 @@ namespace System_Pointage.Classe
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
 
                     break;
-
+                case Master.MVMType.P_A_CR:
+                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" || ma.agent.Statut == "CR" ||  ma.agent.Statut == "A");
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -209,17 +212,36 @@ namespace System_Pointage.Classe
                         join post in _dbContext.Fiche_Postes on agent.ID_Post equals post.ID
                         join userAccess in _dbContext.UserAccessProfilePostes on agent.ScreenPosteD equals userAccess.ID
                         join accessDetails in _dbContext.UserAccessProfilePosteDetails on userAccess.ID equals accessDetails.ID_AccessPoste
+
+                        join lastMovement in (
+                       from mv in _dbContext.MVMAgentDetails
+                       group mv by (int)mv.ItemID into g // تحويل ItemID إلى int إذا لزم الأمر
+                       select new
+                       {
+                           ItemID = g.Key,
+                           LastDate = g.Max(x => x.Date)
+                       }
+                   ) on agent.ID equals lastMovement.ItemID into mvGroup
+                        from mv in mvGroup.DefaultIfEmpty()
+                        join lastStatut in _dbContext.MVMAgentDetails
+                            on new { ItemID = (int)mv.ItemID, LastDate = mv.LastDate }
+                            equals new { ItemID = (int)lastStatut.ItemID, LastDate = lastStatut.Date } into statutGroup
+                        from statut in statutGroup.DefaultIfEmpty()
+
                         select new
                         {
                             agent.ID,
                             AgentID = agent.ID,
                             agent.Matricule,
                             Name = agent.Name,
+                            FirstName = agent.FirstName,
+                            PostID=post.ID.ToString(),// new
                             PostName = post.Name,
                             agent.Affecter,
                             agent.Jour,
                             agent.Date_Embauche,
                             agent.Statut,
+                            Statutmvm = statut != null ? statut.Statut : "Aucun mouvement enregistré",
                             ScreenPosteD = agent.ScreenPosteD,
                             AccessPosteID = accessDetails.ID_AccessPoste,
                             NamePosteDetail = accessDetails.ID_Name_Poste
@@ -306,7 +328,7 @@ namespace System_Pointage.Classe
             var agentsQueryF = _context.MVMmaterielsDetails.AsQueryable();
             IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
          
-                agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
+                agentsQueryF = agentsQueryF/*.Where(x => x.ID_Attent_Liste == null)*/;
             
 
           
@@ -415,5 +437,8 @@ namespace System_Pointage.Classe
         }
         #endregion
 
+        #region
+    
+        #endregion
     }
 }

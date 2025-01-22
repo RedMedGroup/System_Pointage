@@ -11,16 +11,19 @@ namespace System_Pointage.Classe
         public class AgentStatus
         {
             public string Name { get; set; }
+            public string FirstName { get; set; }
             public DateTime Date { get; set; }
             public string Statut { get; set; }
             public int Jour { get; set; }
             public string Poste { get; set; }
+           // public int PosteID { get; set; }
             public int screenPosteD { get; set; }
             public DateTime CalculatedDate { get; set; }
             public int DaysCount { get; set; }
             public string Matricule { get; set; }
             public string Affecter { get; set; }
             public int Difference { get; set; }
+            public string Statutmvm { get; set; }
 
         }
         public class MaterielsStatus

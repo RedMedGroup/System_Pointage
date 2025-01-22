@@ -27,12 +27,14 @@ namespace System_Pointage.Classe
             P = SourceTypes.Présent,
             A = SourceTypes.Absent,
             CR = SourceTypes.Congée,
+            P_A_CR= SourceTypes.PACR,
         }
         public enum SourceTypes
         {
             Présent,
             Absent,
             Congée,
+            PACR,
         }
         public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
                 new ValueAndID() { ID = (int)UserType.Admin, Name="Admin" },

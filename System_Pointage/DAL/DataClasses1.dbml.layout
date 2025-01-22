@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.375, 11.375" name="DataClasses1">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.375, 11.5" name="DataClasses1">
   <DataContextMoniker Name="/DataClasses1DataContext" />
   <nestedChildShapes>
     <classShape Id="ca65283c-f03f-466c-b46d-8ff30fd0e723" absoluteBounds="3.5, 2.875, 2, 2.5401025390625">
@@ -50,24 +50,6 @@
         <elementListCompartment Id="d1e21f86-e7cd-4c34-b864-9f506bbc8a8c" absoluteBounds="7.14, 6.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="4d517660-f4ea-42fe-ba17-6a3c1d3b0ac3" absoluteBounds="0.5, 0.5, 2, 2.5401025390625">
-      <DataClassMoniker Name="/DataClasses1DataContext/Fiche_Agent" />
-      <nestedChildShapes>
-        <elementListCompartment Id="1921607b-8dbc-43bd-bdfc-dfed145457d8" absoluteBounds="0.51499999999999968, 0.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="6771cf2f-acfe-4f8b-a2b9-7adec80ac5b7" absoluteBounds="0.75, 8.75, 2, 1.7708968098958344">
-      <DataClassMoniker Name="/DataClasses1DataContext/MVMmaterielsDetail" />
-      <nestedChildShapes>
-        <elementListCompartment Id="5abe93c1-4bb9-44eb-b9e9-861cc1e5af69" absoluteBounds="0.765, 9.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="0d9741e5-b086-44bb-ba0b-7bdb9a043a16" absoluteBounds="3.75, 8.75, 2, 2.3478011067708344">
-      <DataClassMoniker Name="/DataClasses1DataContext/Fiche_Matricule" />
-      <nestedChildShapes>
-        <elementListCompartment Id="3f53bdf6-5ca9-4f56-a3c7-9d1d0972e787" absoluteBounds="3.765, 9.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="e4d15347-823c-440c-b0f3-4d528face23c" absoluteBounds="6.75, 8.75, 2, 1.5785953776041666">
       <DataClassMoniker Name="/DataClasses1DataContext/Fiche_materiel" />
       <nestedChildShapes>
@@ -78,6 +60,24 @@
       <DataClassMoniker Name="/DataClasses1DataContext/Fiche_Poste" />
       <nestedChildShapes>
         <elementListCompartment Id="1d167331-49d7-41ad-936e-84b53b4225ed" absoluteBounds="3.6399999999999997, 1.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="23349387-623c-4a02-8219-806cf7c73f88" absoluteBounds="0.75, 8.75, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/DataClasses1DataContext/MVMmaterielsDetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="25e43e8d-022e-4d2a-b6bc-59b8900949be" absoluteBounds="0.765, 9.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d9d7024a-81c9-419b-82fe-13a5a127c5e1" absoluteBounds="4.25, 8.875, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/DataClasses1DataContext/Fiche_Matricule" />
+      <nestedChildShapes>
+        <elementListCompartment Id="eb24f3cc-7b93-4bdb-a79a-42aaa3737597" absoluteBounds="4.265, 9.335, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ef379a56-37ac-42eb-a20b-fd1ec563e51c" absoluteBounds="0.875, 0.625, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/DataClasses1DataContext/Fiche_Agent" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc2e69a3-80f7-407b-8f5e-ad0647049b1d" absoluteBounds="0.89000000000000012, 1.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

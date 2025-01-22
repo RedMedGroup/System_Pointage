@@ -25,7 +25,6 @@ namespace System_Pointage.report
         {
             cell_n.Text = (index++).ToString();
         }
-
         public void BindData()
         {
             cell_Department.DataBindings.Add("Text", this.DataSource, "Department");
