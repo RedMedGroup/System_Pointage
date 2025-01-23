@@ -1,14 +1,17 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using DevExpress.XtraRichEdit.Model;
 using ExcelDataReader;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
@@ -31,13 +34,7 @@ namespace System_Pointage.Form
             gridView1.GroupPanelText = " ";
             #endregion
         }
-        public  void RefreshData()
-        {
-            //using (var db = new DAL.DataClasses1DataContext())
-            //{
-            //    lkp_Poste.IntializeData(db.Fiche_Postes.Select(x => new { x.ID, x.Name }).ToList());//base               
-            //}
-        }
+
         private void btn_exl_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -52,7 +49,7 @@ namespace System_Pointage.Form
                     {
                         using (var reader = ExcelReaderFactory.CreateReader(stream))
                         {
-                            // تخطي الصفوف الفارغة حتى نجد صف يحتوي على بيانات
+                           
                             bool validRowFound = false;
                             DataTable dataTable = new DataTable();
                             var columnNames = new List<string>();
@@ -83,12 +80,13 @@ namespace System_Pointage.Form
                             // Set the data source for lookups
                             lkp_Matricule.Properties.DataSource = columnNames;
                             lkp_Name.Properties.DataSource = columnNames;
+                            lkp_FirstName.Properties.DataSource = columnNames;
                             lkp_Poste.Properties.DataSource = columnNames;
                             lkp_syst.Properties.DataSource = columnNames;
                             lkp_date.Properties.DataSource = columnNames;
                             lkp_departement.Properties.DataSource = columnNames;
                             lkp_affecter.Properties.DataSource = columnNames;
-                            // قراءة بقية البيانات وإضافتها كصفوف إلى DataTable
+                            dt_P.Properties.DataSource = columnNames;
                             while (reader.Read())
                             {
                                 DataRow dataRow = dataTable.NewRow();
@@ -100,10 +98,8 @@ namespace System_Pointage.Form
                                 dataTable.Rows.Add(dataRow);
                             }
 
-                            // ربط DataTable بالـ gridControl1 لعرض البيانات
                             gridControl1.DataSource = dataTable;
 
-                            // إعداد خاصية دمج الخلايا للـ GridView
                             gridView1.OptionsView.AllowCellMerge = true;
 
                             // تحديد الأعمدة التي يجب دمجها بناءً على أسماء الأعمدة
@@ -114,7 +110,6 @@ namespace System_Pointage.Form
                                     gridView1.Columns[i].OptionsColumn.AllowMerge = DevExpress.Utils.DefaultBoolean.True;
                                 }
                             }
-                            // ضبط تنسيق الأعمدة
                             gridView1.BestFitColumns();
                         }
                     }
@@ -173,6 +168,9 @@ namespace System_Pointage.Form
                 return "Sélectionnez le nom de colonne";
             }
         }
+        int errorCount = 0;
+        int correctCount = 0;
+        int correctMvm = 0;
         public void Save()
         {
 
@@ -184,6 +182,13 @@ namespace System_Pointage.Form
 
             DataTable table = (DataTable)gridControl1.DataSource;
 
+            #region
+            DataTable tableError = (DataTable)gridControl1.DataSource;
+            // إنشاء DataTable للصفوف الخاطئة التي سيتم عرضها في GridView2
+            DataTable errorTable = tableError.Clone();
+            errorTable.Columns.Add("Observation", typeof(string));
+         
+            #endregion
 
             using (var db = new DAL.DataClasses1DataContext())
             {
@@ -192,12 +197,17 @@ namespace System_Pointage.Form
                     // تحقق من وجود اسم العمود في الجدول باستخدام lkp_Matricule.Text
                     string matriculeColumn = lkp_Matricule.Text;
                     string nameColumn = lkp_Name.Text;
-                    string posteColumn = lkp_Poste.Text;
+                    string firstnameColumn=lkp_FirstName.Text;
                     string jourColumn = lkp_syst.Text;
-
-                    string departementColumn = lkp_departement.Text;
                     string affecterColumn = lkp_affecter.Text;
                     string dateColumn = lkp_date.Text;
+                    string datePresence = dt_P.Text;
+
+                    string departementColumn = lkp_departement.Text;
+                    string posteColumn = lkp_Poste.Text;
+
+              
+                    
 
                     if (table.Columns.Contains(matriculeColumn) && table.Columns.Contains(nameColumn) &&
                         table.Columns.Contains(posteColumn) && table.Columns.Contains(departementColumn) &&
@@ -205,35 +215,72 @@ namespace System_Pointage.Form
                     {
                         string matricule = row[matriculeColumn]?.ToString() ?? string.Empty;
                         string name = row[nameColumn]?.ToString() ?? string.Empty;
+                        string firstname = row[firstnameColumn]?.ToString() ?? string.Empty;
                         string posteName = row[posteColumn]?.ToString() ?? string.Empty;
                         string departementName = row[departementColumn]?.ToString() ?? string.Empty;
                         string affecter = row[affecterColumn]?.ToString() ?? string.Empty;
-                        int jour = row[jourColumn] != DBNull.Value &&
-               int.TryParse(row[jourColumn]?.ToString(), out int tempJour)
-               ? tempJour
-               : 0;
-                        // string date = row[dateColumn]?.ToString() ?? string.Empty;
-                        string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
-                        DateTime date;
-                        bool isValidDate = DateTime.TryParse(dateStr, out date);
+                        int jour = row[jourColumn] != DBNull.Value &&int.TryParse(row[jourColumn]?.ToString(), out int tempJour)? tempJour : 0;
 
-                        // إذا كان التاريخ غير صالح، استخدم قيمة افتراضية
-                        if (!isValidDate)
+                        string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
+                        string datePresent= row[datePresence]?.ToString() ?? string.Empty;
+                        DateTime date;
+                        DateTime dateP;
+                        if (!DateTime.TryParse(dateStr, out date))
                         {
-                            date = DateTime.MinValue;  // يمكن استبدال DateTime.MinValue بتاريخ افتراضي آخر إذا لزم الأمر
+                            date = default(DateTime);
+                        }
+                        if (!DateTime.TryParse(datePresent, out dateP))
+                        {
+                            dateP = default(DateTime);
+                            DataRow errorRow = errorTable.NewRow();
+                            errorRow.ItemArray = row.ItemArray;
+                            errorRow["Observation"] = "تاريخ الحضور خطا";
+                            errorTable.Rows.Add(errorRow);
+                            correctMvm--;
+                            continue;
                         }
 
-                        // تحقق من وجود السجل المرتبط بـ poste و departement
                         var poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == posteName);
                         var departement = db.UserAccessProfilePostes.FirstOrDefault(d => d.Name == departementName);
 
+                        if (poste == null)
+                        {
+                            DataRow errorRow = errorTable.NewRow();
+                            errorRow.ItemArray = row.ItemArray;
+                            errorRow["Observation"] = "Poste non trouvée";
+                            errorTable.Rows.Add(errorRow);
+                            errorCount++;
+                            //  errorTable.ImportRow(row); 
+                            continue;
+                        }
+                        if (departement == null)
+                        {
+                            DataRow errorRow = errorTable.NewRow();
+                            errorRow.ItemArray = row.ItemArray;
+                            errorRow["Observation"] = "département non trouvée";
+                            errorTable.Rows.Add(errorRow);
+                            errorCount++;
+                            // errorTable.ImportRow(row);
+                            continue;
+                        }
+                        var existingAgent = db.Fiche_Agents.FirstOrDefault(x => x.Matricule.Trim() == matricule.Trim());
+                        if (existingAgent != null)
+                        {
+                            DataRow errorRow = errorTable.NewRow();
+                            errorRow.ItemArray = row.ItemArray;
+                            errorRow["Observation"] = "Le matricule existe déjà.";
+                            errorTable.Rows.Add(errorRow);
+                            errorCount++;
+                            // errorTable.ImportRow(row);
+                            continue;
+                        }
                         if (poste != null && departement != null)
                         {
-                            // إعداد كائن Fiche_Agent
                             var agent = new DAL.Fiche_Agent
                             {
                                 Matricule = matricule,
                                 Name = name,
+                                FirstName=firstname,
                                 ID_Post = poste.ID,
                                 Jour = jour,
                                 Date_Embauche = date,// ?? default(DateTime),
@@ -241,20 +288,38 @@ namespace System_Pointage.Form
                                 Affecter = affecter,
                                 Statut = true,
                             };
-
+                            correctCount++;
                             db.Fiche_Agents.InsertOnSubmit(agent);
+                            db.SubmitChanges();
+                            var agentDetail = new DAL.MVMAgentDetail
+                            {
+                                ItemID = agent.ID,
+                                Date =dateP,
+                                Statut="P",
+                            };
+                            correctMvm++;
+                            db.MVMAgentDetails.InsertOnSubmit(agentDetail);
+                            db.SubmitChanges();
                         }
                     }
                 }
-                db.SubmitChanges();
-                XtraMessageBox.Show("Enregistrer succés");
+               
+                gridControl2.DataSource = errorTable;
+                string message =
+     $"{errorCount} erreurs détectées ❌\n" +
+     $"{correctCount} lignes traitées avec succès ✅\n" +
+     $"{correctMvm} personnes présentes enregistrées 👤";
+
+                MessageBox.Show(message, "Résultat du traitement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                errorCount = correctCount = correctMvm = 0;
+
             }
         
 
         Application.DoEvents();
         }
-        
 
+     
         private void btn_save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Save();
