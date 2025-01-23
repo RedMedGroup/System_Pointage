@@ -25,23 +25,31 @@ namespace System_Pointage.Form
         public Frm_Fiche_Ajent()
         {
             InitializeComponent();
-            layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //btn_Delete
+          //  layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //btn_Delete
             this.Size = new System.Drawing.Size(505, 195);
             New();
         }
-        public Frm_Fiche_Ajent(int id)
-        {
-            InitializeComponent();
-            layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; //btn_Delete
-            using (var db = new DAL.DataClasses1DataContext())
-            {
-                agent = db.Fiche_Agents.Single(x => x.ID == id);
-            }
-            this.Text = string.Format(";;: {0}", agent.Name);
-        }
+        //public Frm_Fiche_Ajent(int id)
+        //{
+        //    InitializeComponent();
+        //   // layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; //btn_Delete
+        //    using (var db = new DAL.DataClasses1DataContext())
+        //    {
+        //        agent = db.Fiche_Agents.Single(x => x.ID == id);
+        //    }
+        //    this.Text = string.Format(";;: {0}", agent.Name);
+        //}
 
         private void Frm_Fiche_Ajent_Load(object sender, EventArgs e)
         {
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.GroupPanelText = " ";
+            #endregion
+
+
             layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //grid
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;// btn ajouter 2
 
@@ -63,6 +71,7 @@ namespace System_Pointage.Form
             }
             lkp_post.EditValueChanged += Lkp_post_EditValueChanged;
             GetData();
+            gridView1.CustomDrawCell += GridView1_CustomDrawCell;
         }
 
         private void Lkp_post_EditValueChanged(object sender, EventArgs e)
@@ -83,7 +92,7 @@ namespace System_Pointage.Form
                     txt_contra.Text = postDetails.Nembre_Contra.ToString();
                 }
 
-                int agentCount = db.Fiche_Agents.Count(x => x.ID_Post == selectedPostId );
+                int agentCount = db.Fiche_Agents.Count(x => x.ID_Post == selectedPostId &&x.Statut==true);
                 txt_efectif.Text = agentCount.ToString();
             }
 
@@ -132,11 +141,17 @@ namespace System_Pointage.Form
                     gridControl1.DataSource = data;
                 }
                 gridView1.GroupPanelText = " ";
-                // تحديث التسميات
+                if (data == null || !data.Any())
+                {
+                    return;
+                }
                 gridView1.Columns["Name"].Caption = "Nom";
                 gridView1.Columns["FirstName"].Caption = "Prénom";
                 gridView1.Columns["Date"].Caption = "Date Affectée";
                 gridView1.Columns["Jour"].Caption = "Systéme";
+                gridView1.Columns["Statut"].Caption = "Active/Inactive";
+                gridView1.Columns["Statutmvm"].Caption = "Statut";
+
                 gridView1.Columns["Poste"].Visible = false;
                 gridView1.Columns["screenPosteD"].Visible = false;
                 gridView1.Columns["CalculatedDate"].Visible = false;
@@ -278,6 +293,7 @@ namespace System_Pointage.Form
                 return "Nom enregistré";
             }
         }
+        int AgentID;
         private void Save()
         {
             if (IsValidit() == false)
@@ -301,13 +317,18 @@ namespace System_Pointage.Form
                     {
                        
                         db.Fiche_Agents.InsertOnSubmit(agent);
+                        SetData();
+                        db.SubmitChanges();
+                        AgentID = agent.ID;
+                        SavePrésent();
                     }
                     else
                     {
                         db.Fiche_Agents.Attach(agent);VR = true;
-                    }
-                    SetData();
-                    db.SubmitChanges();
+                        SetData();
+                        db.SubmitChanges();
+                    }                  
+                   
                     userLogAction.PartID = agent.ID;
                     userLogAction.PartName = actionType == UserLogAction.ActionType.Add
                  ? $": {agent.Name} Ajouter-" 
@@ -317,7 +338,7 @@ namespace System_Pointage.Form
                 // New();
                 SaveEmptyTextEdite();
             },actionType);
-           
+       
         }
 
        void SaveEmptyTextEdite()
@@ -337,26 +358,6 @@ namespace System_Pointage.Form
             get
             {
                 return "Ce champ est obligatoire";
-            }
-        }
-
-        private void btn_delete_Click(object sender, EventArgs e)
-        {
-            var db = new DAL.DataClasses1DataContext();
-
-            if (XtraMessageBox.Show(text: "Voulez-vous supprimer?", caption: "Confirmer la suppression", buttons: MessageBoxButtons.YesNo, icon: MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                var log = db.MVMAgentDetails.Where(x => x.ItemID == agent.ID).Count();
-                if (log > 0)
-                {
-                    XtraMessageBox.Show(text: "La gent ne peut pas etre supprimé ou il a été utilisé danns le systéme"
-                        , caption: "", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    return;
-                }
-                db.Fiche_Agents.Attach(agent);
-                db.Fiche_Agents.DeleteOnSubmit(agent);
-                db.SubmitChanges();
-                New();
             }
         }
 
@@ -456,6 +457,68 @@ namespace System_Pointage.Form
                     XtraMessageBox.Show("L'agent spécifié n'existe pas.", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+        void SavePrésent()
+        {
+            
+            XtraForm dialog = new XtraForm
+            {
+                Text = "Sélectionnez la date de présence",
+                Size = new System.Drawing.Size(300, 180),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+            };
+
+            //CheckedComboBoxEdit checkBox1 = new CheckedComboBoxEdit
+            //{
+            //    Text = "Statut",
+            //    Location = new System.Drawing.Point(20, 20),
+            //    AutoSize = true
+            //};
+           // checkBox1.Properties.Items.Add("P");
+          //  checkBox1.Properties.Items.Add("CR");
+
+          //  dialog.Controls.Add(checkBox1);
+
+            DateEdit dateEdit = new DateEdit
+            {
+                Text = "Date Présent",
+                Location = new System.Drawing.Point(20, 50),
+                AutoSize = true               
+            };
+            dateEdit.DateTime=DateTime.Now;
+            dialog.Controls.Add(dateEdit);
+
+            Button button = new Button
+            {
+                Text = "sauvegarder",
+                Location = new System.Drawing.Point(100, 80)
+            };
+            button.Click += (s, args) =>
+            {
+                if (dateEdit.DateTime == DateTime.MinValue)
+                {
+                    dateEdit.ErrorText = ErrorText;
+                    return ;
+                }
+                using (var db = new DAL.DataClasses1DataContext())
+                {
+                    var mvm = new DAL.MVMAgentDetail
+                    {
+                        ItemID = AgentID,
+                        Statut = "P",
+                        Date = dateEdit.DateTime
+                    };
+                    db.MVMAgentDetails.InsertOnSubmit(mvm);
+                    db.SubmitChanges();
+                }                   
+                dialog.Close();
+            };
+            dialog.Controls.Add(button);
+
+            dialog.ShowDialog();
         }
     }
 }

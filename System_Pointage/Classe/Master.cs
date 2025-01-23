@@ -27,7 +27,6 @@ namespace System_Pointage.Classe
             P = SourceTypes.Présent,
             A = SourceTypes.Absent,
             CR = SourceTypes.Congée,
-            P_A_CR= SourceTypes.PACR,
         }
         public enum SourceTypes
         {

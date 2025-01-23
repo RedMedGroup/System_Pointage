@@ -24,7 +24,12 @@ namespace System_Pointage.Form
 
         private void Frm_Fiche_Agent_Import_Load(object sender, EventArgs e)
         {
-            
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.GroupPanelText = " ";
+            #endregion
         }
         public  void RefreshData()
         {

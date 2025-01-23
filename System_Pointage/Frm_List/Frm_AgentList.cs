@@ -30,8 +30,14 @@ namespace System_Pointage.Frm_List
 
         private void Frm_AgentList_Load(object sender, EventArgs e)
         {
-            
-            gridView1.DoubleClick += GridView1_DoubleClick;
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold); 
+            gridView1.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.GroupPanelText = " ";
+            #endregion
+            //gridView1.DoubleClick += GridView1_DoubleClick;
             gridView1.OptionsBehavior.Editable = false;
 
             using (var dbContext = new DAL.DataClasses1DataContext())
@@ -62,15 +68,21 @@ namespace System_Pointage.Frm_List
                     emptyTable.Columns.Add("AccessPosteID", typeof(int));
                     emptyTable.Columns.Add("NamePosteDetail", typeof(string));
 
+              
                     gridControl1.DataSource = emptyTable;
                 }
                 else
                 {
-                    gridControl1.DataSource = data;
+                   gridControl1.DataSource = data;
+
                 }
-                gridView1.GroupPanelText = " ";
+             
                 // تحديث التسميات
-                gridView1.Columns["Name"].Caption = "Nom et prénom";
+                gridView1.Columns["Name"].Caption = "Nom";
+                gridView1.Columns["FirstName"].Caption = "Prénom";
+                gridView1.Columns["Date_Embauche"].Caption = "Date Affectée";
+                gridView1.Columns["Statut"].Caption = "Active/Inactive";
+                gridView1.Columns["Statutmvm"].Caption = "Statut";
                 gridView1.Columns["PostName"].Caption = "Poste";
                 gridView1.Columns["Jour"].Caption = "Systéme";
                 gridView1.Columns["AgentID"].Visible = false;
@@ -78,6 +90,7 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["ScreenPosteD"].Visible = false;
                 gridView1.Columns["AccessPosteID"].Visible = false;
                 gridView1.Columns["NamePosteDetail"].Visible = false;
+                gridView1.Columns["PostID"].Visible = false;
                 gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
             gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
@@ -157,31 +170,30 @@ namespace System_Pointage.Frm_List
         //}
 
 
-        private void GridView1_DoubleClick(object sender, EventArgs e)
-        {
-            DXMouseEventArgs ea = e as DXMouseEventArgs;
-            GridView view = sender as GridView;
-            GridHitInfo info = view.CalcHitInfo(ea.Location);
+        //private void GridView1_DoubleClick(object sender, EventArgs e)
+        //{
+        //    DXMouseEventArgs ea = e as DXMouseEventArgs;
+        //    GridView view = sender as GridView;
+        //    GridHitInfo info = view.CalcHitInfo(ea.Location);
 
-            if (info.InRow || info.InRowCell)
-            {
-                // الحصول على قيمة ID
-                int id = Convert.ToInt32(view.GetFocusedRowCellValue("ID"));
-                OpenForm(id);
-            }
-        }
-        public virtual void OpenForm(int id)
-        {
-            var frm = new Form.Frm_Fiche_Ajent(id);
-            frm.ShowDialog();
-        }
+        //    if (info.InRow || info.InRowCell)
+        //    {
+        //        // الحصول على قيمة ID
+        //        int id = Convert.ToInt32(view.GetFocusedRowCellValue("ID"));
+        //        OpenForm(id);
+        //    }
+        //}
+        //public virtual void OpenForm(int id)
+        //{
+        //    var frm = new Form.Frm_Fiche_Ajent(id);
+        //    frm.ShowDialog();
+        //}
 
         private void btn_import_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Frm_Fiche_Agent_Import frm = new Frm_Fiche_Agent_Import();
             frm.ShowDialog();
         }
-
         private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             gridView1.ShowPrintPreview();

@@ -162,9 +162,7 @@ namespace System_Pointage.Classe
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
 
                     break;
-                case Master.MVMType.P_A_CR:
-                    agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" || ma.agent.Statut == "CR" ||  ma.agent.Statut == "A");
-                    break;
+               
                 default:
                     throw new NotImplementedException();
             }
