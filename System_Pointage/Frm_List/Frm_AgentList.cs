@@ -26,10 +26,18 @@ namespace System_Pointage.Frm_List
         public Frm_AgentList()
         {
             InitializeComponent();
+
         }
+        StatusStrip statusStrip = new StatusStrip();
+        ToolStripStatusLabel statusLabel = new ToolStripStatusLabel();
 
         private void Frm_AgentList_Load(object sender, EventArgs e)
         {
+            
+            statusStrip.Items.Add(statusLabel);
+            this.Controls.Add(statusStrip);
+
+            gridView1.FocusedRowChanged += GridView1_FocusedRowChanged;
             #region paramater gridview     ////////////////
             gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
             gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -96,6 +104,21 @@ namespace System_Pointage.Frm_List
             gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
 
         }
+
+        private void GridView1_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            int currentRow = gridView1.FocusedRowHandle >= 0 ? gridView1.FocusedRowHandle + 1 : 0;
+            int totalRows = gridView1.RowCount;
+
+            statusLabel.Text = $"Enregistrement {currentRow} sur {totalRows}";
+            statusLabel.Font = new Font(statusLabel.Font, FontStyle.Bold);
+            statusLabel.TextAlign = ContentAlignment.MiddleCenter;
+          //  statusStrip.Items.Clear();  
+            statusStrip.Items.Add(new ToolStripStatusLabel() { Spring = true }); 
+            statusStrip.Items.Add(statusLabel);
+        }
+
+
 
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
@@ -191,7 +214,7 @@ namespace System_Pointage.Frm_List
 
         private void btn_import_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            Frm_Fiche_Agent_Import frm = new Frm_Fiche_Agent_Import();
+            Frm_Import_XLSX frm = new Frm_Import_XLSX();
             frm.ShowDialog();
         }
         private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)

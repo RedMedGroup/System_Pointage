@@ -15,7 +15,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
-
+using FuzzySharp;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
+using FuzzySharp.SimilarityRatio;
+using FuzzySharp.Extractor;
 namespace System_Pointage.Form
 {
     public partial class Frm_Fiche_Agent_Import : DevExpress.XtraEditors.XtraForm
@@ -229,15 +232,21 @@ namespace System_Pointage.Form
                         {
                             date = default(DateTime);
                         }
+                        bool hasError = false;
+                        string observation = "";
+                        //DataRow errorRow = errorTable.NewRow();
+                        //errorRow.ItemArray = row.ItemArray;
+
                         if (!DateTime.TryParse(datePresent, out dateP))
                         {
                             dateP = default(DateTime);
-                            DataRow errorRow = errorTable.NewRow();
-                            errorRow.ItemArray = row.ItemArray;
-                            errorRow["Observation"] = "تاريخ الحضور خطا";
-                            errorTable.Rows.Add(errorRow);
-                            correctMvm--;
-                            continue;
+                            //  DataRow errorRow = errorTable.NewRow();
+                            // errorRow.ItemArray = row.ItemArray;
+                            observation += "تاريخ الحضور خطا";
+                          //  errorTable.Rows.Add(errorRow);
+                        //    correctMvm--;
+                            hasError = true;
+                            //  continue;
                         }
 
                         var poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == posteName);
@@ -245,33 +254,42 @@ namespace System_Pointage.Form
 
                         if (poste == null)
                         {
-                            DataRow errorRow = errorTable.NewRow();
-                            errorRow.ItemArray = row.ItemArray;
-                            errorRow["Observation"] = "Poste non trouvée";
-                            errorTable.Rows.Add(errorRow);
-                            errorCount++;
-                            //  errorTable.ImportRow(row); 
-                            continue;
+                            //    DataRow errorRow = errorTable.NewRow();
+                            //  errorRow.ItemArray = row.ItemArray;
+                            observation += "Poste non trouvée";
+                          //  errorTable.Rows.Add(errorRow);
+                           // errorCount++;
+                            hasError = true;
+                           // continue;
                         }
                         if (departement == null)
                         {
-                            DataRow errorRow = errorTable.NewRow();
-                            errorRow.ItemArray = row.ItemArray;
-                            errorRow["Observation"] = "département non trouvée";
-                            errorTable.Rows.Add(errorRow);
-                            errorCount++;
-                            // errorTable.ImportRow(row);
-                            continue;
+                            //      DataRow errorRow = errorTable.NewRow();
+                            //    errorRow.ItemArray = row.ItemArray;
+                            observation += "département non trouvée";
+                         //   errorTable.Rows.Add(errorRow);
+                           // errorCount++;
+                            hasError = true;
+                         //   continue;
                         }
                         var existingAgent = db.Fiche_Agents.FirstOrDefault(x => x.Matricule.Trim() == matricule.Trim());
                         if (existingAgent != null)
                         {
+                            //   DataRow errorRow = errorTable.NewRow();
+                            //   errorRow.ItemArray = row.ItemArray;
+                            observation += "Le matricule existe déjà.";
+                         //   errorTable.Rows.Add(errorRow);
+                          //  errorCount++;
+                            hasError = true;
+                        //    continue;
+                        }
+                        if (hasError)
+                        {
                             DataRow errorRow = errorTable.NewRow();
                             errorRow.ItemArray = row.ItemArray;
-                            errorRow["Observation"] = "Le matricule existe déjà.";
-                            errorTable.Rows.Add(errorRow);
+                            errorRow["Observation"] = observation; // إضافة الملاحظات المتراكمة
+                            errorTable.Rows.Add(errorRow); // إضافة الصف إلى الجدول
                             errorCount++;
-                            // errorTable.ImportRow(row);
                             continue;
                         }
                         if (poste != null && departement != null)
@@ -319,10 +337,359 @@ namespace System_Pointage.Form
         Application.DoEvents();
         }
 
-     
+
+
+
+
+void Coreger()
+    {
+        DataTable correctedDataTable = new DataTable();
+        correctedDataTable.Columns.Add("Matricule", typeof(string));
+        correctedDataTable.Columns.Add("Name", typeof(string));
+        correctedDataTable.Columns.Add("Firstname", typeof(string));
+        correctedDataTable.Columns.Add("Poste", typeof(string));
+        correctedDataTable.Columns.Add("Département", typeof(string));
+        correctedDataTable.Columns.Add("Affecter", typeof(string));
+        correctedDataTable.Columns.Add("Jour", typeof(int));
+        correctedDataTable.Columns.Add("Observation", typeof(string));
+
+        // الحصول على البيانات من gridControl2
+        DataTable table = (DataTable)gridControl1.DataSource;
+
+        DataTable tableError = (DataTable)gridControl1.DataSource;
+        DataTable errorTable = tableError.Clone();
+        errorTable.Columns.Add("Observation", typeof(string));
+
+        using (var db = new DAL.DataClasses1DataContext())
+        {
+            var allPostes = db.Fiche_Postes.Select(p => p.Name).ToList();
+
+            foreach (DataRow row in table.Rows)
+            {
+                string matriculeColumn = lkp_Matricule.Text;
+                string nameColumn = lkp_Name.Text;
+                string firstnameColumn = lkp_FirstName.Text;
+                string jourColumn = lkp_syst.Text;
+                string affecterColumn = lkp_affecter.Text;
+                string dateColumn = lkp_date.Text;
+                string datePresence = dt_P.Text;
+                string departementColumn = lkp_departement.Text;
+                string posteColumn = lkp_Poste.Text;
+
+                if (table.Columns.Contains(matriculeColumn) && table.Columns.Contains(nameColumn) &&
+                    table.Columns.Contains(posteColumn) && table.Columns.Contains(departementColumn) &&
+                    table.Columns.Contains(affecterColumn))
+                {
+                    string matricule = row[matriculeColumn]?.ToString() ?? string.Empty;
+                    string name = row[nameColumn]?.ToString() ?? string.Empty;
+                    string firstname = row[firstnameColumn]?.ToString() ?? string.Empty;
+                    string posteName = row[posteColumn]?.ToString() ?? string.Empty;
+                    string departementName = row[departementColumn]?.ToString() ?? string.Empty;
+                    string affecter = row[affecterColumn]?.ToString() ?? string.Empty;
+                    int jour = row[jourColumn] != DBNull.Value && int.TryParse(row[jourColumn]?.ToString(), out int tempJour) ? tempJour : 0;
+
+                    string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
+                    string datePresent = row[datePresence]?.ToString() ?? string.Empty;
+                    DateTime date;
+                    DateTime dateP;
+                    if (!DateTime.TryParse(dateStr, out date))
+                    {
+                        date = default(DateTime);
+                    }
+                    bool hasError = false;
+                    string observation = "";
+                    if (!DateTime.TryParse(datePresent, out dateP))
+                    {
+                        dateP = default(DateTime);
+                        observation += "تاريخ الحضور خطا";
+                        hasError = true;
+                    }
+
+                    var correctedPosteName = CorrectPosteUsingTokenSetRatio(posteName, allPostes);
+                    if (correctedPosteName != null)
+                    {
+                        observation += $"Poste corrigé automatiquement: {correctedPosteName}; ";
+                    }
+                    else
+                    {
+                        observation += "Poste non trouvée et aucune correction trouvée; ";
+                        hasError = true;
+                    }
+
+                    DataRow newRow = correctedDataTable.NewRow();
+                    newRow.ItemArray = new object[]
+                    {
+                    matricule,          // Matricule
+                    name,               // Name
+                    firstname,          // Firstname
+                    correctedPosteName, // Poste 
+                    departementName,    // Département
+                    affecter,           // Affecter
+                    jour,               // Jour
+                    observation         // Observation
+                    };
+                    correctedDataTable.Rows.Add(newRow);
+
+                    if (hasError)
+                    {
+                        DataRow errorRow = errorTable.NewRow();
+                        errorRow.ItemArray = row.ItemArray;
+                        errorRow["Observation"] = observation;
+                        errorTable.Rows.Add(errorRow);
+                        errorCount++;
+                    }
+                    else
+                    {
+                        correctCount++;
+                    }
+                }
+            }
+        }
+
+        gridControl3.DataSource = correctedDataTable;
+        gridControl3.RefreshDataSource();
+
+        gridControl2.DataSource = errorTable;
+
+        string message =
+            $"{errorCount} erreurs détectées ❌\n" +
+            $"{correctCount} lignes traitées avec succès ✅\n" +
+            $"{correctMvm} personnes présentes enregistrées 👤";
+
+        MessageBox.Show(message, "Résultat du traitement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        errorCount = correctCount = correctMvm = 0;
+    }
+
+    public string CorrectPosteUsingTokenSetRatio(string posteName, List<string> allPostes)
+    {
+      
+        var bestMatch = Process.ExtractOne(posteName, allPostes, scorer: ScorerCache.Get<TokenSetScorer>(), cutoff: 80);
+
+        if (bestMatch != null && bestMatch.Score >= 80) 
+        {
+            return bestMatch.Value;
+        }
+
+        return null; 
+    }
+
+    #region
+    //   void Coreger()
+    //   {
+    //       DataTable table = (DataTable)gridControl2.DataSource;
+    //       #region
+
+    //       DataTable correctedDataTable = new DataTable();
+    //       correctedDataTable.Columns.Add("Matricule", typeof(string));
+    //       correctedDataTable.Columns.Add("Name", typeof(string));
+    //       correctedDataTable.Columns.Add("Firstname", typeof(string));
+    //       correctedDataTable.Columns.Add("Poste", typeof(string));
+    //       correctedDataTable.Columns.Add("Département", typeof(string));
+    //       correctedDataTable.Columns.Add("Affecter", typeof(string));
+    //       correctedDataTable.Columns.Add("Jour", typeof(int));
+    //       correctedDataTable.Columns.Add("Observation", typeof(string));
+    //       #endregion
+    //       #region
+    //       DataTable tableError = (DataTable)gridControl1.DataSource;
+    //       DataTable errorTable = tableError.Clone();
+    //       errorTable.Columns.Add("Observation", typeof(string));
+
+    //       #endregion
+
+    //       using (var db = new DAL.DataClasses1DataContext())
+    //       {
+    //           foreach (DataRow row in table.Rows)
+    //           {
+    //               string matriculeColumn = lkp_Matricule.Text;
+    //               string nameColumn = lkp_Name.Text;
+    //               string firstnameColumn = lkp_FirstName.Text;
+    //               string jourColumn = lkp_syst.Text;
+    //               string affecterColumn = lkp_affecter.Text;
+    //               string dateColumn = lkp_date.Text;
+    //               string datePresence = dt_P.Text;
+
+    //               string departementColumn = lkp_departement.Text;
+    //               string posteColumn = lkp_Poste.Text;
+
+
+
+
+    //               if (table.Columns.Contains(matriculeColumn) && table.Columns.Contains(nameColumn) &&
+    //                   table.Columns.Contains(posteColumn) && table.Columns.Contains(departementColumn) &&
+    //                   table.Columns.Contains(affecterColumn))
+    //               {
+    //                   string matricule = row[matriculeColumn]?.ToString() ?? string.Empty;
+    //                   string name = row[nameColumn]?.ToString() ?? string.Empty;
+    //                   string firstname = row[firstnameColumn]?.ToString() ?? string.Empty;
+    //                   string posteName = row[posteColumn]?.ToString() ?? string.Empty;
+    //                   string departementName = row[departementColumn]?.ToString() ?? string.Empty;
+    //                   string affecter = row[affecterColumn]?.ToString() ?? string.Empty;
+    //                   int jour = row[jourColumn] != DBNull.Value && int.TryParse(row[jourColumn]?.ToString(), out int tempJour) ? tempJour : 0;
+
+    //                   string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
+    //                   string datePresent = row[datePresence]?.ToString() ?? string.Empty;
+    //                   DateTime date;
+    //                   DateTime dateP;
+    //                   if (!DateTime.TryParse(dateStr, out date))
+    //                   {
+    //                       date = default(DateTime);
+    //                   }
+    //                   bool hasError = false;
+    //                   string observation = "";
+    //                   if (!DateTime.TryParse(datePresent, out dateP))
+    //                   {
+    //                       dateP = default(DateTime);                            
+    //                       observation += "تاريخ الحضور خطا";                           
+    //                       hasError = true;
+    //                   }
+
+    //                   var poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == posteName);
+    //                   var departement = db.UserAccessProfilePostes.FirstOrDefault(d => d.Name == departementName);
+    //                   string correctedPosteName = CorrectPoste(posteName);
+    //                   if (correctedPosteName != null)
+    //                   {
+    //                       poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == correctedPosteName);
+    //                       observation += $"Poste corrigé automatiquement: {correctedPosteName}; ";
+    //                   }
+    //                   else
+    //                   {
+    //                       observation += "Poste non trouvée et aucune correction trouvée; ";
+    //                       hasError = true;
+    //                   }
+    //                   //if (departement == null)
+    //                   //{
+    //                   //    observation += "département non trouvée";                          
+    //                   //    hasError = true;
+    //                   //}
+    //                   //var existingAgent = db.Fiche_Agents.FirstOrDefault(x => x.Matricule.Trim() == matricule.Trim());
+    //                   //if (existingAgent != null)
+    //                   //{                    
+    //                   //    observation += "Le matricule existe déjà.";                     
+    //                   //    hasError = true;
+    //                   //}
+    //                   DataRow newRow = correctedDataTable.NewRow();
+    //                   newRow.ItemArray = new object[]
+    //                   {
+    //               matricule,          // Matricule
+    //               name,               // Name
+    //               firstname,          // Firstname
+    //               poste?.Name,        // Poste (تم تصحيحه إذا لزم الأمر)
+    //               departementName,    // Département
+    //               affecter,           // Affecter
+    //               jour,               // Jour
+    //               observation         // Observation
+    //                   };
+    //                   correctedDataTable.Rows.Add(newRow);
+
+    //                   if (hasError)
+    //                   {
+    //                       DataRow errorRow = errorTable.NewRow();
+    //                       errorRow.ItemArray = row.ItemArray;
+    //                       errorRow["Observation"] = observation;
+    //                       errorTable.Rows.Add(errorRow);
+    //                       errorCount++;
+    //                   }
+    //                   else
+    //                   {
+    //                       correctCount++;
+    //                   }
+
+    //                   //gridControl3.DataSource = correctedDataTable;
+
+    //                   //// تحديث الواجهة
+    //                   //gridControl3.RefreshDataSource();
+
+    //               }
+    //               }
+    //           }
+    //       gridControl3.DataSource = correctedDataTable;
+    //       gridControl3.RefreshDataSource();
+
+    //       gridControl1.DataSource = errorTable;
+    //       string message =
+    //$"{errorCount} erreurs détectées ❌\n" +
+    //$"{correctCount} lignes traitées avec succès ✅\n" +
+    //$"{correctMvm} personnes présentes enregistrées 👤";
+
+    //           MessageBox.Show(message, "Résultat du traitement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    //           errorCount = correctCount = correctMvm = 0;
+
+    //   }
+    #endregion
         private void btn_save_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Save();
+        }
+        #region
+        //public string CorrectPoste(string posteName)
+        //{
+        //    var db = new DAL.DataClasses1DataContext();
+        //    // الحصول على جميع المناصب من الجدول Fiche_Postes
+        //    var allPostes = db.Fiche_Postes.Select(p => p.Name).ToList();
+
+        //    // إذا لم يكن هناك مناصب، إرجاع null
+        //    if (allPostes.Count == 0)
+        //        return null;
+
+        //    // البحث عن أقرب تطابق باستخدام Levenshtein Distance
+        //    string closestPoste = null;
+        //    int minDistance = int.MaxValue;
+
+        //    foreach (var poste in allPostes)
+        //    {
+        //        int distance = CalculateLevenshteinDistance(posteName, poste);
+        //        if (distance < minDistance)
+        //        {
+        //            minDistance = distance;
+        //            closestPoste = poste;
+        //        }
+        //    }
+
+        //    // إذا كانت المسافة أقل من حد معين (مثل 3)، نعتبره تطابقًا
+        //    if (minDistance <= 3) // يمكنك تعديل هذا الحد حسب الحاجة
+        //        return closestPoste;
+
+        //    // إذا لم يتم العثور على تطابق قريب، إرجاع null
+        //    return null;
+        //}
+
+        //// دالة لحساب Levenshtein Distance
+        //public int CalculateLevenshteinDistance(string s, string t)
+        //{
+        //    int n = s.Length;
+        //    int m = t.Length;
+        //    int[,] d = new int[n + 1, m + 1];
+
+        //    if (n == 0)
+        //        return m;
+        //    if (m == 0)
+        //        return n;
+
+        //    for (int i = 0; i <= n; d[i, 0] = i++) { }
+        //    for (int j = 0; j <= m; d[0, j] = j++) { }
+
+        //    for (int i = 1; i <= n; i++)
+        //    {
+        //        for (int j = 1; j <= m; j++)
+        //        {
+        //            int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+        //            d[i, j] = Math.Min(
+        //                Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+        //                d[i - 1, j - 1] + cost);
+        //        }
+        //    }
+
+        //    return d[n, m];
+        //}
+        #endregion
+        private void btn_coriger_Click(object sender, EventArgs e)
+        {
+            Coreger();
+        }
+
+        private void btn_CorrectionA_Click(object sender, EventArgs e)
+        {
+            Coreger();
         }
     }
 }

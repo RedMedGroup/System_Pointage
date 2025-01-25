@@ -172,6 +172,7 @@ namespace System_Pointage.Classe
                 .Select(ma => new Models.AgentStatus
                 {
                     Name = ma.worker.Name,
+                    FirstName = ma.worker.FirstName,
                     Date = ma.agent.Date,
                     Statut = ma.agent.Statut,
                     Poste = ma.Name,

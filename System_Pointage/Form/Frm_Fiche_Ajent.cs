@@ -61,11 +61,13 @@ namespace System_Pointage.Form
             using (var db = new DAL.DataClasses1DataContext())
             {
                 var post = db.Fiche_Postes.Select(x => new { x.ID, x.Name }).ToList();
-
-                lkp_post.Properties.DataSource = post;
-                lkp_post.Properties.DisplayMember = "Name";
-                lkp_post.Properties.ValueMember = "ID";
+                lkp_post.IntializeData(db.Fiche_Postes.Select(x => new { x.ID, x.Name }).ToList());
+                lkp_post.Properties.View.Columns["Name"].Caption = "Poste/Fonction";
                 lkp_post.Properties.PopulateViewColumns();
+                //lkp_post.Properties.DataSource = post;
+                //lkp_post.Properties.DisplayMember = "Name";
+                //lkp_post.Properties.ValueMember = "ID";
+
                 lkp_post.Properties.View.Columns["ID"].Visible = false;
                 lkp_ScreanPoste.IntializeData(db.UserAccessProfilePostes.Select(x => new { x.ID, x.Name }).ToList());
             }

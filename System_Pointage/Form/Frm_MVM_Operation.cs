@@ -479,20 +479,23 @@ namespace System_Pointage.Classe
         public void GridName()
         {
             gridView1.GroupPanelText = " ";
-            gridView1.Columns["Name"].Caption = "Nom et prénom";
+            gridView1.Columns["Name"].Caption = "Nom";
+            gridView1.Columns["FirstName"].Caption = "prénom";
             gridView1.Columns["Jour"].Caption = "Systéme";
             gridView1.Columns["Difference"].Caption = "Ecart";
             gridView1.Columns["Matricule"].VisibleIndex = 1;
             gridView1.Columns["Name"].VisibleIndex = 2;
-            gridView1.Columns["Poste"].VisibleIndex = 3;
-            gridView1.Columns["Affecter"].VisibleIndex = 4;
-            gridView1.Columns["Date"].VisibleIndex = 5;
-            gridView1.Columns["Jour"].VisibleIndex = 6;
-            gridView1.Columns["CalculatedDate"].VisibleIndex = 7;
-            gridView1.Columns["DaysCount"].VisibleIndex = 8;
-            gridView1.Columns["Difference"].VisibleIndex = 9;
-            gridView1.Columns["Statut"].VisibleIndex =10;
+            gridView1.Columns["FirstName"].VisibleIndex =3;
+            gridView1.Columns["Poste"].VisibleIndex =4;
+            gridView1.Columns["Affecter"].VisibleIndex =5;
+            gridView1.Columns["Date"].VisibleIndex =6;
+            gridView1.Columns["Jour"].VisibleIndex =7;
+            gridView1.Columns["CalculatedDate"].VisibleIndex = 8;
+            gridView1.Columns["DaysCount"].VisibleIndex =9;
+            gridView1.Columns["Difference"].VisibleIndex = 10;
+            gridView1.Columns["Statut"].VisibleIndex =11;
             gridView1.Columns["screenPosteD"].Visible = false;
+            gridView1.Columns["Statutmvm"].Visible = false;
             switch (Type)
             {
                 case Master.MVMType.P:
