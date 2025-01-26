@@ -11,6 +11,7 @@ namespace System_Pointage.report
 {
     public partial class rpt_WorkDay : DevExpress.XtraReports.UI.XtraReport
     {
+   
         public rpt_WorkDay()
         {
             InitializeComponent();

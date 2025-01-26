@@ -69,6 +69,9 @@ namespace System_Pointage.DAL
     partial void InsertFiche_Agent(Fiche_Agent instance);
     partial void UpdateFiche_Agent(Fiche_Agent instance);
     partial void DeleteFiche_Agent(Fiche_Agent instance);
+    partial void InsertReport(Report instance);
+    partial void UpdateReport(Report instance);
+    partial void DeleteReport(Report instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -202,6 +205,14 @@ namespace System_Pointage.DAL
 			get
 			{
 				return this.GetTable<Fiche_Agent>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Report> Reports
+		{
+			get
+			{
+				return this.GetTable<Report>();
 			}
 		}
 	}
@@ -2427,6 +2438,140 @@ namespace System_Pointage.DAL
 					this._Affecter = value;
 					this.SendPropertyChanged("Affecter");
 					this.OnAffecterChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reports")]
+	public partial class Report : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _ReportName;
+		
+		private System.Data.Linq.Binary _ReportData;
+		
+		private System.DateTime _ModifiedDate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnReportNameChanging(string value);
+    partial void OnReportNameChanged();
+    partial void OnReportDataChanging(System.Data.Linq.Binary value);
+    partial void OnReportDataChanged();
+    partial void OnModifiedDateChanging(System.DateTime value);
+    partial void OnModifiedDateChanged();
+    #endregion
+		
+		public Report()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReportName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string ReportName
+		{
+			get
+			{
+				return this._ReportName;
+			}
+			set
+			{
+				if ((this._ReportName != value))
+				{
+					this.OnReportNameChanging(value);
+					this.SendPropertyChanging();
+					this._ReportName = value;
+					this.SendPropertyChanged("ReportName");
+					this.OnReportNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReportData", DbType="VarBinary(MAX) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary ReportData
+		{
+			get
+			{
+				return this._ReportData;
+			}
+			set
+			{
+				if ((this._ReportData != value))
+				{
+					this.OnReportDataChanging(value);
+					this.SendPropertyChanging();
+					this._ReportData = value;
+					this.SendPropertyChanged("ReportData");
+					this.OnReportDataChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ModifiedDate
+		{
+			get
+			{
+				return this._ModifiedDate;
+			}
+			set
+			{
+				if ((this._ModifiedDate != value))
+				{
+					this.OnModifiedDateChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedDate = value;
+					this.SendPropertyChanged("ModifiedDate");
+					this.OnModifiedDateChanged();
 				}
 			}
 		}

@@ -74,15 +74,24 @@ namespace System_Pointage.Form
             lkp_post.EditValueChanged += Lkp_post_EditValueChanged;
             GetData();
             gridView1.CustomDrawCell += GridView1_CustomDrawCell;
+            
         }
 
         private void Lkp_post_EditValueChanged(object sender, EventArgs e)
         {
+            var selectedPost = lkp_post.GetSelectedDataRow();
+
+            if (selectedPost != null)
+            {
+                var postData = (dynamic)selectedPost;
+                labelControl1.Text = postData.Name; // 
+            }
             MasqueColumns();
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;//button ajouter
             layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;// btn update
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;// btn ajouter 2
             layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;// btn ajouter 2
+            layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
             int selectedPostId = (int)lkp_post.EditValue;
 
@@ -96,6 +105,14 @@ namespace System_Pointage.Form
 
                 int agentCount = db.Fiche_Agents.Count(x => x.ID_Post == selectedPostId &&x.Statut==true);
                 txt_efectif.Text = agentCount.ToString();
+
+                if (int.TryParse(txt_contra.Text, out int contraValue) &&
+              int.TryParse(txt_efectif.Text, out int efectifValue))
+                {
+                    int ecartValue = efectifValue  - contraValue*2;
+
+                    txt_ecart.Text = (ecartValue >= 0 ? "+" : "") + ecartValue.ToString();
+                }
             }
 
 
@@ -179,7 +196,7 @@ namespace System_Pointage.Form
             layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem10.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem11.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-           // layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
         }

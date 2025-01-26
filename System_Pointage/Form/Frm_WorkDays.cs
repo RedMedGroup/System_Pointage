@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -73,54 +74,62 @@ namespace System_Pointage.Form
             gridView1.Columns["Statut"].VisibleIndex = 9;
             gridView1.Columns["screenPosteD"].Visible = false;
         }
-        private void GenerateReport()
-        {
-            if (activeAgentsList == null || !activeAgentsList.Any())
-            {
-                MessageBox.Show("Il n'y a aucune donnée pour générer le rapport.");
-                return;
-            }
 
-            rpt_WorkDay report = new rpt_WorkDay();
-
-            report.DataSource = activeAgentsList;
-            report.DataMember = "";
-
-            var nameField = new XRLabel { Text = "Name" };
-            var matriculeField = new XRLabel { Text = "Matricule" };
-            var posteField = new XRLabel { Text = "Poste" };
-            var daysCountField = new XRLabel { Text = "DaysCount" };
-            var calculatedDateField = new XRLabel { Text = "CalculatedDate" };
-
-            // ajouter les champs dans rapport
-            report.Bands.Add(new DetailBand());
-            report.Bands[0].Controls.AddRange(new XRControl[]
-            {
-        nameField,
-        matriculeField,
-        posteField,
-        daysCountField,
-        calculatedDateField
-            });      
-        }
         private void ShowWorkDayReport()
         {
-            var report = new rpt_WorkDay();
+            // تحميل التقرير المعدل (إذا وجد)
+            rpt_WorkDay report = LoadModifiedReport();
+
+            // إذا لم يتم العثور على التقرير المعدل، استخدم التقرير الافتراضي
+            if (report == null)
+            {
+                report = new rpt_WorkDay();
+            }
+
+            // تصفية البيانات
             var filteredData = activeAgentsList
-       .Where(agent => agent.DaysCount > agent.Jour)
-       .ToList();
+                .Where(agent => agent.DaysCount > agent.Jour)
+                .ToList();
 
-            report.LoadData(filteredData); 
+            // استخدام LoadData لربط البيانات بالتقرير
+            report.LoadData(filteredData);
 
+            // عرض التقرير
             ReportPrintTool printTool = new ReportPrintTool(report);
             printTool.ShowPreviewDialog();
         }
-
         private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             ShowWorkDayReport();
+         
         }
 
+        private rpt_WorkDay LoadModifiedReport()
+        {
+            using (var context = new DAL.DataClasses1DataContext()) // استبدل بسياق قاعدة البيانات الخاص بك
+            {
+                // استرجاع أحدث تقرير محفوظ
+                var reportEntity = context.Reports
+                    .OrderByDescending(r => r.ModifiedDate)
+                    .FirstOrDefault(r => r.ReportName == "rpt_WorkDay");
+
+                if (reportEntity != null && reportEntity.ReportData != null)
+                {
+                    // تحويل byte[] إلى XtraReport
+                    using (MemoryStream ms = new MemoryStream(reportEntity.ReportData.ToArray())) // استخدام ToArray()
+                    {
+                        rpt_WorkDay report = new rpt_WorkDay();
+                        report.LoadLayoutFromXml(ms); // تحميل التقرير من MemoryStream
+                        return report;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Aucun rapport modifié trouvé dans la base de données, le rapport par défaut sera utilisé.");
+                    return null; // إرجاع null إذا لم يتم العثور على التقرير المعدل
+                }
+            }
+        }
         private void btnSearch_Click(object sender, EventArgs e)
         {
             int searchValue = Convert.ToInt32(spinEdit1.Value);

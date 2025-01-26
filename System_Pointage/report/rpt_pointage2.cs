@@ -11,7 +11,7 @@ namespace System_Pointage.report
 {
     public partial class rpt_pointage2 : DevExpress.XtraReports.UI.XtraReport
     {
-        public string ReportTitle { get; set; }
+        //public string ReportTitle { get; set; }
 
         public List<DateTime> ListOfDays { get; set; }
         public rpt_pointage2()
@@ -59,10 +59,10 @@ namespace System_Pointage.report
                 // ربط POSTE لكل فرد
                 XRControl posteCell = FindControl("cell_sp", true);
                 XRLabel lblBase = (XRLabel)FindControl("lbl_base", true);
-                if (lblBase != null)
-                {
-                    lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
-                }
+                //if (lblBase != null)
+                //{
+                //    lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
+                //}
                 if (posteCell != null)
                 {
                     posteCell.DataBindings.Add("Text", table, "POSTE"); // ربط POSTE بالبيانات

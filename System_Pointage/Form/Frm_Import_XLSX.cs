@@ -372,6 +372,10 @@ namespace System_Pointage.Form
 
         private void btn_Correction_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if (!IsDataValide())
+            {
+                return;
+            }
             btn_save.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             btn_Correction.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             Coreger();
@@ -379,6 +383,7 @@ namespace System_Pointage.Form
 
         private void btn_save_ItemClick(object sender, ItemClickEventArgs e)
         {
+            gridControl2.DataSource=null;gridControl3.DataSource=null;
             btn_save.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             if (!IsDataValide())
             {
@@ -386,7 +391,10 @@ namespace System_Pointage.Form
             }
 
             DataTable table = (DataTable)gridControl1.DataSource;
-
+            #region
+            DataTable tableError = (DataTable)gridControl1.DataSource;
+            DataTable errorTable = tableError.Clone();
+            #endregion
 
 
             using (var db = new DAL.DataClasses1DataContext())
@@ -430,8 +438,26 @@ namespace System_Pointage.Form
                         if (!DateTime.TryParse(datePresent, out dateP))
                         {
                             dateP = default(DateTime);
+                        }
 
+                      
 
+                        bool hasError = false;
+                        string observation = "";
+                        var existingAgent = db.Fiche_Agents.FirstOrDefault(x => x.Matricule.Trim() == matricule.Trim());
+                        if (existingAgent != null)
+                        {
+                            observation += "Le matricule existe déjà.";
+                            hasError = true;
+                        }
+                        if (hasError)
+                        {
+                            DataRow errorRow = errorTable.NewRow();
+                            errorRow.ItemArray = row.ItemArray;
+                            errorRow["Observation"] = observation; 
+                            errorTable.Rows.Add(errorRow); 
+                            errorCount++;
+                            continue;
                         }
                         var poste = db.Fiche_Postes.FirstOrDefault(c => c.Name == posteName);
                         var departement = db.UserAccessProfilePostes.FirstOrDefault(d => d.Name == departementName);
@@ -458,10 +484,15 @@ namespace System_Pointage.Form
                             };
                             db.MVMAgentDetails.InsertOnSubmit(agentDetail);
                             db.SubmitChanges();
-                        
+
                     }
                 }
             }
+            gridControl2.DataSource = errorTable;
+            string message =
+             $"{errorCount} erreurs détectées ❌\n" +
+             $"{correctCount} lignes traitées avec succès ✅\n";
+            MessageBox.Show(message, "Résultat du traitement", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
         }
     }

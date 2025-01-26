@@ -1,4 +1,5 @@
-﻿using DevExpress.Utils.Extensions;
+﻿using DevExpress.ReportServer.ServiceModel.DataContracts;
+using DevExpress.Utils.Extensions;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
@@ -9,11 +10,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
+using System_Pointage.DAL;
 using System_Pointage.report;
 
 namespace System_Pointage.Form
@@ -76,11 +79,10 @@ namespace System_Pointage.Form
 
             gridView1.PopulateColumns();
             gridView1.BestFitColumns();
-
+            report.rpt_WorkDay repo = new rpt_WorkDay();
+            repo.ShowDesigner();
         }
-
-    
-
+       
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
             GridView view = sender as GridView;
@@ -198,15 +200,14 @@ namespace System_Pointage.Form
 
             var context = new DAL.DataClasses1DataContext();
             var groups = FicheAgentList
-    .Where(x => x.Statut == true && x.Affecter == cmb_base.Text) // التأكد من الحقول المطلوبة
+    .Where(x => x.Statut == true /*&& x.Affecter == cmb_base.Text*/) // التأكد من الحقول المطلوبة
     .GroupBy(agent => agent.ID_Post)
     .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
     .Select(g => new
     {
         Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-        RequiredQuantity = cmb_base.Text == "TFT"
-            ? context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0
-            : context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra_tfw ?? 0,
+        RequiredQuantity =
+             context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
         Agents = g.ToList()
     });
 
@@ -328,14 +329,14 @@ namespace System_Pointage.Form
         {
             DateTime startDate = dateEdit1.DateTime;
             DateTime endDate = dateEdit2.DateTime;
-            string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
+          //  string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
             int totalDays = (endDate - startDate).Days + 1;
 
             rpt_penalite report = new rpt_penalite();
             string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
             int annee = startDate.Year;
             report.lbl_mois.Text = $"Mois de {mois} {annee}";
-            report.ReportTitle = reportTitle;
+         //   report.ReportTitle = reportTitle;
             report.BindAttendanceDataToCells();
             report.DataSource = CreateAbsenceReport(totalDays, startDate, endDate); // تحديث هنا لاستدعاء الدالة الجديدة
             report.SumPinality = Sum;
@@ -384,7 +385,7 @@ namespace System_Pointage.Form
                     // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة
                     var agentDetails = context.MVMAgentDetails
                         .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
-                        .Join(context.Fiche_Agents.Where(x => x.Statut == true&&x.Affecter==cmb_base.Text),
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true/*&&x.Affecter==cmb_base.Text*/),
                               agent => agent.ItemID,
                               worker => worker.ID,
                               (agent, worker) => new { agent, worker })
@@ -431,9 +432,9 @@ namespace System_Pointage.Form
                     }
                     #region new 08/01
                     // تحقق من العدد الأقصى للغائبين بناءً على القاعدة
-                    int maxAllowedAbsences = cmb_base.Text == "TFT"
-                        ? (int)department.Nembre_Contra
-                        : (int)department.Nembre_Contra_tfw;
+                    int maxAllowedAbsences =
+                         (int)department.Nembre_Contra;
+                       
 
                     // إذا كان عدد الغائبين أكبر من العدد المسموح به، قم بضبطه
                     int validAbsentCount = Math.Min(absentAgents.Count, maxAllowedAbsences);
@@ -459,9 +460,9 @@ namespace System_Pointage.Form
                         }
 
                         // حساب الغيابات اليومية بناءً على القاعدة
-                        int dailyAbsences = Math.Max(0, (int)(cmb_base.Text == "TFT"
-                            ? department.Nembre_Contra
-                            : department.Nembre_Contra_tfw) - dailyPresenceCount);
+                        int dailyAbsences = Math.Max(0, (int)(
+                            department.Nembre_Contra));
+                            
                        
 
                         totalAbsences += dailyAbsences;
@@ -473,14 +474,14 @@ namespace System_Pointage.Form
                         // حساب إجمالي الغرامات
                         //float totalPenalties = (float)(totalAbsences * department.M_Penalite);
                         // حساب إجمالي الغرامات بناءً على القاعدة
-                        float totalPenalties = (float)(totalAbsences * (cmb_base.Text == "TFT"
-                            ? department.M_Penalite
-                            : department.EmployeeCount_tfw));
+                        float totalPenalties = (float)(totalAbsences * (
+                             department.M_Penalite));
+                         
                         // إضافة سطر جديد للتقرير
                         DataRow row = table.NewRow();
                         row["Department"] = department.DepartmentName;
                         row["TotalAbsences"] = totalAbsences;
-                        row["M_Penalite"] = (cmb_base.Text == "TFT") ? department.M_Penalite : department.EmployeeCount_tfw;
+                        row["M_Penalite"] =  department.M_Penalite ;
                    //     row["M_Penalite"] = department.M_Penalite;
                         row["TotalPenalties"] = totalPenalties;
                         row["Nombre du personnel absent"] = absentAgents.Count; // حساب عدد الموظفين الغائبين
@@ -545,26 +546,88 @@ namespace System_Pointage.Form
         {
             DateTime startDate = dateEdit1.DateTime;
             DateTime endDate = dateEdit2.DateTime;
-            string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
-            LoadData();
-            report.rpt_pointage2 report = new report.rpt_pointage2();
-            report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
+            LoadData(); // تحميل البيانات (إن لزم)
+
+            // إنشاء كائن من الكلاس المساعد لتحميل التقرير
+            var reportLoader = new LoadModifiedReportClass(new DAL.DataClasses1DataContext(), this);
+
+            // تحميل التقرير المعدل أو إنشاء التقرير الافتراضي
+            rpt_pointage2 report = reportLoader.LoadModifiedReport<rpt_pointage2>("rpt_pointage2")
+                                   ?? new rpt_pointage2();
+
+            // تخصيص التقرير مباشرة في PrintReport2
             string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
             int annee = startDate.Year;
             report.lbl_mois.Text = $"Mois de {mois} {annee}";
 
-
+            // إضافة أعمدة التاريخ إلى التقرير
             report.AddDateColumnsToReport(report, startDate, endDate);
+
+            // إنشاء وتعيين مصدر البيانات
             DataTable table = CreateDataTablePointge();
             report.DataSource = table;
 
+            // ربط بيانات الحضور بالخلايا
             report.BindAttendanceDataToCells(table);
 
+            // عرض التقرير
             ReportPrintTool printTool = new ReportPrintTool(report);
             printTool.ShowPreview();
-
-
         }
+
+        //private void PrintReport2()
+        //{
+        //    DateTime startDate = dateEdit1.DateTime;
+        //    DateTime endDate = dateEdit2.DateTime;
+        //    LoadData();
+
+        //    // تحميل التقرير المعدل (إذا وجد)
+        //    rpt_pointage2 report = LoadModifiedReport2();
+
+        //    // إذا لم يتم العثور على التقرير المعدل، استخدم التقرير الافتراضي
+        //    if (report == null)
+        //    {
+        //        report = new rpt_pointage2(); // استخدام التقرير الافتراضي
+        //    }
+
+        //    // تعيين النص الخاص بالشهر والسنة
+        //    string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
+        //    int annee = startDate.Year;
+        //    report.lbl_mois.Text = $"Mois de {mois} {annee}";
+
+        //    // إضافة أعمدة التاريخ إلى التقرير
+        //    report.AddDateColumnsToReport(report, startDate, endDate);
+
+        //    // إنشاء وتعيين مصدر البيانات
+        //    DataTable table = CreateDataTablePointge();
+        //    report.DataSource = table;
+
+        //    // ربط بيانات الحضور بالخلايا
+        //    report.BindAttendanceDataToCells(table);
+
+        //    // عرض التقرير
+        //    ReportPrintTool printTool = new ReportPrintTool(report);
+        //    printTool.ShowPreview();
+        //    //DateTime startDate = dateEdit1.DateTime;
+        //    //DateTime endDate = dateEdit2.DateTime;
+        //    //LoadData();
+        //    //report.rpt_pointage2 report = new report.rpt_pointage2();
+        //    //string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
+        //    //int annee = startDate.Year;
+        //    //report.lbl_mois.Text = $"Mois de {mois} {annee}";
+
+
+        //    //report.AddDateColumnsToReport(report, startDate, endDate);
+        //    //DataTable table = CreateDataTablePointge();
+        //    //report.DataSource = table;
+
+        //    //report.BindAttendanceDataToCells(table);
+
+        //    //ReportPrintTool printTool = new ReportPrintTool(report);
+        //    //printTool.ShowPreview();
+
+
+        //}
         private void btn_print2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             gridView1.ShowRibbonPrintPreview();
@@ -603,14 +666,12 @@ namespace System_Pointage.Form
         ID_Post = post.ID,
         DepartmentName = post.Name,
         Department=post.Departement,
-        RequiredEmployees = cmb_base.Text == "TFT"
-            ? post.Nembre_Contra // إذا كانت القيمة "tft"
-            : post.Nembre_Contra_tfw // إذا لم تكن "tft"
+        RequiredEmployees =  post.Nembre_Contra // إذا كانت القيمة "tft"           
     })
     .ToList();
 
             
-                var workers = context.Fiche_Agents .Where( agent => (isAdmin || agent.ScreenPosteD == userAccessPosteID) && agent.Affecter == cmb_base.Text&&agent.Statut==true)
+                var workers = context.Fiche_Agents .Where( agent => (isAdmin || agent.ScreenPosteD == userAccessPosteID) &&agent.Statut==true)
                     .Select(agent => new
                     {
                         WorkerName = agent.Name,
@@ -698,21 +759,85 @@ namespace System_Pointage.Form
 
             return table;
         }
-
+        #region etat journaly
         private void GenerateDailyReport()
         {
             SetStartDate();
             DateTime reportDate = dateEdit1.DateTime;
-            rpt_DailyReport report = new rpt_DailyReport(this);
-            report.DataSource = CreateDailyReport(reportDate);
-            report.ShowPreview();
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                // إنشاء كائن من الكلاس LoadModifiedReportClass وتمرير السياق والفورم الحالي
+                var reportLoader = new LoadModifiedReportClass(context, this);
+
+                // استدعاء الطريقة LoadModifiedReport لتحميل التقرير
+                rpt_DailyReport report = reportLoader.LoadModifiedReport<rpt_DailyReport>("rpt_DailyReport");
+
+                // إذا لم يتم العثور على تقرير معدّل، يتم إنشاء تقرير افتراضي
+                if (report == null)
+                {
+                    report = new rpt_DailyReport(this); // إنشاء التقرير الافتراضي
+                }
+
+                // إعداد مصدر البيانات
+                report.DataSource = CreateDailyReport(reportDate);
+
+                // عرض التقرير
+                report.ShowPreview();
+            }
         }
 
+        //private void GenerateDailyReport()
+        //{
+        //    SetStartDate();
+        //    DateTime reportDate = dateEdit1.DateTime;
+
+        //    rpt_DailyReport report = LoadModifiedReport();
+
+        //    if (report == null)
+        //    {
+        //        report = new rpt_DailyReport(this); // إنشاء التقرير الافتراضي
+        //    }
+
+        //    report.DataSource = CreateDailyReport(reportDate);
+        //    report.ShowPreview();
+        //    //SetStartDate();
+        //    //DateTime reportDate = dateEdit1.DateTime;
+        //    //rpt_DailyReport report = new rpt_DailyReport(this);
+        //    //report.DataSource = CreateDailyReport(reportDate);
+        //    //report.ShowPreview();
+        //}
+        //private rpt_DailyReport LoadModifiedReport()
+        //{
+        //    using (var context = new DAL.DataClasses1DataContext()) // استبدل بسياق قاعدة البيانات الخاص بك
+        //    {
+        //        // استرجاع أحدث تقرير محفوظ
+        //        var reportEntity = context.Reports
+        //            .OrderByDescending(r => r.ModifiedDate)
+        //            .FirstOrDefault(r => r.ReportName == "rpt_DailyReport");
+
+        //        if (reportEntity != null && reportEntity.ReportData != null)
+        //        {
+        //            // تحويل byte[] إلى XtraReport
+        //            using (MemoryStream ms = new MemoryStream(reportEntity.ReportData.ToArray())) // استخدام ToArray()
+        //            {
+        //                rpt_DailyReport report = new rpt_DailyReport();
+        //                report.LoadLayoutFromXml(ms); // تحميل التقرير من MemoryStream
+        //                report.Initialize(this);
+        //                return report;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Aucun rapport modifié trouvé dans la base de données, le rapport par défaut sera utilisé."); return null;
+        //        }
+        //    }
+        //}
         private void btn_reportAparJour_Click(object sender, EventArgs e)
         {
             GenerateDailyReport();
         }
-
+        #endregion
         private void btn_workdays_Click(object sender, EventArgs e)
         {
             Frm_WorkDays frm = new Frm_WorkDays();
@@ -762,7 +887,7 @@ namespace System_Pointage.Form
             // إذا لم يكن أدمن، استخدم userAccessPosteID
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
             var groups = FicheAgentList
-    .Where(x => x.Statut == true && x.Affecter == cmb_base.Text && (isAdmin || x.ScreenPosteD == userAccessPosteID))
+    .Where(x => x.Statut == true  && (isAdmin || x.ScreenPosteD == userAccessPosteID))
     .GroupBy(agent => agent.ID_Post)
     .Select(g =>
     {
@@ -772,12 +897,9 @@ namespace System_Pointage.Form
         return new
         {
             Specialization = fichePost?.Name,
-            RequiredQuantity = cmb_base.Text == "TFT"
-                ? fichePost?.Nembre_Contra ?? 0
-                : fichePost?.Nembre_Contra_tfw ?? 0,
-            Penalty = cmb_base.Text == "TFT"
-                ? fichePost?.M_Penalite ?? 0
-                : fichePost?.EmployeeCount_tfw ?? 0,
+            RequiredQuantity =  fichePost?.Nembre_Contra ?? 0,              
+            Penalty = 
+                fichePost?.M_Penalite ?? 0,              
             Agents = g.ToList()
         };
     });
@@ -939,10 +1061,10 @@ namespace System_Pointage.Form
 
         private void btn_print_mensuel_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
+          //  string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
             LoadData();
             report.rpt_pointage_mensuel report = new report.rpt_pointage_mensuel();
-            report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
+         //   report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
            
             PrintReportMensuel(report);
         }
@@ -1041,9 +1163,8 @@ namespace System_Pointage.Form
                 table.Columns.Add($"{currentDay.Day}", typeof(string));
             }
 
-            // إضافة عمود "Total Présent" لكل فرد
+            // إضافة عمود "S/TOTAL"
             table.Columns.Add("S/TOTAL", typeof(int));
-       
 
             // التحقق مما إذا كان المستخدم أدمن
             bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
@@ -1053,15 +1174,14 @@ namespace System_Pointage.Form
 
             var context = new DAL.DataClasses1DataContext();
             var groups = FicheAgentList
-                .Where(x => x.Statut == true && x.Affecter == cmb_base.Text) // التأكد من الحقول المطلوبة
+                .Where(x => x.Statut == true ) // التأكد من الحقول المطلوبة
                 .GroupBy(agent => agent.ID_Post)
                 .Where(g => isAdmin || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
                 .Select(g => new
                 {
                     Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-                    RequiredQuantity = cmb_base.Text == "TFT"
-                        ? context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0
-                        : context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra_tfw ?? 0,
+                    RequiredQuantity =  context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+                       
                     Agents = g.ToList()
                 });
 
@@ -1127,14 +1247,14 @@ namespace System_Pointage.Form
                         }
                     }
 
-                    // إضافة عدد الأيام الحاضرة للفرد في العمود "Total Présent"
+                    // إضافة عدد الأيام الحاضرة للفرد في العمود "S/TOTAL"
                     row["S/TOTAL"] = individualPresentCount;
                     table.Rows.Add(row);
                 }
 
-                // إضافة صف لحساب الحضور "Jours Présente" لكل قسم
+                // إضافة صف "S/TOTAL" لكل قسم
                 DataRow presentCountRow = table.NewRow();
-                presentCountRow["POSTE"] = group.Specialization; // إضافة POSTE لصف "Jours Présente"
+                presentCountRow["POSTE"] = group.Specialization; // إضافة POSTE لصف "S/TOTAL"
                 presentCountRow["Name"] = "S/TOTAL";
                 for (int i = 0; i < totalDays; i++)
                 {
@@ -1142,11 +1262,51 @@ namespace System_Pointage.Form
                 }
                 presentCountRow["S/TOTAL"] = totalPresent;
                 table.Rows.Add(presentCountRow);
+
+                // إضافة صف "ecart" لكل قسم
+                DataRow ecartRow = table.NewRow();
+                ecartRow["POSTE"] = group.Specialization; // إضافة POSTE لصف "ecart"
+                ecartRow["Name"] = "ecart";
+                int totalEcart = 0;
+                for (int i = 0; i < totalDays; i++)
+                {
+                    int ecartValue =(int) group.RequiredQuantity - presentCountPerDay[i];
+                    ecartRow[$"{startDate.AddDays(i).Day}"] = ecartValue < 0 ? 0 : ecartValue;
+                    totalEcart += ecartValue;
+                }
+                ecartRow["S/TOTAL"] = Math.Max(totalEcart, 0);
+                table.Rows.Add(ecartRow);
+
             }
 
             return table;
         }
-    
+        private rpt_pointage2 LoadModifiedReport2()
+        {
+            using (var context = new DAL.DataClasses1DataContext()) // استبدل بسياق قاعدة البيانات الخاص بك
+            {
+                // استرجاع أحدث تقرير محفوظ
+                var reportEntity = context.Reports
+                    .OrderByDescending(r => r.ModifiedDate)
+                    .FirstOrDefault(r => r.ReportName == "rpt_pointage2");
+
+                if (reportEntity != null && reportEntity.ReportData != null)
+                {
+                    // تحويل byte[] إلى XtraReport
+                    using (MemoryStream ms = new MemoryStream(reportEntity.ReportData.ToArray())) // استخدام ToArray()
+                    {
+                        rpt_pointage2 report = new rpt_pointage2();
+                        report.LoadLayoutFromXml(ms); // تحميل التقرير من MemoryStream
+                        return report;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("لم يتم العثور على التقرير المعدل في قاعدة البيانات، سيتم استخدام التقرير الافتراضي.");
+                    return null; // إرجاع null إذا لم يتم العثور على التقرير المعدل
+                }
+            }
+        }
         private void btn_print_personell_monsuelle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             LoadData();
@@ -1157,10 +1317,10 @@ namespace System_Pointage.Form
         {
             DateTime startDate = dateEdit1.DateTime;
             DateTime endDate = dateEdit2.DateTime;
-            string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
+          //  string reportTitle = cmb_base.Text == "TFT" ? "TFT" : "TFY";
             int totalDays = (endDate - startDate).Days + 1;
             rpt_penalite2 report = new rpt_penalite2();
-            report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
+           // report.ReportTitle = reportTitle; // تعيين قيمة reportTitle
             
             string mois = startDate.ToString("MMMM", new System.Globalization.CultureInfo("fr-FR"));
             int annee = startDate.Year;
@@ -1208,7 +1368,7 @@ namespace System_Pointage.Form
                     // استرجاع جميع السجلات للعاملين في هذا القسم ضمن الفترة المحددة
                     var agentDetails = context.MVMAgentDetails
                         .Where(x => x.Date <= endDate) // تحقق من أي سجل حتى تاريخ endDate
-                        .Join(context.Fiche_Agents.Where(x => x.Statut == true && x.Affecter == cmb_base.Text),
+                        .Join(context.Fiche_Agents.Where(x => x.Statut == true ),
                               agent => agent.ItemID,
                               worker => worker.ID,
                               (agent, worker) => new { agent, worker })
@@ -1255,9 +1415,8 @@ namespace System_Pointage.Form
                     }
 
                     // تحقق من العدد الأقصى للغائبين بناءً على القاعدة
-                    int maxAllowedAbsences = cmb_base.Text == "TFT"
-                        ? (int)department.Nembre_Contra
-                        : (int)department.Nembre_Contra_tfw;
+                    int maxAllowedAbsences = (int)department.Nembre_Contra;
+                        
 
                     // إذا كان عدد الغائبين أكبر من العدد المسموح به، قم بضبطه
                     int validAbsentCount = Math.Min(absentAgents.Count, maxAllowedAbsences);
@@ -1282,39 +1441,30 @@ namespace System_Pointage.Form
                         }
 
                         // حساب الغيابات اليومية بناءً على القاعدة
-                        int dailyAbsences = Math.Max(0, (int)(cmb_base.Text == "TFT"
-                            ? department.Nembre_Contra
-                            : department.Nembre_Contra_tfw) - dailyPresenceCount);
+                        int dailyAbsences = Math.Max(0, (int)(department.Nembre_Contra));
+                           
 
                         totalAbsences += dailyAbsences;
                         attendanceDays += dailyPresenceCount;
                     }
 
                     // حساب الحقل 3: Nembre_Contra أو Nembre_Contra_tfw مضروب في عدد أيام الشهر
-                    int calculatedField3 = (cmb_base.Text == "TFT"
-                        ? (int)department.Nembre_Contra
-                        : (int)department.Nembre_Contra_tfw) * totalDays;
-
-                    // حساب الحقل 5: حقل 3 - حقل 2
-                    // حساب الحقل 5: حقل 3 - عدد أيام الحضور
+                    int calculatedField3 = ((int)department.Nembre_Contra);
+                            // حساب الحقل 5: حقل 3 - عدد أيام الحضور
                     int calculatedField5 = Math.Max(0, calculatedField3 - attendanceDays);
-                   // int calculatedField5 = calculatedField3 - attendanceDays;
-                    //  (cmb_base.Text == "TFT"  ? (int)department.Nembre_Contra
-                    //    : (int)department.Nembre_Contra_tfw);
+
 
                     // حساب إجمالي الغرامات
-                    float totalPenalties = (float)(totalAbsences * (cmb_base.Text == "TFT"
-                        ? department.M_Penalite
-                        : department.EmployeeCount_tfw));
-
+                    float totalPenalties = (float)(totalAbsences * (department.M_Penalite));
+                       
                     // إضافة سطر جديد للتقرير
                     DataRow row = table.NewRow();
                     row["Department"] = department.DepartmentName;
-                    row["Nembre_Contra"] = cmb_base.Text == "TFT" ? department.Nembre_Contra : department.Nembre_Contra_tfw;
+                    row["Nembre_Contra"] =  department.Nembre_Contra;
                     row["CalculatedField3"] = calculatedField3;
                     row["AttendanceDays"] = attendanceDays;
                     row["CalculatedField5"] = calculatedField5;
-                    row["M_Penalite"] = cmb_base.Text == "TFT" ? department.M_Penalite : department.EmployeeCount_tfw;
+                    row["M_Penalite"] =  department.M_Penalite;
                     row["TotalPenalties"] = totalPenalties;
 
                     // إضافة القيمة إلى المجموع

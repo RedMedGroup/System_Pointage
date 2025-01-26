@@ -26,6 +26,23 @@ namespace System_Pointage.report
             BeforePrint += Rpt_DailyReport_BeforePrint;
         }
 
+        public void Initialize(Frm_Pointage form)
+        {
+            this._frmPointage = form;
+            BindData();
+            cell_Department.BeforePrint += Cell_Department_BeforePrint;
+            cell_ncontra.BeforePrint += Cell_ncontra_BeforePrint;
+            cell_n.BeforePrint += Cell_n_BeforePrint;
+            Cell_PresentCount.BeforePrint += Cell_PresentCount_BeforePrint;
+            cell_Ecart.BeforePrint += Cell_Ecart_BeforePrint;
+            BeforePrint += Rpt_DailyReport_BeforePrint;
+        }
+        public rpt_DailyReport()
+        {
+            // تهيئة التقرير بدون frmPointage
+            InitializeComponent();
+
+        }
         private void Rpt_DailyReport_BeforePrint(object sender, CancelEventArgs e)
         {
             lastCellByDepartment.Clear();

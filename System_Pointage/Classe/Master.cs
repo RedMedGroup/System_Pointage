@@ -36,8 +36,8 @@ namespace System_Pointage.Classe
             PACR,
         }
         public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
-                new ValueAndID() { ID = (int)UserType.Admin, Name="Admin" },
-            new ValueAndID() { ID = (int)UserType.User, Name="Utilisateur"} };
+             new ValueAndID { ID = (int)UserType.Admin, Name = nameof(UserType.Admin) },
+    new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) } };
         public enum UserType
         {
             Admin = 1,
