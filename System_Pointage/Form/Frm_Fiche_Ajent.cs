@@ -26,7 +26,7 @@ namespace System_Pointage.Form
         {
             InitializeComponent();
           //  layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //btn_Delete
-            this.Size = new System.Drawing.Size(505, 195);
+            this.Size = new System.Drawing.Size(505, 220);
             New();
         }
         //public Frm_Fiche_Ajent(int id)
@@ -52,7 +52,8 @@ namespace System_Pointage.Form
 
             layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //grid
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;// btn ajouter 2
-
+            emptySpaceItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            emptySpaceItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             MasqueColumns();
             gridView1.OptionsSelection.MultiSelect = true;
             gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
@@ -92,7 +93,8 @@ namespace System_Pointage.Form
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;// btn ajouter 2
             layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;// btn ajouter 2
             layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-
+            emptySpaceItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            emptySpaceItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             int selectedPostId = (int)lkp_post.EditValue;
 
             using (var db = new DAL.DataClasses1DataContext())
@@ -186,8 +188,7 @@ namespace System_Pointage.Form
         }
         void MasqueColumns()
         {
-            //layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            //layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+           
             layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

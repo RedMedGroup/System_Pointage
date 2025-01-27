@@ -60,7 +60,7 @@ namespace System_Pointage.Classe
                 }
                 else
                 {
-                    MessageBox.Show("لم يتم العثور على التقرير المعدل في قاعدة البيانات.");
+                    MessageBox.Show("Aucun rapport modifié trouvé dans la base de données.");
                     return null;
                 }
             }

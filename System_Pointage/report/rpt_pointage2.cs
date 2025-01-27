@@ -108,5 +108,94 @@ namespace System_Pointage.report
         {
             
         }
+
+        private void cell_effec_BeforePrint(object sender, CancelEventArgs e)
+        {
+            XRTableCell cell = (XRTableCell)sender;
+
+            // Set text alignment
+            cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            // Configure cell merging
+            cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Tag;
+
+            // Retrieve department and required employees
+            var department = GetCurrentColumnValue("POSTE")?.ToString(); // استخدام عمود "Poste" لتحديد القسم
+            var requiredEmployees = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+
+            // Set the Tag property to department
+            if (!string.IsNullOrEmpty(department))
+            {
+                cell.Tag = department;
+            }
+            else
+            {
+                cell.Tag = null; // أو قيمة افتراضية
+            }
+
+            // Set the cell text to required employees
+            if (!string.IsNullOrEmpty(requiredEmployees))
+            {
+                cell.Text = requiredEmployees;
+            }
+            else
+            {
+                // إذا كانت الخلية فارغة، نتحقق من القسم ونعطيها نفس القيمة إذا كانت تابعة لنفس القسم
+                if (cell.Tag != null)
+                {
+                    cell.Text = " "; // نعطيها مسافة لضمان الدمج
+                }
+                else
+                {
+                    cell.Text = string.Empty;
+                }
+            }
+
+            //XRTableCell cell = (XRTableCell)sender;
+
+            //// Set text alignment
+            //cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            //// Configure cell merging
+            //cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            //cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Tag;
+
+            //// Retrieve department and required employees
+            //var department = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+            //var requiredEmployees = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+
+            //// Set the Tag property to department
+            //if (!string.IsNullOrEmpty(department))
+            //{
+            //    cell.Tag = department;
+            //}
+            //else
+            //{
+            //    cell.Tag = null; // or some default value
+            //}
+
+            //// Set the cell text to required employees
+            //if (!string.IsNullOrEmpty(requiredEmployees))
+            //{
+            //    cell.Text = requiredEmployees;
+            //}
+            //else
+            //{
+            //    cell.Text = string.Empty;
+            //}
+       
+
+        }
+
+        private void cell_name_BeforePrint(object sender, CancelEventArgs e)
+        {
+           
+        }
+
+        private void cell_FirstName_BeforePrint(object sender, CancelEventArgs e)
+        {
+            
+        }
     }
 }

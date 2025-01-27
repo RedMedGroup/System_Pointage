@@ -48,40 +48,59 @@ namespace System_Pointage.Form
         {
             GridView view = sender as GridView;
 
-            if (e.Column.FieldName == "POSTE" || e.Column.FieldName == "EFECTIF/CONTRAT")
+            if (e.Column.FieldName == "POSTE" || e.Column.FieldName == "EFFC/CRT")
             {
+                // الحصول على القيم من الخليتين
                 string value1 = view.GetRowCellDisplayText(e.RowHandle1, e.Column);
                 string value2 = view.GetRowCellDisplayText(e.RowHandle2, e.Column);
 
-                // دمج الخلايا إذا كانت القيم متساوية أو إذا كانت القيم فارغة تحت نفس الـ 
-                if (value1 == value2 || string.IsNullOrEmpty(value2))
+                // التحقق من شروط الدمج لكل عمود
+                if (e.Column.FieldName == "POSTE")
                 {
-                    e.Merge = true;
+                    // دمج الخلايا إذا كانت القيم متساوية أو إذا كانت القيمة الثانية فارغة
+                    if (value1 == value2 || string.IsNullOrEmpty(value2))
+                    {
+                        e.Merge = true;
+                    }
+                    else
+                    {
+                        e.Merge = false;
+                    }
                 }
-                else
+                else if (e.Column.FieldName == "EFFC/CRT")
                 {
-                    e.Merge = false;
+                    // دمج الخلايا فقط إذا كانت القيم متساوية
+                    if (value1 == value2)
+                    {
+                        e.Merge = true;
+                    }
+                    else
+                    {
+                        e.Merge = false;
+                    }
                 }
 
-                e.Handled = true;
+                e.Handled = true; // تمت معالجة الحدث
             }
             else
             {
+                // تعطيل الدمج لجميع الأعمدة الأخرى
                 e.Merge = false;
+                e.Handled = true; // تمت معالجة الحدث
             }
-            e.Handled = true;
+ 
         }
 
-        private void btn_recharch_Click(object sender, EventArgs e)
-        {
-            LoadData();
-            gridControl1.DataSource = CreateDataTable();
+        //private void btn_recharch_Click(object sender, EventArgs e)
+        //{
+        //    LoadData();
+        //    gridControl1.DataSource = CreateDataTable();
 
-            gridView1.PopulateColumns();
-            gridView1.BestFitColumns();
-            report.rpt_WorkDay repo = new rpt_WorkDay();
-            repo.ShowDesigner();
-        }
+        //    gridView1.PopulateColumns();
+        //    gridView1.BestFitColumns();
+        //    report.rpt_WorkDay repo = new rpt_WorkDay();
+        //    repo.ShowDesigner();
+        //}
        
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
@@ -94,9 +113,8 @@ namespace System_Pointage.Form
                     e.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
                 }
             }
+
         }
-
-
 
         private void GridView1_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
@@ -105,24 +123,23 @@ namespace System_Pointage.Form
                 string cellValue = e.CellValue?.ToString();
                 if (cellValue != "")
                     e.Appearance.BackColor = Color.Yellow;
-            }
-
-            if (e.Column.FieldName == "EFECTIF/CONTRAT")
+            }          
+            //if (e.Column.FieldName == "EFFC/CRT") 
+            //{
+            //    string cellValue = e.CellValue?.ToString();
+            //    if (cellValue != "")
+            //        e.Appearance.BackColor = ColorTranslator.FromHtml("#FFECB3");
+            //}
+            if (e.Column.FieldName == "Nom")
             {
                 string cellValue = e.CellValue?.ToString();
-                if (cellValue != "")
-                    e.Appearance.BackColor = ColorTranslator.FromHtml("#FFECB3");
-            }
-            if (e.Column.FieldName == "Name")
-            {
-                string cellValue = e.CellValue?.ToString();
-                if (cellValue == "P/Total" || cellValue == "A/Total")
+                if (cellValue == "S/TOTAL" || cellValue == "Ecart")
                 {
                     e.Appearance.BackColor = ColorTranslator.FromHtml("#00897B");
 
                 }
             }
-            if (e.Column.FieldName != "POSTE" && e.Column.FieldName != "Name")
+            if (e.Column.FieldName != "POSTE" && e.Column.FieldName != "Nom")
             {
                 string cellValue = e.CellValue?.ToString();
 
@@ -162,8 +179,7 @@ namespace System_Pointage.Form
                     }
                 }
             }
-        }
-      
+        }     
         private DataTable CreateDataTable()
         {
             DataTable table = new DataTable();
@@ -1142,7 +1158,9 @@ namespace System_Pointage.Form
         {
             DataTable table = new DataTable();
             table.Columns.Add("POSTE", typeof(string));
-            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Nom", typeof(string));
+            table.Columns.Add("Prénom", typeof(string));
+            table.Columns.Add("EFFC/CRT", typeof(int));
 
             DateTime startDate = dateEdit1.DateTime;
             DateTime endDate = dateEdit2.DateTime;
@@ -1194,8 +1212,9 @@ namespace System_Pointage.Form
                 {
                     DataRow row = table.NewRow();
                     row["POSTE"] = group.Specialization; // إضافة POSTE لكل فرد
-                    row["Name"] = agent.Name;
-
+                    row["Nom"] = agent.Name;
+                    row["Prénom"] = agent.FirstName; 
+                        row["EFFC/CRT"] = group.RequiredQuantity;
                     // جلب الحركات من جدول MVMAgentDetails
                     var agentMovements = context.MVMAgentDetails
                         .Where(m => m.ItemID == agent.ID)
@@ -1255,7 +1274,8 @@ namespace System_Pointage.Form
                 // إضافة صف "S/TOTAL" لكل قسم
                 DataRow presentCountRow = table.NewRow();
                 presentCountRow["POSTE"] = group.Specialization; // إضافة POSTE لصف "S/TOTAL"
-                presentCountRow["Name"] = "S/TOTAL";
+                presentCountRow["Nom"] = "S/TOTAL";
+              //  presentCountRow["Prénom"] = "S/TOTAL";
                 for (int i = 0; i < totalDays; i++)
                 {
                     presentCountRow[$"{startDate.AddDays(i).Day}"] = presentCountPerDay[i].ToString();
@@ -1266,7 +1286,8 @@ namespace System_Pointage.Form
                 // إضافة صف "ecart" لكل قسم
                 DataRow ecartRow = table.NewRow();
                 ecartRow["POSTE"] = group.Specialization; // إضافة POSTE لصف "ecart"
-                ecartRow["Name"] = "ecart";
+                ecartRow["Nom"] = "Ecart";
+               // ecartRow["Prénom"] = "Ecart";
                 int totalEcart = 0;
                 for (int i = 0; i < totalDays; i++)
                 {
@@ -1278,35 +1299,10 @@ namespace System_Pointage.Form
                 table.Rows.Add(ecartRow);
 
             }
-
+         
             return table;
         }
-        private rpt_pointage2 LoadModifiedReport2()
-        {
-            using (var context = new DAL.DataClasses1DataContext()) // استبدل بسياق قاعدة البيانات الخاص بك
-            {
-                // استرجاع أحدث تقرير محفوظ
-                var reportEntity = context.Reports
-                    .OrderByDescending(r => r.ModifiedDate)
-                    .FirstOrDefault(r => r.ReportName == "rpt_pointage2");
-
-                if (reportEntity != null && reportEntity.ReportData != null)
-                {
-                    // تحويل byte[] إلى XtraReport
-                    using (MemoryStream ms = new MemoryStream(reportEntity.ReportData.ToArray())) // استخدام ToArray()
-                    {
-                        rpt_pointage2 report = new rpt_pointage2();
-                        report.LoadLayoutFromXml(ms); // تحميل التقرير من MemoryStream
-                        return report;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("لم يتم العثور على التقرير المعدل في قاعدة البيانات، سيتم استخدام التقرير الافتراضي.");
-                    return null; // إرجاع null إذا لم يتم العثور على التقرير المعدل
-                }
-            }
-        }
+  
         private void btn_print_personell_monsuelle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             LoadData();

@@ -72,6 +72,9 @@ namespace System_Pointage.DAL
     partial void InsertReport(Report instance);
     partial void UpdateReport(Report instance);
     partial void DeleteReport(Report instance);
+    partial void InsertConfig_Jour(Config_Jour instance);
+    partial void UpdateConfig_Jour(Config_Jour instance);
+    partial void DeleteConfig_Jour(Config_Jour instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -213,6 +216,14 @@ namespace System_Pointage.DAL
 			get
 			{
 				return this.GetTable<Report>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Config_Jour> Config_Jours
+		{
+			get
+			{
+				return this.GetTable<Config_Jour>();
 			}
 		}
 	}
@@ -2469,7 +2480,7 @@ namespace System_Pointage.DAL
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _Id;
+		private int _ID;
 		
 		private string _ReportName;
 		
@@ -2481,8 +2492,8 @@ namespace System_Pointage.DAL
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
     partial void OnReportNameChanging(string value);
     partial void OnReportNameChanged();
     partial void OnReportDataChanging(System.Data.Linq.Binary value);
@@ -2496,22 +2507,22 @@ namespace System_Pointage.DAL
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
 		{
 			get
 			{
-				return this._Id;
+				return this._ID;
 			}
 			set
 			{
-				if ((this._Id != value))
+				if ((this._ID != value))
 				{
-					this.OnIdChanging(value);
+					this.OnIDChanging(value);
 					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
 				}
 			}
 		}
@@ -2572,6 +2583,92 @@ namespace System_Pointage.DAL
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Config_Jour")]
+	public partial class Config_Jour : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _Jour;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnJourChanging(int value);
+    partial void OnJourChanged();
+    #endregion
+		
+		public Config_Jour()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Jour", DbType="Int NOT NULL")]
+		public int Jour
+		{
+			get
+			{
+				return this._Jour;
+			}
+			set
+			{
+				if ((this._Jour != value))
+				{
+					this.OnJourChanging(value);
+					this.SendPropertyChanging();
+					this._Jour = value;
+					this.SendPropertyChanged("Jour");
+					this.OnJourChanged();
 				}
 			}
 		}

@@ -525,11 +525,21 @@ namespace System_Pointage.Classe
                 case Master.MVMType.P:
                     using (var context = new DAL.DataClasses1DataContext())
                     {
+                        // استرجاع قيمة Jour من جدول Config_Jour
+                        var configJour = context.Config_Jours.FirstOrDefault(); // افترضنا أن هناك سجل واحد فقط في الجدول
+
+                        if (configJour == null)
+                        {
+                            throw new Exception("لم يتم العثور على أي سجل في جدول Config_Jour.");
+                        }
+
+                        int jour = configJour.Jour;
+
                         // استرجاع أحدث سجل لكل عامل
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
                             .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
-                            .Where(m => m.Statut == "CR" &&m.ID_Attent_Liste==null) // التأكد من أن الحالة "P"
+                            .Where(m => m.Statut == "CR" && m.ID_Attent_Liste == null) // التأكد من أن الحالة "CR"
                             .ToList();
 
                         // الربط بين الجداول بعد التحقق من الحالة
@@ -538,27 +548,27 @@ namespace System_Pointage.Classe
                                   m => m.ItemID,
                                   agent => agent.ID,
                                   (m, agent) => new { m, agent })
-                                     .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
-                  ma => ma.agent.ID_Post,
-                  poste => poste.ID,
-                  (ma, poste) => new
-                  {
-                      ma.agent.Matricule,
-                      ma.agent.Name,
-                      ma.m.Date,
-                      ma.m.Statut,
-                      ma.agent.Jour,
-                      PosteName = poste.Name,
-                      ma.agent.ScreenPosteD,
-                      ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),
-                      DaysCount = ma.m.Statut == "P"
-                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
-                    : ma.m.Statut == "CR"
-                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
-                        : 0 // الحالات الأخرى
-                  }) // اختيار Name من Fiche_Agents
-                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+                                  ma => ma.agent.ID_Post,
+                                  poste => poste.ID,
+                                  (ma, poste) => new
+                                  {
+                                      ma.agent.Matricule,
+                                      ma.agent.Name,
+                                      ma.agent.FirstName,
+                                      ma.m.Date,
+                                      ma.m.Statut,
+                                      PosteName = poste.Name,
+                                      ma.agent.ScreenPosteD,
+                                      ma.agent.Affecter,
+                                      CalculatedDate = ma.m.Date.AddDays(jour), // استخدام Jour من Config_Jour
+                                      DaysCount = ma.m.Statut == "P"
+                                        ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                                        : ma.m.Statut == "CR"
+                                            ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                                            : 0 // الحالات الأخرى
+                                  }) // اختيار Name من Fiche_Agents
+                            .Where(x => (selectedDate - x.Date).TotalDays >= jour) // استخدام Jour من Config_Jour
                             .ToList();
 
                         // إنشاء BindingList جديدة
@@ -567,26 +577,36 @@ namespace System_Pointage.Classe
                             {
                                 Matricule = x.Matricule,
                                 Name = x.Name,
+                                FirstName = x.FirstName,
                                 Poste = x.PosteName,
                                 screenPosteD = x.ScreenPosteD ?? 0,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
-                                Jour = x.Jour ,
+                                Jour = jour, // استخدام Jour من Config_Jour
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
                                 Statut = x.Statut,
-                                Difference = (x.DaysCount - (x.Jour ))
+                                Difference = (x.DaysCount - jour) // استخدام Jour من Config_Jour
                             }).ToList()
                         );
 
                         FilterGrid();
-                        // gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
                     break;
                 case Master.MVMType.CR:
                     using (var context = new DAL.DataClasses1DataContext())
                     {
+                        // استرجاع قيمة Jour من جدول Config_Jour
+                        var configJour = context.Config_Jours.FirstOrDefault(); // افترضنا أن هناك سجل واحد فقط في الجدول
+
+                        if (configJour == null)
+                        {
+                            throw new Exception("لم يتم العثور على أي سجل في جدول Config_Jour.");
+                        }
+
+                        int jour = configJour.Jour;
+
                         // استرجاع أحدث سجل لكل عامل
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
@@ -600,28 +620,27 @@ namespace System_Pointage.Classe
                                   m => m.ItemID,
                                   agent => agent.ID,
                                   (m, agent) => new { m, agent })
-                                     .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
-                  ma => ma.agent.ID_Post,
-                  poste => poste.ID,
-                  (ma, poste) => new
-                  {
-                      ma.agent.Matricule,
-                      ma.agent.Name,
-                      ma.m.Date,
-                      ma.m.Statut,
-                      ma.agent.Jour,
-                      PosteName = poste.Name,
-                      ma.agent.ScreenPosteD,
-                      ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),// حساب التاريخ
-                      DaysCount = ma.m.Statut == "P"
-                    ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
-                    : ma.m.Statut == "CR"
-                        ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
-                        : 0 // الحالات الأخرى
-
-                  }) // اختيار Name من Fiche_Agents
-                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+                                  ma => ma.agent.ID_Post,
+                                  poste => poste.ID,
+                                  (ma, poste) => new
+                                  {
+                                      ma.agent.Matricule,
+                                      ma.agent.Name,
+                                      ma.agent.FirstName,
+                                      ma.m.Date,
+                                      ma.m.Statut,
+                                      PosteName = poste.Name,
+                                      ma.agent.ScreenPosteD,
+                                      ma.agent.Affecter,
+                                      CalculatedDate = ma.m.Date.AddDays(jour), // استخدام Jour من Config_Jour
+                                      DaysCount = ma.m.Statut == "P"
+                                        ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+                                        : ma.m.Statut == "CR"
+                                            ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+                                            : 0 // الحالات الأخرى
+                                  }) // اختيار Name من Fiche_Agents
+                            .Where(x => (selectedDate - x.Date).TotalDays >= jour) // استخدام Jour من Config_Jour
                             .ToList();
 
                         // إنشاء BindingList جديدة
@@ -630,28 +649,160 @@ namespace System_Pointage.Classe
                             {
                                 Matricule = x.Matricule,
                                 Name = x.Name,
+                                FirstName=x.FirstName,
                                 Poste = x.PosteName,
                                 screenPosteD = x.ScreenPosteD ?? 0,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
-                                Jour = x.Jour,
+                                Jour = jour, // استخدام Jour من Config_Jour
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
                                 Statut = x.Statut,
-                                Difference = (x.DaysCount - (x.Jour))
+                                Difference = (x.DaysCount - jour) // استخدام Jour من Config_Jour
                             }).ToList()
                         );
+
                         FilterGrid();
-                        //gridControl1_Prvu.DataSource = transferredAgentsList;
                         GridName();
                     }
-
                     break;
                 default:
                     break;
-
             }
         }
+        //private void LoadEligibleEmployees(DateTime selectedDate)
+        //{
+        //    switch (Type)
+        //    {
+        //        case Master.MVMType.P:
+        //            using (var context = new DAL.DataClasses1DataContext())
+        //            {
+        //                // استرجاع أحدث سجل لكل عامل
+        //                var latestStatusForEachEmployee = context.MVMAgentDetails
+        //                    .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
+        //                    .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
+        //                    .Where(m => m.Statut == "CR" &&m.ID_Attent_Liste==null) // التأكد من أن الحالة "P"
+        //                    .ToList();
+
+        //                // الربط بين الجداول بعد التحقق من الحالة
+        //                var eligibleEmployees = latestStatusForEachEmployee
+        //                    .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
+        //                          m => m.ItemID,
+        //                          agent => agent.ID,
+        //                          (m, agent) => new { m, agent })
+        //                             .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+        //          ma => ma.agent.ID_Post,
+        //          poste => poste.ID,
+        //          (ma, poste) => new
+        //          {
+        //              ma.agent.Matricule,
+        //              ma.agent.Name,
+        //              ma.m.Date,
+        //              ma.m.Statut,
+        //              ma.agent.Jour,
+        //              PosteName = poste.Name,
+        //              ma.agent.ScreenPosteD,
+        //              ma.agent.Affecter,
+        //              CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),
+        //              DaysCount = ma.m.Statut == "P"
+        //            ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+        //            : ma.m.Statut == "CR"
+        //                ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+        //                : 0 // الحالات الأخرى
+        //          }) // اختيار Name من Fiche_Agents
+        //                    .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+        //                    .ToList();
+
+        //                // إنشاء BindingList جديدة
+        //                transferredAgentsList = new BindingList<Models.AgentStatus>(
+        //                    eligibleEmployees.Select(x => new Models.AgentStatus
+        //                    {
+        //                        Matricule = x.Matricule,
+        //                        Name = x.Name,
+        //                        Poste = x.PosteName,
+        //                        screenPosteD = x.ScreenPosteD ?? 0,
+        //                        Affecter = x.Affecter,
+        //                        Date = x.Date,
+        //                        Jour = x.Jour ,
+        //                        CalculatedDate = x.CalculatedDate,
+        //                        DaysCount = x.DaysCount,
+        //                        Statut = x.Statut,
+        //                        Difference = (x.DaysCount - (x.Jour ))
+        //                    }).ToList()
+        //                );
+
+        //                FilterGrid();
+        //                GridName();
+        //            }
+        //            break;
+        //        case Master.MVMType.CR:
+        //            using (var context = new DAL.DataClasses1DataContext())
+        //            {
+        //                // استرجاع أحدث سجل لكل عامل
+        //                var latestStatusForEachEmployee = context.MVMAgentDetails
+        //                    .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
+        //                    .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
+        //                    .Where(m => m.Statut == "P" && m.ID_Attent_Liste == null) // التأكد من أن الحالة "P"
+        //                    .ToList();
+
+        //                // الربط بين الجداول بعد التحقق من الحالة
+        //                var eligibleEmployees = latestStatusForEachEmployee
+        //                    .Join(context.Fiche_Agents, // الربط بين Fiche_Agents و MVMAgentDetails
+        //                          m => m.ItemID,
+        //                          agent => agent.ID,
+        //                          (m, agent) => new { m, agent })
+        //                             .Join(context.Fiche_Postes, // الربط مع جدول Fiche_Poste
+        //          ma => ma.agent.ID_Post,
+        //          poste => poste.ID,
+        //          (ma, poste) => new
+        //          {
+        //              ma.agent.Matricule,
+        //              ma.agent.Name,
+        //              ma.m.Date,
+        //              ma.m.Statut,
+        //              ma.agent.Jour,
+        //              PosteName = poste.Name,
+        //              ma.agent.ScreenPosteD,
+        //              ma.agent.Affecter,
+        //              CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour),// حساب التاريخ
+        //              DaysCount = ma.m.Statut == "P"
+        //            ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
+        //            : ma.m.Statut == "CR"
+        //                ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
+        //                : 0 // الحالات الأخرى
+
+        //          }) // اختيار Name من Fiche_Agents
+        //                    .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+        //                    .ToList();
+
+        //                // إنشاء BindingList جديدة
+        //                transferredAgentsList = new BindingList<Models.AgentStatus>(
+        //                    eligibleEmployees.Select(x => new Models.AgentStatus
+        //                    {
+        //                        Matricule = x.Matricule,
+        //                        Name = x.Name,
+        //                        Poste = x.PosteName,
+        //                        screenPosteD = x.ScreenPosteD ?? 0,
+        //                        Affecter = x.Affecter,
+        //                        Date = x.Date,
+        //                        Jour = x.Jour,
+        //                        CalculatedDate = x.CalculatedDate,
+        //                        DaysCount = x.DaysCount,
+        //                        Statut = x.Statut,
+        //                        Difference = (x.DaysCount - (x.Jour))
+        //                    }).ToList()
+        //                );
+        //                FilterGrid();
+        //                //gridControl1_Prvu.DataSource = transferredAgentsList;
+        //                GridName();
+        //            }
+
+        //            break;
+        //        default:
+        //            break;
+
+        //    }
+        //}
         void FilterGrid()
         {// التحقق مما إذا كان المستخدم أدمن
             bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;

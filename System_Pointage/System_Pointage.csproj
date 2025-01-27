@@ -100,6 +100,9 @@
     <Compile Include="Classe\ReportManager.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
     <Compile Include="Classe\UserLogAction.cs" />
+    <Compile Include="DAL\DataClasses1.cs">
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Form\BackUp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +126,12 @@
     </Compile>
     <Compile Include="Form\frm_AccessProfile.Designer.cs">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_Config_Generale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Config_Generale.Designer.cs">
+      <DependentUpon>Frm_Config_Generale.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_Debut_MTR.cs">
       <SubType>Form</SubType>
@@ -370,6 +379,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frm_AccessProfile.resx">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Config_Generale.resx">
+      <DependentUpon>Frm_Config_Generale.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Debut_MTR.resx">
       <DependentUpon>Frm_Debut_MTR.cs</DependentUpon>
