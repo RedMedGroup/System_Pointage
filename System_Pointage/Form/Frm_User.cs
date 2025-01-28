@@ -90,7 +90,7 @@ namespace System_Pointage.Form
             }
             if (txt_PWD.Text.Trim() == string.Empty)
             {
-                txt_PWD.Text = ErrorText;
+                txt_PWD.ErrorText = ErrorText;
                 return false;
             }
             if (lkp_UserType.Text.Trim() == string.Empty)
@@ -111,7 +111,15 @@ namespace System_Pointage.Form
                     return false;
                 }
             }
-           
+            if (lkp_UserType.EditValue is int userTypeId2 && (UserType)userTypeId2 == UserType.Manager)
+            {
+                if (lkp_ScreanProfileID.Text.Trim() == string.Empty)
+                {
+                    lkp_ScreanProfileID.ErrorText = ErrorText;
+                    return false;
+                }
+               
+            }
             return true;
         }
         public  void Save()
@@ -142,16 +150,42 @@ namespace System_Pointage.Form
 
         private void lkp_UserType_EditValueChanged(object sender, EventArgs e)
         {
-            if (lkp_UserType.EditValue is int userTypeId && (UserType)userTypeId == UserType.User)
+            if (lkp_UserType.EditValue is int userTypeId)
             {
-                layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                if (userTypeId == (int)UserType.User)
+                {
+                    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else if (userTypeId == (int)UserType.Admin)
+                {
+                    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else if (userTypeId == (int)UserType.Manager)
+                {
+                    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
             }
-            else
-            {
-                layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            }
+
+
+            //if (lkp_UserType.EditValue is int userTypeId && (UserType)userTypeId == UserType.User)
+            //{
+            //    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            //    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            //}
+            //if (lkp_UserType.EditValue is int userTypeId2 && (UserType)userTypeId2 == UserType.Admin)
+            //{
+            //    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //}
+            //if (lkp_UserType.EditValue is int userTypeId3 && (UserType)userTypeId3 == UserType.Manager)
+            //{
+            //    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+            //}
         }
     }
 }

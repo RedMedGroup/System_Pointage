@@ -101,8 +101,8 @@ namespace System_Pointage.Form
             treeList1.Columns["Name"].Caption= "Poste";
             treeList1.Columns["Nembre_Contra"].Caption = "CONTRACTUEL(TFT)";
             treeList1.Columns["M_Penalite"].Caption = "Pénalité(TFT)";
-            treeList1.Columns["EmployeeCount_tfw"].Visible =false;
-            treeList1.Columns["Nembre_Contra_tfw"].Visible = false;
+            //treeList1.Columns["EmployeeCount_tfw"].Visible =false;
+            //treeList1.Columns["Nembre_Contra_tfw"].Visible = false;
             treeList1.Columns["Departement"].Visible =false;
 
         }
@@ -124,8 +124,8 @@ namespace System_Pointage.Form
             un.Departement = Convert.ToInt32(lkp_ScreanPoste.EditValue);
             un.Nembre_Contra = Convert.ToInt32(spn_contra.EditValue);
             un.M_Penalite = Convert.ToInt32(spn_penalite.EditValue);
-             un.Nembre_Contra_tfw= 0;
-            un.EmployeeCount_tfw = 0 ;
+            // un.Nembre_Contra_tfw= 0;
+            //un.EmployeeCount_tfw = 0 ;
         }
 
         private void btn_save_Click(object sender, EventArgs e)

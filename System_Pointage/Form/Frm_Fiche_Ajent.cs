@@ -222,7 +222,7 @@ namespace System_Pointage.Form
             agent.Name = txt_Name.Text;
             agent.FirstName=txt_FirstName.Text;
             agent.ID_Post = Convert.ToInt32(lkp_post.EditValue);
-            agent.Jour = Convert.ToInt32(spn_jour.EditValue);
+           // agent.Jour = Convert.ToInt32(spn_jour.EditValue);
             agent.Date_Embauche = dt_embouch.DateTime;
             agent.ScreenPosteD = Convert.ToInt32(lkp_ScreanPoste.EditValue);
             agent.Matricule=txt_matricule.Text;
@@ -241,7 +241,7 @@ namespace System_Pointage.Form
             txt_Name.Text = agent.Name;
             txt_FirstName.Text = agent.FirstName;
             lkp_post.EditValue = agent.ID_Post;
-            spn_jour.EditValue= agent.Jour;
+           // spn_jour.EditValue= agent.Jour;
             dt_embouch.DateTime = agent.Date_Embauche;
             lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
             txt_matricule.Text=agent.Matricule;
@@ -318,6 +318,8 @@ namespace System_Pointage.Form
         {
             if (IsValidit() == false)
                 return;
+            if (!Master.ConfirmSave())
+                return;
             UserLogAction.ActionType actionType = agent.ID == 0 ? UserLogAction.ActionType.Add : UserLogAction.ActionType.Edit;
 
             UserLogAction userLogAction = new UserLogAction
@@ -354,7 +356,7 @@ namespace System_Pointage.Form
                  ? $": {agent.Name} Ajouter-" 
                  : $": {agent.Name} Modifier-";
                 }
-                XtraMessageBox.Show("Enregistrer succés");
+                Master.MessageBox();
                 // New();
                 SaveEmptyTextEdite();
             },actionType);
@@ -366,7 +368,7 @@ namespace System_Pointage.Form
             agent = new DAL.Fiche_Agent();
             txt_Name.Text = agent.Name;
             txt_FirstName.Text = agent.FirstName;
-            spn_jour.EditValue = agent.Jour;
+           // spn_jour.EditValue = agent.Jour;
             dt_embouch.DateTime = agent.Date_Embauche;
             lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
             txt_matricule.Text = agent.Matricule;
@@ -429,12 +431,15 @@ namespace System_Pointage.Form
                 txt_Name.Text = agent.Name;
                 txt_FirstName.Text = agent.FirstName;
                 lkp_post.EditValue = agent.ID_Post;
-                spn_jour.EditValue = agent.Jour;
+               // spn_jour.EditValue = agent.Jour;
                 dt_embouch.DateTime = agent.Date_Embauche;
                 lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
                 txt_matricule.Text = agent.Matricule;
                 cmb_affecte.Text = agent.Affecter;
-                cmb_statut.Text = agent.Statut.GetValueOrDefault() ? "Actif" : "Inactif";
+                cmb_statut.Text = agent.Statut ? "Actif" : "Inactif";
+
+              //  cmb_statut.Text = agent.Statut.GetValueOrDefault(false) ? "Actif" : "Inactif";
+
             }
         }
 
@@ -491,16 +496,7 @@ namespace System_Pointage.Form
                 MinimizeBox = false,
             };
 
-            //CheckedComboBoxEdit checkBox1 = new CheckedComboBoxEdit
-            //{
-            //    Text = "Statut",
-            //    Location = new System.Drawing.Point(20, 20),
-            //    AutoSize = true
-            //};
-           // checkBox1.Properties.Items.Add("P");
-          //  checkBox1.Properties.Items.Add("CR");
-
-          //  dialog.Controls.Add(checkBox1);
+          
 
             DateEdit dateEdit = new DateEdit
             {

@@ -82,6 +82,10 @@ namespace System_Pointage.Form
                 case Master.MVMType.P:
                     using (var context = new DAL.DataClasses1DataContext())
                     {
+                        var configJour = context.Config_Jours.FirstOrDefault();
+                        if (configJour == null) throw new Exception("Config_Jour not found");
+                        int jourValue = configJour.Jour;
+
                         // استرجاع أحدث سجل لكل عامل
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
@@ -103,18 +107,19 @@ namespace System_Pointage.Form
                       ma.agent.Name,
                       ma.m.Date,
                       ma.m.Statut,
-                      ma.agent.Jour,
+                    //  ma.agent.Jour,
                       PosteName = poste.Name,
                       ma.agent.Matricule,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour) ,
+                      CalculatedDate = ma.m.Date.AddDays(jourValue),
+                     // CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour) ,
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
                         ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
                         : 0 // الحالات الأخرى
                   }) // اختيار Name من Fiche_Agents
-                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .Where(x => (selectedDate - x.Date).TotalDays >= jourValue) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
                             .ToList();
 
                         // إنشاء BindingList جديدة
@@ -124,7 +129,7 @@ namespace System_Pointage.Form
                                 Name = x.Name,
                                 Date = x.Date,
                                 Statut = x.Statut,
-                                Jour = x.Jour ,
+                                Jour = jourValue,
                                 Poste = x.PosteName,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
@@ -141,6 +146,10 @@ namespace System_Pointage.Form
                 case Master.MVMType.CR:
                     using (var context = new DAL.DataClasses1DataContext())
                     {
+                        var configJour = context.Config_Jours.FirstOrDefault();
+                        if (configJour == null) throw new Exception("Config_Jour not found");
+                        int jourValue = configJour.Jour;
+
                         // استرجاع أحدث سجل لكل عامل
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
@@ -162,11 +171,11 @@ namespace System_Pointage.Form
                       ma.agent.Name,
                       ma.m.Date,
                       ma.m.Statut,
-                      ma.agent.Jour,
+                     // ma.agent.Jour,
                       PosteName = poste.Name,
                       ma.agent.Matricule,
                       ma.agent.Affecter,
-                      CalculatedDate = ma.m.Date.AddDays(ma.agent.Jour) ,// حساب التاريخ
+                      CalculatedDate = ma.m.Date.AddDays(jourValue),// حساب التاريخ
                       DaysCount = ma.m.Statut == "P"
                     ? (DateTime.Now - ma.m.Date).Days // إذا كان يعمل
                     : ma.m.Statut == "CR"
@@ -174,7 +183,7 @@ namespace System_Pointage.Form
                         : 0 // الحالات الأخرى
 
                   }) // اختيار Name من Fiche_Agents
-                            .Where(x => (selectedDate - x.Date).TotalDays >= x.Jour) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
+                            .Where(x => (selectedDate - x.Date).TotalDays >= jourValue) // تحقق من الأيام بين تاريخ العمل والتاريخ المختار
                             .ToList();
 
                         // إنشاء BindingList جديدة
@@ -184,7 +193,7 @@ namespace System_Pointage.Form
                                 Name = x.Name,
                                 Date = x.Date,
                                 Statut = x.Statut,
-                                Jour = x.Jour ,
+                                Jour = jourValue,
                                 Poste = x.PosteName,
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,

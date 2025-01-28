@@ -37,11 +37,13 @@ namespace System_Pointage.Classe
         }
         public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
              new ValueAndID { ID = (int)UserType.Admin, Name = nameof(UserType.Admin) },
-    new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) } };
+    new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) },
+         new ValueAndID { ID = (int)UserType.Manager, Name = nameof(UserType.Manager) }};
         public enum UserType
         {
             Admin = 1,
             User,
+            Manager
         }
         public enum Actions
         {
@@ -130,12 +132,25 @@ namespace System_Pointage.Classe
             //lkp.Properties.Columns[valuMember].Visible = false;
             lkp.Properties.NullText = "";
         }
-             public static void MessageBox()
+
+        public static bool ConfirmSave()
+        {
+            var result = XtraMessageBox.Show(
+                "Voulez-vous vraiment enregistrer les données ?",
+                "Confirmation d'enregistrement",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            return result == DialogResult.Yes;
+        }
+
+        public static void MessageBox()
         {
             XtraMessageBox.Show("Enregistrer succès", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
-    public static string ErrorText
+        public static string ErrorText
         {
             get
             {

@@ -27,7 +27,6 @@ namespace System_Pointage.report
         {
             var reportManager = new WorkDayReportManager();
             reportManager.OpenReportDesigner();
-
         }   
 
         private void btn_EtatJournal_Click(object sender, EventArgs e)
@@ -44,6 +43,12 @@ namespace System_Pointage.report
         private void btn_rpt_pointage_Click(object sender, EventArgs e)
         {
             var reportManager = new EtatPointageReportManager();
+            reportManager.OpenReportDesigner();
+        }
+
+        private void simpleButton4_Click(object sender, EventArgs e)
+        {
+            var reportManager = new EtatPénalitesReportManager();
             reportManager.OpenReportDesigner();
         }
     }

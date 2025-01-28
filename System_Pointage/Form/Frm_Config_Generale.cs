@@ -19,19 +19,25 @@ namespace System_Pointage.Form
 
         private void accordionControlElement1_Click(object sender, EventArgs e)
         {
-            // إنشاء مثيل من Form1
             report.Frm_Report_Config form1 = new report.Frm_Report_Config();
 
-            // تعيين أسلوب الإغلاق للعرض
             form1.TopLevel = false;
             form1.FormBorderStyle = FormBorderStyle.None;
             form1.Dock = DockStyle.Fill;
-
-            // إضافة Form1 إلى layoutControl1
-            layoutControl1.Controls.Clear(); // مسح أي عناصر موجودة
+            layoutControl1.Controls.Clear(); 
             layoutControl1.Controls.Add(form1);
+            form1.Show();
+        }
 
-            // إظهار Form1
+        private void accordionControlElement2_Click(object sender, EventArgs e)
+        {
+            Frm_Config_JourTravail form1 = new Frm_Config_JourTravail();
+
+            form1.TopLevel = false;
+            form1.FormBorderStyle = FormBorderStyle.None;
+            form1.Dock = DockStyle.Fill;
+            layoutControl1.Controls.Clear(); 
+            layoutControl1.Controls.Add(form1);
             form1.Show();
         }
     }

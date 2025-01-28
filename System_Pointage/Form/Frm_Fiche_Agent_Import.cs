@@ -300,7 +300,7 @@ namespace System_Pointage.Form
                                 Name = name,
                                 FirstName=firstname,
                                 ID_Post = poste.ID,
-                                Jour = jour,
+                                //Jour = jour,
                                 Date_Embauche = date,// ?? default(DateTime),
                                 ScreenPosteD = departement.ID,
                                 Affecter = affecter,

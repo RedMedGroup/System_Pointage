@@ -124,7 +124,7 @@ namespace System_Pointage.Classe
 
         protected override XtraReport CreateDefaultReport()
         {
-            return new rpt_DailyReport(); // إنشاء التقرير الافتراضي
+            return new rpt_DailyReport(); 
         }
     }
 
@@ -134,11 +134,19 @@ namespace System_Pointage.Classe
 
         protected override XtraReport CreateDefaultReport()
         {
-            return new rpt_pointage2(); // إنشاء التقرير الافتراضي
+            return new rpt_pointage2();
         }
     }
 
-    
+    public class EtatPénalitesReportManager : ReportManager
+    {
+        protected override string ReportName => "rpt_penalite2";
+
+        protected override XtraReport CreateDefaultReport()
+        {
+            return new rpt_penalite2(); 
+        }
+    }
     public class LoadModifiedReportClass//pour confirmer dans la base de donné copy de raport
     {
         private readonly DAL.DataClasses1DataContext _context;

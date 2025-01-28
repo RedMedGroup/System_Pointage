@@ -37,12 +37,14 @@ namespace System_Pointage.Form
         {
             var agentDataService = new AgentDataService();
 
-            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+            // التحقق مما إذا كان المستخدم أدمن أو مانجر
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
 
-            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+            // إذا لم يكن أدمن أو مانجر، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
             var filteredAgents = agentDataService
-         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true, "Frm_WorkDays")
+         .GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdminOrManager,selectedID, true, "Frm_WorkDays")
          .Where(agent => agent.DaysCount > agent.Jour)
          .ToList();
 
@@ -73,6 +75,7 @@ namespace System_Pointage.Form
             gridView1.Columns["Difference"].VisibleIndex = 8;
             gridView1.Columns["Statut"].VisibleIndex = 9;
             gridView1.Columns["screenPosteD"].Visible = false;
+            gridView1.Columns["Statutmvm"].Visible = false;
         }
 
         private void ShowWorkDayReport()

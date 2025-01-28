@@ -41,11 +41,21 @@ namespace System_Pointage.Classe
 
             return false;
         }
-        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
+        public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin, int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
         {
+            // استرجاع قيمة Jour من جدول Config_Jour
+            var configJour = _context.Config_Jours.FirstOrDefault(); // افترضنا أن هناك سجل واحد فقط في الجدول
+
+            if (configJour == null)
+            {
+                throw new Exception("Aucun enregistrement trouvé dans la table Config_Jour.");
+            }
+
+            int jour = configJour.Jour;
+
             var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
             IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
-            // تحديد الشرط بناءً على fetchNullOnly
+
             if (fetchNullOnly)
             {
                 agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
@@ -54,65 +64,10 @@ namespace System_Pointage.Classe
             {
                 agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == idAttentListe);
             }
-            //if (formName == "Frm_Heir" /*|| formName == "Frm_WorkDays"*/)
-            //{
-                #region
-   //             agentsQuery = agentsQueryF
-   //.GroupBy(agent => agent.ItemID)
-   //.ToList() // تحميل البيانات إلى الذاكرة
-   //.Select(g =>
-   //{
-   //    var orderedRecords = g.OrderBy(x => x.Date).ToList();
 
-   //    // البحث عن أول حالة "P" بعد "CR"
-   //    bool foundCR = false; // هل وجدنا "CR"
-   //    foreach (var record in orderedRecords)
-   //    {
-   //        if (record.Statut == "CR")
-   //        {
-   //            foundCR = true; // وجدنا عطلة
-   //        }
-   //        else if (record.Statut == "P" && foundCR)
-   //        {
-   //            return record; // أول حضور بعد عطلة
-   //        }
-   //    }
-   //    foreach (var record in orderedRecords)
-   //    {
-   //        if (record.Statut == "CR")
-   //        {
-   //            return record;// وجدنا عطلة
-   //        }
-   //    }
-   //    // إذا لم يتم العثور على الحضور بعد "CR"، ارجع إلى أول سجل
-   //    return orderedRecords.FirstOrDefault();
-   //})
-   //.Where(agent => agent != null)
-   //.Join(_context.Fiche_Agents.Where(x => x.Statut == true),
-   //agent => agent.ItemID,
-   //worker => worker.ID,
-   //(agent, worker) => new { agent, worker })
-   //.Join(_context.Fiche_Postes,
-   //ma => ma.worker.ID_Post,
-   //poste => poste.ID,
-   //(ma, poste) => new
-   //{
-   //    ma.worker,
-   //    ma.agent,
-   //    poste.Name,
-   //    ma.worker.Jour,
-   //});
-                #endregion
-
-
-
-            //}
-
-
-            if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir" )
+            if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir")
             {
-                // استعلام أساسي
-                 agentsQuery = agentsQueryF
+                agentsQuery = agentsQueryF
                     .GroupBy(agent => agent.ItemID)
                     .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
                     .Where(agent => agent != null)
@@ -128,23 +83,17 @@ namespace System_Pointage.Classe
                             ma.worker,
                             ma.agent,
                             poste.Name,
-                            ma.worker.Jour,
+                            // تمت إزالة ma.worker.Jour لأننا سنستخدم jour من Config_Jour
                         });
             }
 
-
-            // تطبيق الفلترة بناءً على userAccessPosteID إذا لم يكن المستخدم أدمن
             if (!isAdmin && userAccessPosteID.HasValue)
             {
                 agentsQuery = agentsQuery.Where(ma => ma.worker.ScreenPosteD == userAccessPosteID.Value);
             }
 
-        
-
-            // تصفية حسب النوع
             switch (type)
             {
-
                 case Master.MVMType.P:
                     agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "A");
                     break;
@@ -156,13 +105,12 @@ namespace System_Pointage.Classe
                 case Master.MVMType.CR:
                     if (formName == "Frm_Heir"/*|| formName == "Frm_WorkDays"*/)
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "P");
-                    else if ( formName == "Frm_WorkDays")
-                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" );
-                    else// frm_operation partant/
+                    else if (formName == "Frm_WorkDays")
+                        agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P");
+                    else
                         agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
-
                     break;
-               
+
                 default:
                     throw new NotImplementedException();
             }
@@ -176,25 +124,120 @@ namespace System_Pointage.Classe
                     Date = ma.agent.Date,
                     Statut = ma.agent.Statut,
                     Poste = ma.Name,
-                    screenPosteD =ma.worker.ScreenPosteD ??0,
-                    Jour = ma.Jour,
-                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
+                    screenPosteD = ma.worker.ScreenPosteD ?? 0,
+                    Jour = jour, // استخدام Jour من Config_Jour
+                    CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(jour), // استخدام Jour من Config_Jour
                     Matricule = ma.worker.Matricule,
                     Affecter = ma.worker.Affecter,
                     DaysCount = ma.agent.Statut == "P"
-                  ? (DateTime.Now - ma.agent.Date).Days 
-                 : ma.agent.Statut == "CR"
-                   ? (DateTime.Now - ma.agent.Date).Days 
-                  : 0, // في الحالات الأخرى، القيمة 0
+                        ? (DateTime.Now - ma.agent.Date).Days
+                        : ma.agent.Statut == "CR"
+                            ? (DateTime.Now - ma.agent.Date).Days
+                            : 0, // في الحالات الأخرى، القيمة 0
                     Difference = 0
                 })
                 .ToList();
+
             foreach (var agent in agents)
             {
-                agent.Difference = agent.DaysCount - agent.Jour;
+                agent.Difference = agent.DaysCount - agent.Jour; // استخدام Jour من Config_Jour
             }
+
             return new BindingList<Models.AgentStatus>(agents);
         }
+        //public BindingList<Models.AgentStatus> GetAgentStatuses(int? userAccessPosteID, Master.MVMType type, bool isAdmin ,int? idAttentListe = null, bool fetchNullOnly = false, string formName = null)
+        //{
+        //    var agentsQueryF = _context.MVMAgentDetails.AsQueryable();
+        //    IEnumerable<dynamic> agentsQuery = Enumerable.Empty<dynamic>();
+        //    if (fetchNullOnly)
+        //    {
+        //        agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == null);
+        //    }
+        //    else
+        //    {
+        //        agentsQueryF = agentsQueryF.Where(x => x.ID_Attent_Liste == idAttentListe);
+        //    }
+
+
+        //    if (formName == "frm_op" || formName == "Frm_WorkDays" || formName == "Frm_Heir" )
+        //    {
+        //         agentsQuery = agentsQueryF
+        //            .GroupBy(agent => agent.ItemID)
+        //            .Select(g => g.OrderByDescending(x => x.Date).FirstOrDefault())
+        //            .Where(agent => agent != null)
+        //            .Join(_context.Fiche_Agents.Where(x => x.Statut == true),
+        //                agent => agent.ItemID,
+        //                worker => worker.ID,
+        //                (agent, worker) => new { agent, worker })
+        //            .Join(_context.Fiche_Postes,
+        //                ma => ma.worker.ID_Post,
+        //                poste => poste.ID,
+        //                (ma, poste) => new
+        //                {
+        //                    ma.worker,
+        //                    ma.agent,
+        //                    poste.Name,
+        //                    ma.worker.Jour,
+        //                });
+        //    }
+
+        //    if (!isAdmin && userAccessPosteID.HasValue)
+        //    {
+        //        agentsQuery = agentsQuery.Where(ma => ma.worker.ScreenPosteD == userAccessPosteID.Value);
+        //    }
+        //    switch (type)
+        //    {
+
+        //        case Master.MVMType.P:
+        //            agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "A");
+        //            break;
+
+        //        case Master.MVMType.A:
+        //            agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" /*|| ma.agent.Statut == "CR"*/);
+        //            break;
+
+        //        case Master.MVMType.CR:
+        //            if (formName == "Frm_Heir"/*|| formName == "Frm_WorkDays"*/)
+        //                agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "CR" || ma.agent.Statut == "P");
+        //            else if ( formName == "Frm_WorkDays")
+        //                agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "P" );
+        //            else
+        //                agentsQuery = agentsQuery.Where(ma => ma.agent.Statut == "A" || ma.agent.Statut == "P");
+
+        //            break;
+
+        //        default:
+        //            throw new NotImplementedException();
+        //    }
+
+        //    // تحويل البيانات إلى الكلاس AgentStatus
+        //    var agents = agentsQuery
+        //        .Select(ma => new Models.AgentStatus
+        //        {
+        //            Name = ma.worker.Name,
+        //            FirstName = ma.worker.FirstName,
+        //            Date = ma.agent.Date,
+        //            Statut = ma.agent.Statut,
+        //            Poste = ma.Name,
+        //            screenPosteD =ma.worker.ScreenPosteD ??0,
+        //            Jour = ma.Jour,
+        //            CalculatedDate = Convert.ToDateTime(ma.agent.Date).AddDays(ma.Jour),
+        //            Matricule = ma.worker.Matricule,
+        //            Affecter = ma.worker.Affecter,
+        //            DaysCount = ma.agent.Statut == "P"
+        //          ? (DateTime.Now - ma.agent.Date).Days 
+        //         : ma.agent.Statut == "CR"
+        //           ? (DateTime.Now - ma.agent.Date).Days 
+        //          : 0, // في الحالات الأخرى، القيمة 0
+        //            Difference = 0
+        //        })
+        //        .ToList();
+        //    foreach (var agent in agents)
+        //    {
+        //        agent.Difference = agent.DaysCount - agent.Jour;
+        //    }
+        //    return new BindingList<Models.AgentStatus>(agents);
+        //}
 
         #region ////////////////////////  Agent liste
         private readonly DAL.DataClasses1DataContext _dbContext;
@@ -237,7 +280,7 @@ namespace System_Pointage.Classe
                             PostID=post.ID.ToString(),// new
                             PostName = post.Name,
                             agent.Affecter,
-                            agent.Jour,
+                          //  agent.Jour,
                             agent.Date_Embauche,
                             agent.Statut,
                             Statutmvm = statut != null ? statut.Statut : "Aucun mouvement enregistré",
@@ -286,7 +329,7 @@ namespace System_Pointage.Classe
                             Name = agent.Name,
                             PostName = post.Name,
                             agent.Affecter,
-                            agent.Jour,
+                           // agent.Jour,
                             agent.Date_Embauche,
                             agent.Statut,
                             ScreenPosteD = agent.ScreenPosteD,

@@ -24,9 +24,17 @@ namespace System_Pointage.Frm_List
 
         private void Frm_Liste_AccessProfile_Load(object sender, EventArgs e)
         {
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.GroupPanelText = " ";
+            #endregion
             gridView1.OptionsBehavior.Editable = false;
             var db = new DAL.DataClasses1DataContext();
             gridControl1.DataSource=db.UserAccessProfileNames;
+            gridView1.Columns["ID"].Visible=false;
             gridView1.DoubleClick += GridView1_DoubleClick;
         }
 

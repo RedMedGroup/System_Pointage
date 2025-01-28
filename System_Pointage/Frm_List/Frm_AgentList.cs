@@ -92,7 +92,7 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["Statut"].Caption = "Active/Inactive";
                 gridView1.Columns["Statutmvm"].Caption = "Statut";
                 gridView1.Columns["PostName"].Caption = "Poste";
-                gridView1.Columns["Jour"].Caption = "Systéme";
+            //    gridView1.Columns["Jour"].Caption = "Systéme";
                 gridView1.Columns["AgentID"].Visible = false;
                 gridView1.Columns["ID"].Visible = false;
                 gridView1.Columns["ScreenPosteD"].Visible = false;

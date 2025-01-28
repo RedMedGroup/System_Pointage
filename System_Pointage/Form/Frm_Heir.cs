@@ -78,11 +78,13 @@ namespace System_Pointage.Form
         {
             var agentDataService = new AgentDataService();
 
-            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+            // التحقق مما إذا كان المستخدم أدمن أو مانجر
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
 
-            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+            // إذا لم يكن أدمن أو مانجر، استخدم userAccessPosteID
+            int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdmin,selectedID, true, "Frm_Heir");
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdminOrManager,selectedID, true, "Frm_Heir");
 
             gridControl1.DataSource = activeAgentsList;
 
@@ -106,7 +108,7 @@ namespace System_Pointage.Form
             gridView1.Columns["Date"].Visible = false;
             gridView1.Columns["CalculatedDate"].Visible = false;
             gridView1.Columns["DaysCount"].Visible = false;
-
+            gridView1.Columns["Statutmvm"].Visible = false;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

@@ -79,17 +79,6 @@
       <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Fiche_Poste" Member="Fiche_Postes">
-    <Type Name="Fiche_Poste">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="EmployeeCount_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="Nembre_Contra_tfw" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="Departement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.MVMmaterielsDetails" Member="MVMmaterielsDetails">
     <Type Name="MVMmaterielsDetail">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -111,20 +100,6 @@
       <Column Name="ScreenPosteD" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Fiche_Agent" Member="Fiche_Agents">
-    <Type Name="Fiche_Agent">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Matricule" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ID_Post" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Jour" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Date_Embauche" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="Statut" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ScreenPosteD" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Affecter" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Reports" Member="Reports">
     <Type Name="Report">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -137,6 +112,28 @@
     <Type Name="Config_Jour">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Jour" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fiche_Poste" Member="Fiche_Postes">
+    <Type Name="Fiche_Poste">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Nembre_Contra" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="M_Penalite" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Departement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fiche_Agent" Member="Fiche_Agents">
+    <Type Name="Fiche_Agent">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Matricule" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Post" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date_Embauche" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Statut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ScreenPosteD" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Affecter" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

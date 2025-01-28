@@ -51,11 +51,12 @@ namespace System_Pointage.Form
             treeList1.Columns[nameof(ins.CanDelet)].Visible = false;
             treeList1.Columns[nameof(ins.SsvgImage)].Visible = false;
             treeList1.Columns[nameof(ins.ScreenName)].Visible = false;
+            treeList1.Columns[nameof(ins.CanEdit)].Visible = false;
             treeList1.Columns[nameof(ins.ScreenName)].OptionsColumn.AllowEdit = false;
             treeList1.Columns[nameof(ins.ScreenCaption)].OptionsColumn.AllowEdit = false;
             treeList1.Columns[nameof(ins.CanAdd)].Caption = "Valider";
             treeList1.Columns[nameof(ins.CanDelet)].Caption = "Supprimer";
-            treeList1.Columns[nameof(ins.CanEdit)].Caption = "Modifier";
+          //  treeList1.Columns[nameof(ins.CanEdit)].Caption = "Modifier";
             treeList1.Columns[nameof(ins.CanOpen)].Caption = "Ouvert";
             treeList1.Columns[nameof(ins.CanPrint)].Caption = "Impression";
             treeList1.Columns[nameof(ins.CanShow)].Caption = "Visible";
@@ -67,7 +68,7 @@ namespace System_Pointage.Form
             repoChech.CheckBoxOptions.SvgColorUnchecked = DXSkinColors.ForeColors.Question;
             treeList1.Columns[nameof(ins.CanAdd)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanDelet)].ColumnEdit =
-            treeList1.Columns[nameof(ins.CanEdit)].ColumnEdit =
+          //  treeList1.Columns[nameof(ins.CanEdit)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanOpen)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanPrint)].ColumnEdit =
             treeList1.Columns[nameof(ins.CanShow)].ColumnEdit = repoChech;

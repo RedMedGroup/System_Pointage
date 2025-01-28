@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Charts.Native;
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid;
@@ -206,9 +207,11 @@ namespace System_Pointage.Classe
       void  GridRefrechAgent()
         {
             var agentDataService = new AgentDataService();
-            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
-            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
-            var agentData = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdmin, selectedID, false, "frm_op");
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+
+            int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
+
+            var agentData = agentDataService.GetAgentStatuses(userAccessPosteID, Type, isAdminOrManager, selectedID, false, "frm_op");
 
             gridControl1_mvm.DataSource = agentData;
             activeAgentsList = agentData;
@@ -331,110 +334,229 @@ namespace System_Pointage.Classe
             }    
 
              DateTime date = dateEdit1.DateTime;
+            //using (var context = new DAL.DataClasses1DataContext())
+            //{
+            //    UserLogAction userLogAction = null;
+            //    UserLogAction.ActionType actionType;
+
+            //    switch (Type)
+            //    {
+            //        case Master.MVMType.P:
+            //            actionType = UserLogAction.ActionType.Entrée;
+            //            break;
+            //        case Master.MVMType.A:
+            //            actionType = UserLogAction.ActionType.Absent;
+            //            break;
+            //        case Master.MVMType.CR:
+            //            actionType = UserLogAction.ActionType.Sortie;
+            //            break;
+            //        default:
+            //            actionType = UserLogAction.ActionType.Sortie;  // Default case
+            //            break;
+            //    }
+
+            //    // التعامل مع كل agent مختار
+            //    foreach (var agent in selectedAgents)
+            //    {
+            //        var newAgentDetail = new DAL.MVMAgentDetail
+            //        {
+            //            ItemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0,
+            //            Date = date,
+            //            Statut = statut
+            //        };
+
+                    // تحديد تفاصيل الحفظ بناءً على النوع
+            //        switch (Type)
+            //        {
+            //            case Master.MVMType.P:
+            //                userLogAction = new UserLogAction
+            //                {
+            //                    PartID = newAgentDetail.ItemID,
+            //                    PartName = $"Rentrée la Agent: {agent.Name} P-",
+            //                    Name = "Frm_MVM_Operation_P",
+            //                };
+            //                break;
+            //            case Master.MVMType.A:
+            //                if (comboBoxEdit1.Text == "A")
+            //                {
+            //                    userLogAction = new UserLogAction
+            //                    {
+            //                        PartID = newAgentDetail.ItemID,
+            //                        PartName = $"Absence la Agent: {agent.Name} A-",
+            //                        Name = "Frm_MVM_Operation_A",
+            //                    };
+            //                }
+            //                else if (comboBoxEdit1.Text == "M")
+            //                {
+            //                    userLogAction = new UserLogAction
+            //                    {
+            //                        PartID = newAgentDetail.ItemID,
+            //                        PartName = $"Maladie la Agent: {agent.Name} M-",
+            //                        Name = "Frm_MVM_Operation_A",
+            //                    };
+            //                }
+            //                else if (comboBoxEdit1.Text == "AA")
+            //                {
+            //                    userLogAction = new UserLogAction
+            //                    {
+            //                        PartID = newAgentDetail.ItemID,
+            //                        PartName = $"Absence autorisée la Agent: {agent.Name} AA-",
+            //                        Name = "Frm_MVM_Operation_A",
+            //                    };
+            //                }
+            //                break;
+            //            case Master.MVMType.CR:
+            //                userLogAction = new UserLogAction
+            //                {
+            //                    PartID = newAgentDetail.ItemID,
+            //                    PartName = $"Sortant la Agent: {agent.Name} CR-",
+            //                    Name = "Frm_MVM_Operation_CR",
+            //                };
+            //                break;
+            //            default:
+            //                break;
+            //        }
+
+            //        context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
+
+            //        userLogAction.SaveAction(() =>
+            //        {
+            //            context.SubmitChanges();
+            //            XtraMessageBox.Show("Enregistrer succés");
+            //        }, actionType);
+            //    }
+            //}
+
             using (var context = new DAL.DataClasses1DataContext())
             {
+                UserLogAction userLogAction = null;
+                //  UserLogAction.ActionType actionType = UserLogAction.ActionType.Sortie;
+                UserLogAction.ActionType actionType;
+
+
+                switch (Type)  // Switch on the actual enum values
+                {
+                    case Master.MVMType.P:
+                        actionType = UserLogAction.ActionType.Entrée;
+                        break;
+                    case Master.MVMType.A:
+                        actionType = UserLogAction.ActionType.Absent;
+                        break;
+                    case Master.MVMType.CR:
+                        actionType = UserLogAction.ActionType.Sortie;
+                        break;
+                    default:
+                        actionType = UserLogAction.ActionType.Sortie;  // Default case
+                        break;
+                }
+
+
                 foreach (var agent in selectedAgents)
                 {
                     var newAgentDetail = new DAL.MVMAgentDetail
                     {
                         ItemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0,
-                        Date = date, 
+                        Date = date,
                         Statut = statut
                     };
 
-                    context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
-                    UserLogAction userLogAction = null;
-                    UserLogAction.ActionType actionType = UserLogAction.ActionType.Sortie;
+
+
                     switch (Type)
+            {
+                case Master.MVMType.P:
+                    actionType = UserLogAction.ActionType.Entrée;
+                    userLogAction = new UserLogAction
                     {
-                        case Master.MVMType.P:
-                            actionType = UserLogAction.ActionType.Entrée;
-                            userLogAction = new UserLogAction
-                            {
-                                PartID = newAgentDetail.ItemID,
-                                PartName = $"Rentrée la Agent: {agent.Name} P-",
-                                Name = "Frm_MVM_Operation_P",
-                            //    IsNew = true 
-                            };
-                            break;
-                        case Master.MVMType.A:
-                            if (comboBoxEdit1.Text == "A")
-                            {
-                                actionType = UserLogAction.ActionType.Absent;
-                                userLogAction = new UserLogAction
-                                {
-                                    PartID = newAgentDetail.ItemID,
-                                    PartName = $"Absence la Agent: {agent.Name} A-",
-                                    Name = "Frm_MVM_Operation_A",
-                                };
-                            }
-                            else if (comboBoxEdit1.Text == "M")
-                            {
-                                actionType = UserLogAction.ActionType.Absent;
-                                userLogAction = new UserLogAction
-                                {
-                                    PartID = newAgentDetail.ItemID,
-                                    PartName = $"Maladie la Agent: {agent.Name} M-",
-                                    Name = "Frm_MVM_Operation_A",
-                                };
-                            }else if (comboBoxEdit1.Text == "AA")
-                            {
-                                actionType = UserLogAction.ActionType.Absent;
-                                userLogAction = new UserLogAction
-                                {
-                                    PartID = newAgentDetail.ItemID,
-                                    PartName = $"Absence autorisée la Agent: {agent.Name} AA-",
-                                    Name = "Frm_MVM_Operation_A",
-                                };
-                            }
-
-
-                                break;
-                        case Master.MVMType.CR:
-                            actionType = UserLogAction.ActionType.Sortie;
-                            userLogAction = new UserLogAction
-                            {
-                                PartID = newAgentDetail.ItemID,
-                                PartName = $"Sortant la Agent: {agent.Name} CR-",
-                                Name = "Frm_MVM_Operation_CR",
-                            //    IsNew = true
-                            };
-
-                            break;
-                        default:
-                            break;
-                    }
-                 //   userLogAction.PartName += $": P-";
-                    userLogAction.SaveAction(() => { context.SubmitChanges(); }, actionType);
-                }
-
-                context.SubmitChanges();
-                XtraMessageBox.Show("Enregistrer succés");
-                if (delete == true) 
-                {
-                    ValiderAgentToListeAttent();
-                    #region
-                    var log = context.Attent_Heders.FirstOrDefault(a => a.ID == ATH.ID);
-                    if (log != null)
+                        PartID = newAgentDetail.ItemID,
+                        PartName = $"Rentrée la Agent: {agent.Name} P-",
+                        Name = "Frm_MVM_Operation_P",
+                        //    IsNew = true 
+                    };
+                    break;
+                case Master.MVMType.A:
+                    if (comboBoxEdit1.Text == "A")
                     {
-                        // التحقق من عدم وجود ID_Attent_Liste في جدول MVMAgentDetails
-                        bool existsInMVMAgentDetails = context.MVMAgentDetails.Any(agent => agent.ID_Attent_Liste == ATH.ID);
-
-                        // إذا لم يكن موجودًا في جدول MVMAgentDetails، قم بحذفه
-                        if (!existsInMVMAgentDetails)
+                        actionType = UserLogAction.ActionType.Absent;
+                        userLogAction = new UserLogAction
                         {
-                            context.Attent_Heders.DeleteOnSubmit(log);
-                            context.SubmitChanges();
-                        }
-                       
+                            PartID = newAgentDetail.ItemID,
+                            PartName = $"Absence la Agent: {agent.Name} A-",
+                            Name = "Frm_MVM_Operation_A",
+                        };
                     }
-                    #endregion
-                    RefrechAttent();
-                }
-                activeAgentsList.Clear();
-                gridControl1_mvm.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList); 
-                gridView1.ClearSelection();
+                    else if (comboBoxEdit1.Text == "M")
+                    {
+                        actionType = UserLogAction.ActionType.Absent;
+                        userLogAction = new UserLogAction
+                        {
+                            PartID = newAgentDetail.ItemID,
+                            PartName = $"Maladie la Agent: {agent.Name} M-",
+                            Name = "Frm_MVM_Operation_A",
+                        };
+                    }
+                    else if (comboBoxEdit1.Text == "AA")
+                    {
+                        actionType = UserLogAction.ActionType.Absent;
+                        userLogAction = new UserLogAction
+                        {
+                            PartID = newAgentDetail.ItemID,
+                            PartName = $"Absence autorisée la Agent: {agent.Name} AA-",
+                            Name = "Frm_MVM_Operation_A",
+                        };
+                    }
+
+
+                    break;
+                case Master.MVMType.CR:
+                    actionType = UserLogAction.ActionType.Sortie;
+                    userLogAction = new UserLogAction
+                    {
+                        PartID = newAgentDetail.ItemID,
+                        PartName = $"Sortant la Agent: {agent.Name} CR-",
+                        Name = "Frm_MVM_Operation_CR",
+                        //    IsNew = true
+                    };
+
+                    break;
+                default:
+                    break;
             }
+            context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
+            //  userLogAction.SaveAction(() => { context.SubmitChanges(); }, actionType);
+        }
+
+        userLogAction.SaveAction(() =>
+                {
+                    context.SubmitChanges();
+                    XtraMessageBox.Show("Enregistrer succés");
+                }, actionType);
+
+            if (delete == true)
+            {
+                ValiderAgentToListeAttent();
+                #region
+                var log = context.Attent_Heders.FirstOrDefault(a => a.ID == ATH.ID);
+                if (log != null)
+                {
+                    // التحقق من عدم وجود ID_Attent_Liste في جدول MVMAgentDetails
+                    bool existsInMVMAgentDetails = context.MVMAgentDetails.Any(agent => agent.ID_Attent_Liste == ATH.ID);
+
+                    // إذا لم يكن موجودًا في جدول MVMAgentDetails، قم بحذفه
+                    if (!existsInMVMAgentDetails)
+                    {
+                        context.Attent_Heders.DeleteOnSubmit(log);
+                        context.SubmitChanges();
+                    }
+
+                }
+                #endregion
+                RefrechAttent();
+            }
+            activeAgentsList.Clear();
+            gridControl1_mvm.DataSource = new BindingList<Models.AgentStatus>(activeAgentsList);
+            gridView1.ClearSelection();
+        }
         }
         void ValiderAgentToListeAttent()
         {
@@ -458,7 +580,7 @@ namespace System_Pointage.Classe
                     // جلب معرف ItemID بناءً على الاسم
                     int itemID = context.Fiche_Agents.FirstOrDefault(f => f.Matricule == agent.Matricule)?.ID ?? 0;
 
-                    string statut1 = agent.Statut; // استخدم القيمة مباشرة من agent
+                    string statut1 = agent.Statut; 
                     DateTime? dt = context.MVMAgentDetails.FirstOrDefault(f => f.Date == agent.Date)?.Date;
 
 
@@ -469,8 +591,8 @@ namespace System_Pointage.Classe
                     if (existingAgentDetail != null)
                     {
                         // تحديث فقط حقل ID_Attent_Liste
-                        existingAgentDetail.ID_Attent_Liste = null; // تحديث حقل ID_Attent_Liste بقيمة معرف Attent_Heder
-                        context.SubmitChanges(); // حفظ التغييرات
+                        existingAgentDetail.ID_Attent_Liste = null; 
+                        context.SubmitChanges(); 
                     }
 
                 }
@@ -530,7 +652,7 @@ namespace System_Pointage.Classe
 
                         if (configJour == null)
                         {
-                            throw new Exception("لم يتم العثور على أي سجل في جدول Config_Jour.");
+                            throw new Exception("Aucun enregistrement trouvé dans la table Config_Jour.");
                         }
 
                         int jour = configJour.Jour;
@@ -539,7 +661,7 @@ namespace System_Pointage.Classe
                         var latestStatusForEachEmployee = context.MVMAgentDetails
                             .GroupBy(m => m.ItemID) // تجميع حسب معرف العامل
                             .Select(g => g.OrderByDescending(m => m.Date).FirstOrDefault()) // الحصول على أحدث سجل لكل عامل
-                            .Where(m => m.Statut == "CR" && m.ID_Attent_Liste == null) // التأكد من أن الحالة "CR"
+                            .Where(m => m.Statut == "CR" && m.ID_Attent_Liste == null) // التأكد من أن الحالة 
                             .ToList();
 
                         // الربط بين الجداول بعد التحقق من الحالة
@@ -567,26 +689,25 @@ namespace System_Pointage.Classe
                                         : ma.m.Statut == "CR"
                                             ? (DateTime.Now - ma.m.Date).Days // إذا كان في عطلة
                                             : 0 // الحالات الأخرى
-                                  }) // اختيار Name من Fiche_Agents
-                            .Where(x => (selectedDate - x.Date).TotalDays >= jour) // استخدام Jour من Config_Jour
+                                  }) 
+                            .Where(x => (selectedDate - x.Date).TotalDays >= jour) 
                             .ToList();
 
-                        // إنشاء BindingList جديدة
-                        transferredAgentsList = new BindingList<Models.AgentStatus>(
+                        transferredAgentsList = new BindingList<Models.AgentStatus>(   
                             eligibleEmployees.Select(x => new Models.AgentStatus
                             {
                                 Matricule = x.Matricule,
                                 Name = x.Name,
                                 FirstName = x.FirstName,
                                 Poste = x.PosteName,
-                                screenPosteD = x.ScreenPosteD ?? 0,
+                                screenPosteD = x.ScreenPosteD ,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
-                                Jour = jour, // استخدام Jour من Config_Jour
+                                Jour = jour, 
                                 CalculatedDate = x.CalculatedDate,
                                 DaysCount = x.DaysCount,
                                 Statut = x.Statut,
-                                Difference = (x.DaysCount - jour) // استخدام Jour من Config_Jour
+                                Difference = (x.DaysCount - jour) 
                             }).ToList()
                         );
 
@@ -597,12 +718,11 @@ namespace System_Pointage.Classe
                 case Master.MVMType.CR:
                     using (var context = new DAL.DataClasses1DataContext())
                     {
-                        // استرجاع قيمة Jour من جدول Config_Jour
-                        var configJour = context.Config_Jours.FirstOrDefault(); // افترضنا أن هناك سجل واحد فقط في الجدول
+                        var configJour = context.Config_Jours.FirstOrDefault(); 
 
                         if (configJour == null)
                         {
-                            throw new Exception("لم يتم العثور على أي سجل في جدول Config_Jour.");
+                            throw new Exception("Aucun enregistrement trouvé dans la table Config_Jour.");
                         }
 
                         int jour = configJour.Jour;
@@ -651,7 +771,7 @@ namespace System_Pointage.Classe
                                 Name = x.Name,
                                 FirstName=x.FirstName,
                                 Poste = x.PosteName,
-                                screenPosteD = x.ScreenPosteD ?? 0,
+                                screenPosteD = x.ScreenPosteD ,
                                 Affecter = x.Affecter,
                                 Date = x.Date,
                                 Jour = jour, // استخدام Jour من Config_Jour
@@ -804,17 +924,15 @@ namespace System_Pointage.Classe
         //    }
         //}
         void FilterGrid()
-        {// التحقق مما إذا كان المستخدم أدمن
-            bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
+        {
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
 
-            // إذا لم يكن أدمن، استخدم userAccessPosteID
-            int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
+            int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
-            // دمج القائمتين مع الاحتفاظ بعنصر واحد فقط من العناصر المتكررة
             var mergedList = new BindingList<Models.AgentStatus>(
                 transferredAgentsList
                     .Concat(activeAgentsList)
-                     .Where(agent => isAdmin || agent.screenPosteD == userAccessPosteID)
+                     .Where(agent => isAdminOrManager || agent.screenPosteD == userAccessPosteID)
                     .GroupBy(agent => agent.Name)
                     .Select(group => group.First()) // أخذ العنصر الأول من كل مجموعة
                     .ToList()

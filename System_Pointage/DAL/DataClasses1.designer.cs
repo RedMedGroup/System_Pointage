@@ -57,24 +57,24 @@ namespace System_Pointage.DAL
     partial void InsertFiche_materiel(Fiche_materiel instance);
     partial void UpdateFiche_materiel(Fiche_materiel instance);
     partial void DeleteFiche_materiel(Fiche_materiel instance);
-    partial void InsertFiche_Poste(Fiche_Poste instance);
-    partial void UpdateFiche_Poste(Fiche_Poste instance);
-    partial void DeleteFiche_Poste(Fiche_Poste instance);
     partial void InsertMVMmaterielsDetail(MVMmaterielsDetail instance);
     partial void UpdateMVMmaterielsDetail(MVMmaterielsDetail instance);
     partial void DeleteMVMmaterielsDetail(MVMmaterielsDetail instance);
     partial void InsertFiche_Matricule(Fiche_Matricule instance);
     partial void UpdateFiche_Matricule(Fiche_Matricule instance);
     partial void DeleteFiche_Matricule(Fiche_Matricule instance);
-    partial void InsertFiche_Agent(Fiche_Agent instance);
-    partial void UpdateFiche_Agent(Fiche_Agent instance);
-    partial void DeleteFiche_Agent(Fiche_Agent instance);
     partial void InsertReport(Report instance);
     partial void UpdateReport(Report instance);
     partial void DeleteReport(Report instance);
     partial void InsertConfig_Jour(Config_Jour instance);
     partial void UpdateConfig_Jour(Config_Jour instance);
     partial void DeleteConfig_Jour(Config_Jour instance);
+    partial void InsertFiche_Poste(Fiche_Poste instance);
+    partial void UpdateFiche_Poste(Fiche_Poste instance);
+    partial void DeleteFiche_Poste(Fiche_Poste instance);
+    partial void InsertFiche_Agent(Fiche_Agent instance);
+    partial void UpdateFiche_Agent(Fiche_Agent instance);
+    partial void DeleteFiche_Agent(Fiche_Agent instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -179,14 +179,6 @@ namespace System_Pointage.DAL
 			}
 		}
 		
-		public System.Data.Linq.Table<Fiche_Poste> Fiche_Postes
-		{
-			get
-			{
-				return this.GetTable<Fiche_Poste>();
-			}
-		}
-		
 		public System.Data.Linq.Table<MVMmaterielsDetail> MVMmaterielsDetails
 		{
 			get
@@ -203,14 +195,6 @@ namespace System_Pointage.DAL
 			}
 		}
 		
-		public System.Data.Linq.Table<Fiche_Agent> Fiche_Agents
-		{
-			get
-			{
-				return this.GetTable<Fiche_Agent>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Report> Reports
 		{
 			get
@@ -224,6 +208,22 @@ namespace System_Pointage.DAL
 			get
 			{
 				return this.GetTable<Config_Jour>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Fiche_Poste> Fiche_Postes
+		{
+			get
+			{
+				return this.GetTable<Fiche_Poste>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Fiche_Agent> Fiche_Agents
+		{
+			get
+			{
+				return this.GetTable<Fiche_Agent>();
 			}
 		}
 	}
@@ -1602,212 +1602,6 @@ namespace System_Pointage.DAL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Poste")]
-	public partial class Fiche_Poste : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Name;
-		
-		private double _Nembre_Contra;
-		
-		private double _M_Penalite;
-		
-		private System.Nullable<double> _EmployeeCount_tfw;
-		
-		private System.Nullable<double> _Nembre_Contra_tfw;
-		
-		private System.Nullable<int> _Departement;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnNembre_ContraChanging(double value);
-    partial void OnNembre_ContraChanged();
-    partial void OnM_PenaliteChanging(double value);
-    partial void OnM_PenaliteChanged();
-    partial void OnEmployeeCount_tfwChanging(System.Nullable<double> value);
-    partial void OnEmployeeCount_tfwChanged();
-    partial void OnNembre_Contra_tfwChanging(System.Nullable<double> value);
-    partial void OnNembre_Contra_tfwChanged();
-    partial void OnDepartementChanging(System.Nullable<int> value);
-    partial void OnDepartementChanged();
-    #endregion
-		
-		public Fiche_Poste()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra", DbType="Float NOT NULL")]
-		public double Nembre_Contra
-		{
-			get
-			{
-				return this._Nembre_Contra;
-			}
-			set
-			{
-				if ((this._Nembre_Contra != value))
-				{
-					this.OnNembre_ContraChanging(value);
-					this.SendPropertyChanging();
-					this._Nembre_Contra = value;
-					this.SendPropertyChanged("Nembre_Contra");
-					this.OnNembre_ContraChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_M_Penalite", DbType="Float NOT NULL")]
-		public double M_Penalite
-		{
-			get
-			{
-				return this._M_Penalite;
-			}
-			set
-			{
-				if ((this._M_Penalite != value))
-				{
-					this.OnM_PenaliteChanging(value);
-					this.SendPropertyChanging();
-					this._M_Penalite = value;
-					this.SendPropertyChanged("M_Penalite");
-					this.OnM_PenaliteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployeeCount_tfw", DbType="Float")]
-		public System.Nullable<double> EmployeeCount_tfw
-		{
-			get
-			{
-				return this._EmployeeCount_tfw;
-			}
-			set
-			{
-				if ((this._EmployeeCount_tfw != value))
-				{
-					this.OnEmployeeCount_tfwChanging(value);
-					this.SendPropertyChanging();
-					this._EmployeeCount_tfw = value;
-					this.SendPropertyChanged("EmployeeCount_tfw");
-					this.OnEmployeeCount_tfwChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra_tfw", DbType="Float")]
-		public System.Nullable<double> Nembre_Contra_tfw
-		{
-			get
-			{
-				return this._Nembre_Contra_tfw;
-			}
-			set
-			{
-				if ((this._Nembre_Contra_tfw != value))
-				{
-					this.OnNembre_Contra_tfwChanging(value);
-					this.SendPropertyChanging();
-					this._Nembre_Contra_tfw = value;
-					this.SendPropertyChanged("Nembre_Contra_tfw");
-					this.OnNembre_Contra_tfwChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Departement", DbType="Int")]
-		public System.Nullable<int> Departement
-		{
-			get
-			{
-				return this._Departement;
-			}
-			set
-			{
-				if ((this._Departement != value))
-				{
-					this.OnDepartementChanging(value);
-					this.SendPropertyChanging();
-					this._Departement = value;
-					this.SendPropertyChanged("Departement");
-					this.OnDepartementChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MVMmaterielsDetails")]
 	public partial class MVMmaterielsDetail : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2196,284 +1990,6 @@ namespace System_Pointage.DAL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Agent")]
-	public partial class Fiche_Agent : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Matricule;
-		
-		private string _Name;
-		
-		private string _FirstName;
-		
-		private int _ID_Post;
-		
-		private int _Jour;
-		
-		private System.DateTime _Date_Embauche;
-		
-		private System.Nullable<bool> _Statut;
-		
-		private System.Nullable<int> _ScreenPosteD;
-		
-		private string _Affecter;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnMatriculeChanging(string value);
-    partial void OnMatriculeChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnFirstNameChanging(string value);
-    partial void OnFirstNameChanged();
-    partial void OnID_PostChanging(int value);
-    partial void OnID_PostChanged();
-    partial void OnJourChanging(int value);
-    partial void OnJourChanged();
-    partial void OnDate_EmbaucheChanging(System.DateTime value);
-    partial void OnDate_EmbaucheChanged();
-    partial void OnStatutChanging(System.Nullable<bool> value);
-    partial void OnStatutChanged();
-    partial void OnScreenPosteDChanging(System.Nullable<int> value);
-    partial void OnScreenPosteDChanged();
-    partial void OnAffecterChanging(string value);
-    partial void OnAffecterChanged();
-    #endregion
-		
-		public Fiche_Agent()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matricule", DbType="NVarChar(MAX)")]
-		public string Matricule
-		{
-			get
-			{
-				return this._Matricule;
-			}
-			set
-			{
-				if ((this._Matricule != value))
-				{
-					this.OnMatriculeChanging(value);
-					this.SendPropertyChanging();
-					this._Matricule = value;
-					this.SendPropertyChanged("Matricule");
-					this.OnMatriculeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(MAX)")]
-		public string FirstName
-		{
-			get
-			{
-				return this._FirstName;
-			}
-			set
-			{
-				if ((this._FirstName != value))
-				{
-					this.OnFirstNameChanging(value);
-					this.SendPropertyChanging();
-					this._FirstName = value;
-					this.SendPropertyChanged("FirstName");
-					this.OnFirstNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Post", DbType="Int NOT NULL")]
-		public int ID_Post
-		{
-			get
-			{
-				return this._ID_Post;
-			}
-			set
-			{
-				if ((this._ID_Post != value))
-				{
-					this.OnID_PostChanging(value);
-					this.SendPropertyChanging();
-					this._ID_Post = value;
-					this.SendPropertyChanged("ID_Post");
-					this.OnID_PostChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Jour", DbType="Int NOT NULL")]
-		public int Jour
-		{
-			get
-			{
-				return this._Jour;
-			}
-			set
-			{
-				if ((this._Jour != value))
-				{
-					this.OnJourChanging(value);
-					this.SendPropertyChanging();
-					this._Jour = value;
-					this.SendPropertyChanged("Jour");
-					this.OnJourChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_Embauche", DbType="Date NOT NULL")]
-		public System.DateTime Date_Embauche
-		{
-			get
-			{
-				return this._Date_Embauche;
-			}
-			set
-			{
-				if ((this._Date_Embauche != value))
-				{
-					this.OnDate_EmbaucheChanging(value);
-					this.SendPropertyChanging();
-					this._Date_Embauche = value;
-					this.SendPropertyChanged("Date_Embauche");
-					this.OnDate_EmbaucheChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Statut", DbType="Bit")]
-		public System.Nullable<bool> Statut
-		{
-			get
-			{
-				return this._Statut;
-			}
-			set
-			{
-				if ((this._Statut != value))
-				{
-					this.OnStatutChanging(value);
-					this.SendPropertyChanging();
-					this._Statut = value;
-					this.SendPropertyChanged("Statut");
-					this.OnStatutChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenPosteD", DbType="Int")]
-		public System.Nullable<int> ScreenPosteD
-		{
-			get
-			{
-				return this._ScreenPosteD;
-			}
-			set
-			{
-				if ((this._ScreenPosteD != value))
-				{
-					this.OnScreenPosteDChanging(value);
-					this.SendPropertyChanging();
-					this._ScreenPosteD = value;
-					this.SendPropertyChanged("ScreenPosteD");
-					this.OnScreenPosteDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Affecter", DbType="NVarChar(10)")]
-		public string Affecter
-		{
-			get
-			{
-				return this._Affecter;
-			}
-			set
-			{
-				if ((this._Affecter != value))
-				{
-					this.OnAffecterChanging(value);
-					this.SendPropertyChanging();
-					this._Affecter = value;
-					this.SendPropertyChanged("Affecter");
-					this.OnAffecterChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reports")]
 	public partial class Report : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2669,6 +2185,418 @@ namespace System_Pointage.DAL
 					this._Jour = value;
 					this.SendPropertyChanged("Jour");
 					this.OnJourChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Poste")]
+	public partial class Fiche_Poste : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private double _Nembre_Contra;
+		
+		private double _M_Penalite;
+		
+		private System.Nullable<int> _Departement;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnNembre_ContraChanging(double value);
+    partial void OnNembre_ContraChanged();
+    partial void OnM_PenaliteChanging(double value);
+    partial void OnM_PenaliteChanged();
+    partial void OnDepartementChanging(System.Nullable<int> value);
+    partial void OnDepartementChanged();
+    #endregion
+		
+		public Fiche_Poste()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nembre_Contra", DbType="Float NOT NULL")]
+		public double Nembre_Contra
+		{
+			get
+			{
+				return this._Nembre_Contra;
+			}
+			set
+			{
+				if ((this._Nembre_Contra != value))
+				{
+					this.OnNembre_ContraChanging(value);
+					this.SendPropertyChanging();
+					this._Nembre_Contra = value;
+					this.SendPropertyChanged("Nembre_Contra");
+					this.OnNembre_ContraChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_M_Penalite", DbType="Float NOT NULL")]
+		public double M_Penalite
+		{
+			get
+			{
+				return this._M_Penalite;
+			}
+			set
+			{
+				if ((this._M_Penalite != value))
+				{
+					this.OnM_PenaliteChanging(value);
+					this.SendPropertyChanging();
+					this._M_Penalite = value;
+					this.SendPropertyChanged("M_Penalite");
+					this.OnM_PenaliteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Departement", DbType="Int")]
+		public System.Nullable<int> Departement
+		{
+			get
+			{
+				return this._Departement;
+			}
+			set
+			{
+				if ((this._Departement != value))
+				{
+					this.OnDepartementChanging(value);
+					this.SendPropertyChanging();
+					this._Departement = value;
+					this.SendPropertyChanged("Departement");
+					this.OnDepartementChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fiche_Agent")]
+	public partial class Fiche_Agent : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Matricule;
+		
+		private string _Name;
+		
+		private int _ID_Post;
+		
+		private System.DateTime _Date_Embauche;
+		
+		private bool _Statut;
+		
+		private int _ScreenPosteD;
+		
+		private string _Affecter;
+		
+		private string _FirstName;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnMatriculeChanging(string value);
+    partial void OnMatriculeChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnID_PostChanging(int value);
+    partial void OnID_PostChanged();
+    partial void OnDate_EmbaucheChanging(System.DateTime value);
+    partial void OnDate_EmbaucheChanged();
+    partial void OnStatutChanging(bool value);
+    partial void OnStatutChanged();
+    partial void OnScreenPosteDChanging(int value);
+    partial void OnScreenPosteDChanged();
+    partial void OnAffecterChanging(string value);
+    partial void OnAffecterChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    #endregion
+		
+		public Fiche_Agent()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matricule", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Matricule
+		{
+			get
+			{
+				return this._Matricule;
+			}
+			set
+			{
+				if ((this._Matricule != value))
+				{
+					this.OnMatriculeChanging(value);
+					this.SendPropertyChanging();
+					this._Matricule = value;
+					this.SendPropertyChanged("Matricule");
+					this.OnMatriculeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Post", DbType="Int NOT NULL")]
+		public int ID_Post
+		{
+			get
+			{
+				return this._ID_Post;
+			}
+			set
+			{
+				if ((this._ID_Post != value))
+				{
+					this.OnID_PostChanging(value);
+					this.SendPropertyChanging();
+					this._ID_Post = value;
+					this.SendPropertyChanged("ID_Post");
+					this.OnID_PostChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_Embauche", DbType="Date NOT NULL")]
+		public System.DateTime Date_Embauche
+		{
+			get
+			{
+				return this._Date_Embauche;
+			}
+			set
+			{
+				if ((this._Date_Embauche != value))
+				{
+					this.OnDate_EmbaucheChanging(value);
+					this.SendPropertyChanging();
+					this._Date_Embauche = value;
+					this.SendPropertyChanged("Date_Embauche");
+					this.OnDate_EmbaucheChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Statut", DbType="Bit NOT NULL")]
+		public bool Statut
+		{
+			get
+			{
+				return this._Statut;
+			}
+			set
+			{
+				if ((this._Statut != value))
+				{
+					this.OnStatutChanging(value);
+					this.SendPropertyChanging();
+					this._Statut = value;
+					this.SendPropertyChanged("Statut");
+					this.OnStatutChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScreenPosteD", DbType="Int NOT NULL")]
+		public int ScreenPosteD
+		{
+			get
+			{
+				return this._ScreenPosteD;
+			}
+			set
+			{
+				if ((this._ScreenPosteD != value))
+				{
+					this.OnScreenPosteDChanging(value);
+					this.SendPropertyChanging();
+					this._ScreenPosteD = value;
+					this.SendPropertyChanged("ScreenPosteD");
+					this.OnScreenPosteDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Affecter", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string Affecter
+		{
+			get
+			{
+				return this._Affecter;
+			}
+			set
+			{
+				if ((this._Affecter != value))
+				{
+					this.OnAffecterChanging(value);
+					this.SendPropertyChanging();
+					this._Affecter = value;
+					this.SendPropertyChanged("Affecter");
+					this.OnAffecterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
 				}
 			}
 		}

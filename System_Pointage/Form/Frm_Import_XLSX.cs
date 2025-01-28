@@ -80,7 +80,6 @@ namespace System_Pointage.Form
                             lkp_Name.Properties.DataSource = columnNames;
                             lkp_FirstName.Properties.DataSource = columnNames;
                             lkp_Poste.Properties.DataSource = columnNames;
-                            lkp_syst.Properties.DataSource = columnNames;
                             lkp_date.Properties.DataSource = columnNames;
                             lkp_departement.Properties.DataSource = columnNames;
                             lkp_affecter.Properties.DataSource = columnNames;
@@ -134,11 +133,7 @@ namespace System_Pointage.Form
                     NumberOfErrors += 1;
                     lkp_Poste.ErrorText = ErrorText;
                 }
-                if (string.IsNullOrWhiteSpace(lkp_syst.Text))
-                {
-                    NumberOfErrors += 1;
-                    lkp_syst.ErrorText = ErrorText;
-                }
+             
                 if (string.IsNullOrWhiteSpace(lkp_date.Text))
                 {
                     NumberOfErrors += 1;
@@ -202,7 +197,6 @@ namespace System_Pointage.Form
                     string matriculeColumn = lkp_Matricule.Text;
                     string nameColumn = lkp_Name.Text;
                     string firstnameColumn = lkp_FirstName.Text;
-                    string jourColumn = lkp_syst.Text;
                     string affecterColumn = lkp_affecter.Text;
                     string dateColumn = lkp_date.Text;
                     string datePresence = dt_P.Text;
@@ -219,7 +213,6 @@ namespace System_Pointage.Form
                         string posteName = row[posteColumn]?.ToString() ?? string.Empty;
                         string departementName = row[departementColumn]?.ToString() ?? string.Empty;
                         string affecter = row[affecterColumn]?.ToString() ?? string.Empty;
-                        int jour = row[jourColumn] != DBNull.Value && int.TryParse(row[jourColumn]?.ToString(), out int tempJour) ? tempJour : 0;
 
                         string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
                         string datePresent = row[datePresence]?.ToString() ?? string.Empty;
@@ -305,7 +298,6 @@ namespace System_Pointage.Form
                         row[posteColumn],   // Poste 
                         row[departementColumn], // Département
                         affecter,           // Affecter
-                        jour,               // Jour
                         observation         // Observation
                             };
                             correctedDataTable.Rows.Add(correctedRow);
@@ -404,7 +396,6 @@ namespace System_Pointage.Form
                     string matriculeColumn = lkp_Matricule.Text;
                     string nameColumn = lkp_Name.Text;
                     string firstnameColumn = lkp_FirstName.Text;
-                    string jourColumn = lkp_syst.Text;
                     string affecterColumn = lkp_affecter.Text;
                     string dateColumn = lkp_date.Text;
                     string datePresence = dt_P.Text;
@@ -425,7 +416,6 @@ namespace System_Pointage.Form
                         string posteName = row[posteColumn]?.ToString() ?? string.Empty;
                         string departementName = row[departementColumn]?.ToString() ?? string.Empty;
                         string affecter = row[affecterColumn]?.ToString() ?? string.Empty;
-                        int jour = row[jourColumn] != DBNull.Value && int.TryParse(row[jourColumn]?.ToString(), out int tempJour) ? tempJour : 0;
 
                         string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
                         string datePresent = row[datePresence]?.ToString() ?? string.Empty;
@@ -467,7 +457,7 @@ namespace System_Pointage.Form
                                 Name = name,
                                 FirstName = firstname,
                                 ID_Post = poste.ID,
-                                Jour = jour,
+                              //  Jour = jour,
                                 Date_Embauche = date,// ?? default(DateTime),
                                 ScreenPosteD = departement.ID,
                                 Affecter = affecter,

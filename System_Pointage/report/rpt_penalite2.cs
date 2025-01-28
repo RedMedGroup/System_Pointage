@@ -41,11 +41,11 @@ namespace System_Pointage.report
         }
         public void BindAttendanceDataToCells()
         {
-            XRLabel lblBase = (XRLabel)FindControl("lbl_base", true);
-            if (lblBase != null)
-            {
-                lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
-            }
+            //XRLabel lblBase = (XRLabel)FindControl("lbl_base", true);
+            //if (lblBase != null)
+            //{
+            //    lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
+            //}
         }
 
         private void rpt_penalite2_BeforePrint(object sender, CancelEventArgs e)

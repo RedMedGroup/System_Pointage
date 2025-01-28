@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Form;
+using static System_Pointage.Classe.Master;
 
 namespace System_Pointage.Frm_List
 {
@@ -26,6 +27,14 @@ namespace System_Pointage.Frm_List
 
         private void frm_User_List_Load(object sender, EventArgs e)
         {
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.GroupPanelText = " ";
+            #endregion
+
             gridView1.OptionsBehavior.Editable = false;
             RefrechData();
             gridView1.Columns[nameof(us.ID)].Visible = false;
@@ -53,18 +62,21 @@ namespace System_Pointage.Frm_List
         {
             var db = new DAL.DataClasses1DataContext();
             var data = from us in db.Users
-                       join c in db.UserAccessProfileNames on us.ScreenProfileID equals c.ID
+                       join c in db.UserAccessProfileNames on us.ScreenProfileID equals c.ID into userProfiles
+                       from c in userProfiles.DefaultIfEmpty() 
                        select new
                        {
                            us.ID,
                            us.Name,
                            us.Password,
                            us.UserName,
-                           ScreenProfileID = c.Name,
-                           us.IsActive
-
+                           ScreenProfileID = c != null ? c.Name : "N/A", // ou "Inconnu",// 
+            us.IsActive,
+                           UserType = (UserType)us.UserType
                        };
-            gridControl1.DataSource = data;
+
+            gridControl1.DataSource = data.ToList(); 
+           
         }
         public  void OpenForm(int id)
         {
