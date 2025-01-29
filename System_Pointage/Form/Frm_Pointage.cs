@@ -125,7 +125,7 @@ namespace System_Pointage.Form
             //    if (cellValue != "")
             //        e.Appearance.BackColor = ColorTranslator.FromHtml("#FFECB3");
             //}
-            if (e.Column.FieldName == "Nom")
+            if (/*e.Column.FieldName == "Nom"||*/ e.Column.FieldName == "POSTE")
             {
                 string cellValue = e.CellValue?.ToString();
                 if (cellValue == "S/TOTAL" || cellValue == "Ecart")
@@ -217,10 +217,7 @@ namespace System_Pointage.Form
         RequiredQuantity =
              context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
         Agents = g.ToList()
-    });
-
-            
-
+    });         
             foreach (var group in groups)
             {
                 DataRow specializationRow = table.NewRow();
@@ -342,8 +339,7 @@ namespace System_Pointage.Form
             report.BindAttendanceDataToCells();
             report.DataSource = CreateAbsenceReport(totalDays, startDate, endDate);
             report.SumPinality = Sum;
-            report.ShowPreviewDialog();
-
+            report.ShowRibbonPreview();
        
         }
 
@@ -515,7 +511,7 @@ namespace System_Pointage.Form
             report.BindAttendanceDataToCells(table);
 
             ReportPrintTool printTool = new ReportPrintTool(report);
-            printTool.ShowPreview();
+            printTool.ShowRibbonPreview();
         }
         private void PrintReport2()
         {
@@ -540,7 +536,8 @@ namespace System_Pointage.Form
             report.BindAttendanceDataToCells(table);
 
             ReportPrintTool printTool = new ReportPrintTool(report);
-            printTool.ShowPreview();
+            //  printTool.ShowPreview();
+            printTool.ShowRibbonPreview();
         }
 
         //private void PrintReport2()
@@ -1182,9 +1179,13 @@ namespace System_Pointage.Form
                     table.Rows.Add(row);
                 }
 
+
+
                 DataRow presentCountRow = table.NewRow();
-                presentCountRow["POSTE"] = group.Specialization; 
-                presentCountRow["Nom"] = "S/TOTAL";
+                presentCountRow["POSTE"] = group.Specialization;
+                //presentCountRow["Nom"] = "S/TOTAL";
+                //presentCountRow["Prénom"] = "S/TOTAL";
+                presentCountRow["POSTE"] = "S/TOTAL";
                 for (int i = 0; i < totalDays; i++)
                 {
                     presentCountRow[$"{startDate.AddDays(i).Day}"] = presentCountPerDay[i].ToString();
@@ -1193,12 +1194,14 @@ namespace System_Pointage.Form
                 table.Rows.Add(presentCountRow);
 
                 DataRow ecartRow = table.NewRow();
-                ecartRow["POSTE"] = group.Specialization; 
-                ecartRow["Nom"] = "Ecart";
+                ecartRow["POSTE"] = group.Specialization;
+                //ecartRow["Nom"] = "Ecart";
+                //ecartRow["Prénom"] = "Ecart";
+                ecartRow["POSTE"] = "Ecart";
                 int totalEcart = 0;
                 for (int i = 0; i < totalDays; i++)
                 {
-                    int ecartValue =(int) group.RequiredQuantity - presentCountPerDay[i];
+                    int ecartValue = (int)group.RequiredQuantity - presentCountPerDay[i];
                     ecartRow[$"{startDate.AddDays(i).Day}"] = ecartValue < 0 ? 0 : ecartValue;
                     totalEcart += ecartValue;
                 }
@@ -1423,7 +1426,7 @@ namespace System_Pointage.Form
 
             // عرض التقرير
             ReportPrintTool printTool = new ReportPrintTool(report);
-            printTool.ShowPreview();
+            printTool.ShowRibbonPreview();
         }
         //private void GenerateReport3() // pénalité
         //{

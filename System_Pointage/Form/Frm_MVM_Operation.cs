@@ -80,6 +80,13 @@ namespace System_Pointage.Classe
         }
         private void Frm_MVM_Operation_Load(object sender, EventArgs e)
         {
+            #region paramater gridview     ////////////////
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.GroupPanelText = " ";
+            #endregion
             activeAgentsList = new BindingList<Models.AgentStatus>();
             transferredAgentsList = new BindingList<Models.AgentStatus>();
 
@@ -618,6 +625,7 @@ namespace System_Pointage.Classe
             gridView1.Columns["Statut"].VisibleIndex =11;
             gridView1.Columns["screenPosteD"].Visible = false;
             gridView1.Columns["Statutmvm"].Visible = false;
+            gridView1.Columns["Jour"].Visible=false;
             switch (Type)
             {
                 case Master.MVMType.P:

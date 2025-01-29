@@ -19,6 +19,9 @@ namespace System_Pointage.report
             InitializeComponent();
             string formattedDate = DateTime.Now.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
             //lbl_date.Text = formattedDate;
+          
+
+
         }
         private TimeSpan dateRange;
         private int totalDays;
@@ -46,7 +49,6 @@ namespace System_Pointage.report
 
             availableWidth = PageWidth - Margins.Left - Margins.Right;
             columnWidth = availableWidth / (totalDays + 3);
-
 
         }
 
@@ -102,6 +104,100 @@ namespace System_Pointage.report
             cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Value;
 
             cell.Text = cell.Text;
+
+
+
+            string nomValue = GetCurrentColumnValue("POSTE")?.ToString();
+
+            if (!string.IsNullOrEmpty(nomValue) && nomValue == "S/TOTAL"|| !string.IsNullOrEmpty(nomValue) && nomValue == "Ecart")
+            {
+                cell_sp.BackColor = Color.Gainsboro;
+                cell_name.BackColor = Color.Gainsboro;
+                cell_FirstName.BackColor = Color.Gainsboro;
+                cell_effec.BackColor = Color.Gainsboro;
+                xrTableCell35.BackColor = Color.Gainsboro;
+                #region
+                cell_1.BackColor = Color.Gainsboro;
+                cell_2.BackColor = Color.LightGray;
+                cell_3.BackColor = Color.Gainsboro;
+                cell_4.BackColor = Color.Gainsboro;
+                cell_5.BackColor = Color.Gainsboro;
+                cell_6.BackColor = Color.Gainsboro;
+                cell_7.BackColor = Color.Gainsboro;
+                cell_8.BackColor = Color.Gainsboro;
+                cell_9.BackColor = Color.Gainsboro;
+                cell_10.BackColor = Color.Gainsboro;
+                cell_11.BackColor = Color.Gainsboro;
+                cell_12.BackColor = Color.Gainsboro;
+                cell_13.BackColor = Color.Gainsboro;
+                cell_14.BackColor = Color.Gainsboro;
+                cell_15.BackColor = Color.Gainsboro;
+                cell_16.BackColor = Color.Gainsboro;
+                cell_17.BackColor = Color.Gainsboro;
+                cell_18.BackColor = Color.Gainsboro;
+                cell_19.BackColor = Color.Gainsboro;
+                cell_20.BackColor = Color.Gainsboro;
+                cell_21.BackColor = Color.Gainsboro;
+                cell_22.BackColor = Color.Gainsboro;
+                cell_23.BackColor = Color.Gainsboro;
+                cell_24.BackColor = Color.Gainsboro;
+                cell_25.BackColor = Color.Gainsboro;
+                cell_26.BackColor = Color.Gainsboro;
+                cell_27.BackColor = Color.Gainsboro;
+                cell_28.BackColor = Color.Gainsboro;
+                cell_29.BackColor = Color.Gainsboro;
+                cell_30.BackColor = Color.Gainsboro;
+                cell_31.BackColor = Color.Gainsboro;
+                #endregion
+                cell_sp.Font = new Font(cell_sp.Font, FontStyle.Bold);
+                cell_name.Font = new Font(cell_name.Font, FontStyle.Bold);
+                cell_FirstName.Font = new Font(cell_FirstName.Font, FontStyle.Bold);
+            }
+            else
+            {
+                cell_sp.BackColor = Color.White;
+                cell_name.BackColor = Color.White;
+                cell_FirstName.BackColor = Color.White;
+                cell_effec.BackColor = Color.White;
+                xrTableCell35.BackColor = Color.White;
+
+                #region
+                cell_1.BackColor = Color.White;
+                cell_2.BackColor = Color.White;
+                cell_3.BackColor = Color.White;
+                cell_4.BackColor = Color.White;
+                cell_5.BackColor = Color.White;
+                cell_6.BackColor = Color.White;
+                cell_7.BackColor = Color.White;
+                cell_8.BackColor = Color.White;
+                cell_9.BackColor = Color.White;
+                cell_10.BackColor = Color.White;
+                cell_11.BackColor = Color.White;
+                cell_12.BackColor = Color.White;
+                cell_13.BackColor = Color.White;
+                cell_14.BackColor = Color.White;
+                cell_15.BackColor = Color.White;
+                cell_16.BackColor = Color.White;
+                cell_17.BackColor = Color.White;
+                cell_18.BackColor = Color.White;
+                cell_19.BackColor = Color.White;
+                cell_20.BackColor = Color.White;
+                cell_21.BackColor = Color.White;
+                cell_22.BackColor = Color.White;
+                cell_23.BackColor = Color.White;
+                cell_24.BackColor = Color.White;
+                cell_25.BackColor = Color.White;
+                cell_26.BackColor = Color.White;
+                cell_27.BackColor = Color.White;
+                cell_28.BackColor = Color.White;
+                cell_29.BackColor = Color.White;
+                cell_30.BackColor = Color.White;
+                cell_31.BackColor = Color.White;
+                #endregion
+                cell_sp.Font = new Font(cell_sp.Font, FontStyle.Regular);
+                cell_name.Font = new Font(cell_name.Font, FontStyle.Regular);
+                cell_FirstName.Font = new Font(cell_FirstName.Font, FontStyle.Regular);
+            }
         }
 
         private void xrTableDetail_BeforePrint(object sender, CancelEventArgs e)
@@ -111,46 +207,48 @@ namespace System_Pointage.report
 
         private void cell_effec_BeforePrint(object sender, CancelEventArgs e)
         {
-            XRTableCell cell = (XRTableCell)sender;
+            //XRTableCell cell = (XRTableCell)sender;
 
-            // Set text alignment
-            cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            //// Set text alignment
+            //cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
 
-            // Configure cell merging
-            cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
-            cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Tag;
+            //// Configure cell merging
+            //cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+            //cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Tag;
 
-            // Retrieve department and required employees
-            var department = GetCurrentColumnValue("POSTE")?.ToString(); // استخدام عمود "Poste" لتحديد القسم
-            var requiredEmployees = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+            //// Retrieve department and required employees
+            //var department = GetCurrentColumnValue("POSTE")?.ToString(); // استخدام عمود "Poste" لتحديد القسم
+            //var requiredEmployees = GetCurrentColumnValue("EFFC/CRT")?.ToString();
 
-            // Set the Tag property to department
-            if (!string.IsNullOrEmpty(department))
-            {
-                cell.Tag = department;
-            }
-            else
-            {
-                cell.Tag = null; // أو قيمة افتراضية
-            }
+            //// Set the Tag property to department
+            //if (!string.IsNullOrEmpty(department))
+            //{
+            //    cell.Tag = department;
+            //}
+            //else
+            //{
+            //    cell.Tag = null; // أو قيمة افتراضية
+            //}
 
-            // Set the cell text to required employees
-            if (!string.IsNullOrEmpty(requiredEmployees))
-            {
-                cell.Text = requiredEmployees;
-            }
-            else
-            {
-                // إذا كانت الخلية فارغة، نتحقق من القسم ونعطيها نفس القيمة إذا كانت تابعة لنفس القسم
-                if (cell.Tag != null)
-                {
-                    cell.Text = " "; // نعطيها مسافة لضمان الدمج
-                }
-                else
-                {
-                    cell.Text = string.Empty;
-                }
-            }
+            //// Set the cell text to required employees
+            //if (!string.IsNullOrEmpty(requiredEmployees))
+            //{
+            //    cell.Text = requiredEmployees;
+            //}
+            //else
+            //{
+            //    // إذا كانت الخلية فارغة، نتحقق من القسم ونعطيها نفس القيمة إذا كانت تابعة لنفس القسم
+            //    if (cell.Tag != null)
+            //    {
+            //        cell.Text = " "; // نعطيها مسافة لضمان الدمج
+            //    }
+            //    else
+            //    {
+            //        cell.Text = string.Empty;
+            //    }
+            //}
+
+
 
             //XRTableCell cell = (XRTableCell)sender;
 
@@ -184,8 +282,33 @@ namespace System_Pointage.report
             //{
             //    cell.Text = string.Empty;
             //}
-       
 
+
+            XRTableCell cell = (XRTableCell)sender;
+
+            // تعيين محاذاة النص
+            cell.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+
+            // استخراج القيم من الحقول
+            var department = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+            var requiredEmployees = GetCurrentColumnValue("EFFC/CRT")?.ToString();
+
+            // تعيين النص إذا لم يكن فارغًا
+            if (!string.IsNullOrEmpty(requiredEmployees))
+            {
+                cell.Text = requiredEmployees;
+                // تفعيل دمج الخلايا فقط إذا كان هناك نص
+                cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+                cell.ProcessDuplicatesTarget = ProcessDuplicatesTarget.Tag;
+                cell.Tag = department; // استخدام القيمة الفعلية للدمج
+            }
+            else
+            {
+                cell.Text = string.Empty;
+                // إلغاء دمج الخلايا الفارغة
+            //    cell.ProcessDuplicatesMode = ProcessDuplicatesMode.None;
+                cell.Tag = Guid.NewGuid().ToString(); // قيمة فريدة لمنع الدمج
+            }
         }
 
         private void cell_name_BeforePrint(object sender, CancelEventArgs e)

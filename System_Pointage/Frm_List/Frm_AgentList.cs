@@ -45,21 +45,18 @@ namespace System_Pointage.Frm_List
             gridView1.Appearance.HeaderPanel.Options.UseFont = true;
             gridView1.GroupPanelText = " ";
             #endregion
-            //gridView1.DoubleClick += GridView1_DoubleClick;
             gridView1.OptionsBehavior.Editable = false;
 
             using (var dbContext = new DAL.DataClasses1DataContext())
             {
                 _agentDataService = new AgentDataService(dbContext);
 
-                // التحقق من نوع المستخدم
-                bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
-                int? userAccessPosteID = isAdmin ? null : Master.User.IDAccessPoste;
+                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
 
-                // استدعاء الخدمة للحصول على البيانات
-                var data = _agentDataService.GetAgents(userAccessPosteID, isAdmin);
-                // تعيين البيانات إلى الجدول
-               // gridControl1.DataSource = data;
+                int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
+
+                   var data = _agentDataService.GetAgents(userAccessPosteID, isAdminOrManager);
+
                 if (data == null || !data.Any())
                 {
                     DataTable emptyTable = new DataTable();
@@ -85,14 +82,12 @@ namespace System_Pointage.Frm_List
 
                 }
              
-                // تحديث التسميات
                 gridView1.Columns["Name"].Caption = "Nom";
                 gridView1.Columns["FirstName"].Caption = "Prénom";
                 gridView1.Columns["Date_Embauche"].Caption = "Date Affectée";
                 gridView1.Columns["Statut"].Caption = "Active/Inactive";
                 gridView1.Columns["Statutmvm"].Caption = "Statut";
                 gridView1.Columns["PostName"].Caption = "Poste";
-            //    gridView1.Columns["Jour"].Caption = "Systéme";
                 gridView1.Columns["AgentID"].Visible = false;
                 gridView1.Columns["ID"].Visible = false;
                 gridView1.Columns["ScreenPosteD"].Visible = false;
@@ -113,32 +108,22 @@ namespace System_Pointage.Frm_List
             statusLabel.Text = $"Enregistrement {currentRow} sur {totalRows}";
             statusLabel.Font = new Font(statusLabel.Font, FontStyle.Bold);
             statusLabel.TextAlign = ContentAlignment.MiddleCenter;
-          //  statusStrip.Items.Clear();  
             statusStrip.Items.Add(new ToolStripStatusLabel() { Spring = true }); 
             statusStrip.Items.Add(statusLabel);
         }
-
-
-
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
-            // تحقق إذا كان العمود هو "Name" و إذا كانت الحالة في العمود "Status" هي false
             if (e.RowHandle >= 0 && e.Column.FieldName == "Name")
             {
-                // استرجاع القيمة من عمود "Status"
                 bool status = Convert.ToBoolean(gridView1.GetRowCellValue(e.RowHandle, "Statut"));
 
-                // إذا كانت القيمة في عمود "Status" هي false
                 if (!status)
                 {
-                    // تخصيص لون النص باللون الأحمر
                     e.Appearance.ForeColor = Color.Red;
 
-                    // رسم النص مع السهم
-                    string arrow = "→"; // السهم الذي تريده
+                    string arrow = "→"; 
                     e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
 
-                    // منع الرسم الافتراضي
                     e.Handled = true;
                 }
             }

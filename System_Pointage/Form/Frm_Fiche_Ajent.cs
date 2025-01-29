@@ -145,7 +145,7 @@ namespace System_Pointage.Form
                             Poste = ((dynamic)x).PostID?.ToString() ?? string.Empty,
                             Matricule = ((dynamic)x).Matricule.ToString(),
                             Affecter = ((dynamic)x).Affecter.ToString(),
-                            Jour = ((dynamic)x).Jour,
+                            //Jour = ((dynamic)x).Jour,
                             Date = (DateTime)((dynamic)x).Date_Embauche,
                             Statut = ((dynamic)x).Statut ? "Active" : "Inactive",
                             Statutmvm = statutmvm
