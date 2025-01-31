@@ -1,14 +1,5 @@
-﻿using DevExpress.Data.Browsing.Design;
-using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System_Pointage.Classe;
 
 namespace System_Pointage.Form
@@ -33,7 +24,7 @@ namespace System_Pointage.Form
 
             spn_sys.EditValue = info.Jour;
         }
-      
+
         private void btn_valider_Click(object sender, EventArgs e)
         {
             if (spn_sys.EditValue == null || string.IsNullOrWhiteSpace(spn_sys.EditValue.ToString()))

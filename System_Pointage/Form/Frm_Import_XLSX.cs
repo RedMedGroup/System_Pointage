@@ -84,6 +84,7 @@ namespace System_Pointage.Form
                             lkp_departement.Properties.DataSource = columnNames;
                             lkp_affecter.Properties.DataSource = columnNames;
                             dt_P.Properties.DataSource = columnNames;
+                            dt_CR.Properties.DataSource = columnNames;
                             while (reader.Read())
                             {
                                 DataRow dataRow = dataTable.NewRow();
@@ -174,7 +175,7 @@ namespace System_Pointage.Form
             correctedDataTable.Columns.Add("Poste", typeof(string));
             correctedDataTable.Columns.Add("Département", typeof(string));
             correctedDataTable.Columns.Add("Affecter", typeof(string));
-            correctedDataTable.Columns.Add("Jour", typeof(int));
+            //correctedDataTable.Columns.Add("Jour", typeof(int));
             correctedDataTable.Columns.Add("Observation", typeof(string));
 
             DataTable table = (DataTable)gridControl1.DataSource;
@@ -227,7 +228,7 @@ namespace System_Pointage.Form
                         if (!DateTime.TryParse(datePresent, out dateP))
                         {
                             dateP = default(DateTime);
-                            observation += "تاريخ الحضور خطا";
+                            observation += "Date de présence incorrecte";
                             hasError = true;
                         }
 
@@ -399,6 +400,7 @@ namespace System_Pointage.Form
                     string affecterColumn = lkp_affecter.Text;
                     string dateColumn = lkp_date.Text;
                     string datePresence = dt_P.Text;
+                    string dateConger = dt_CR.Text;
 
                     string departementColumn = lkp_departement.Text;
                     string posteColumn = lkp_Poste.Text;
@@ -419,8 +421,13 @@ namespace System_Pointage.Form
 
                         string dateStr = row[dateColumn]?.ToString() ?? string.Empty;
                         string datePresent = row[datePresence]?.ToString() ?? string.Empty;
+                        string dateCongert = row[dateConger]?.ToString()?.Trim() ?? string.Empty;
+
                         DateTime date;
                         DateTime dateP;
+                        DateTime dateCR;
+                        bool isValidDate = DateTime.TryParse(dateCongert, out dateCR);
+
                         if (!DateTime.TryParse(dateStr, out date))
                         {
                             date = default(DateTime);
@@ -429,8 +436,11 @@ namespace System_Pointage.Form
                         {
                             dateP = default(DateTime);
                         }
+                        //if (!DateTime.TryParse(dateCongert, out dateCR))
+                        //{
+                        //    dateCR = default(DateTime);
+                        //}
 
-                      
 
                         bool hasError = false;
                         string observation = "";
@@ -474,6 +484,17 @@ namespace System_Pointage.Form
                             };
                             db.MVMAgentDetails.InsertOnSubmit(agentDetail);
                             db.SubmitChanges();
+                        if (!string.IsNullOrWhiteSpace(dateCongert) && isValidDate)
+                        {
+                            var agentDetail2 = new DAL.MVMAgentDetail
+                            {
+                                ItemID = agent.ID,
+                                Date = dateCR,
+                                Statut = "CR",
+                            };
+                            db.MVMAgentDetails.InsertOnSubmit(agentDetail2);
+                            db.SubmitChanges();
+                        }
 
                     }
                 }

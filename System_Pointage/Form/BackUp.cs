@@ -54,7 +54,7 @@ namespace System_Pointage.Form
             string dbname = txt_DataBase.Text;
 
             SqlConnection con = new SqlConnection(@"Data Source =" + servername + ";Integrated Security =true; Initial Catalog =" + dbname + "");
-            //SqlConnection con = new SqlConnection(@"Data Source=" + servername + ";Initial Catalog=" + dbname + ";User ID=sa;Password=123;");
+          //  SqlConnection con = new SqlConnection(@"Data Source=" + servername + ";Initial Catalog=" + dbname + ";User ID=sa;Password=123;");
             //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-647FREP\SQL2014;Initial Catalog=RedMed_TFT;User ID=sa;Password=123;Integrated Security=False;");
 
             con.Open();//DESKTOP-647FREP\SQL2014RedMed_TFT

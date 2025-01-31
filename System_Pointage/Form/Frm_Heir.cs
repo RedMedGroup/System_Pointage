@@ -1,25 +1,17 @@
-﻿using DevExpress.Xpo.DB;
-using DevExpress.XtraEditors;
-using DevExpress.XtraPrinting;
-using DevExpress.XtraReports.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
-using System_Pointage.DAL;
 
 namespace System_Pointage.Form
 {
     public partial class Frm_Heir : DevExpress.XtraEditors.XtraForm
     {
         private BindingList<Models.AgentStatus> activeAgentsList;
-    
+
 
         public Frm_Heir()
         {
@@ -37,14 +29,14 @@ namespace System_Pointage.Form
             #endregion
             gridView1.OptionsBehavior.Editable = false;
             RefrecheData();
-            gridView1.GroupPanelText =" ";
+            gridView1.GroupPanelText = " ";
             gridView1.RefreshData();
             gridView1.CustomDrawCell += GridView1_CustomDrawCell;
         }
 
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
-            if (e.RowHandle >= 0 && (e.Column.FieldName == "Name"|| e.RowHandle >= 0 && e.Column.FieldName == "NameP"|| e.RowHandle >= 0 && e.Column.FieldName == "NameCR"))
+            if (e.RowHandle >= 0 && (e.Column.FieldName == "Name" || e.RowHandle >= 0 && e.Column.FieldName == "NameP" || e.RowHandle >= 0 && e.Column.FieldName == "NameCR"))
             {
                 string statut = null;
                 if (e.Column.FieldName == "Name")
@@ -65,18 +57,18 @@ namespace System_Pointage.Form
                     {
                         e.Appearance.ForeColor = Color.Red;
                         string arrow = "→";
-                        e.Appearance.Font = new Font("Arial", 10); 
+                        e.Appearance.Font = new Font("Arial", 10);
                         e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
                     }
                     else if (statut == "P")
                     {
                         e.Appearance.ForeColor = Color.Green;
                         string arrow = "←";
-                        e.Appearance.Font = new Font("Arial", 10); 
+                        e.Appearance.Font = new Font("Arial", 10);
                         e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
                     }
                     e.Handled = true;
-                }                   
+                }
             }
         }
 
@@ -91,7 +83,7 @@ namespace System_Pointage.Form
             // إذا لم يكن أدمن أو مانجر، استخدم userAccessPosteID
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
-            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdminOrManager,selectedID, true, "Frm_Heir");
+            activeAgentsList = agentDataService.GetAgentStatuses(userAccessPosteID, Master.MVMType.CR, isAdminOrManager, selectedID, true, "Frm_Heir");
 
             gridControl1.DataSource = activeAgentsList;
 
@@ -100,12 +92,14 @@ namespace System_Pointage.Form
 
         public void GridName()
         {
-            gridView1.Columns["Name"].Caption = "Nom et prénom";
-            gridView1.Columns["Jour"].Visible =false;
+            gridView1.Columns["Name"].Caption = "Nom";
+            gridView1.Columns["FirstName"].Caption = "Prénom";
+            gridView1.Columns["Jour"].Visible = false;
             gridView1.Columns["Matricule"].VisibleIndex = 0;
             gridView1.Columns["Name"].VisibleIndex = 1;
-            gridView1.Columns["Poste"].VisibleIndex = 2;
-            gridView1.Columns["Affecter"].VisibleIndex = 3;
+            gridView1.Columns["FirstName"].VisibleIndex = 2;
+            gridView1.Columns["Poste"].VisibleIndex = 3;
+            gridView1.Columns["Affecter"].VisibleIndex = 4;
             gridView1.Columns["Jour"].Visible = false;
             gridView1.Columns["CalculatedDate"].Visible = false;
             gridView1.Columns["DaysCount"].Visible = false;
@@ -136,12 +130,14 @@ namespace System_Pointage.Form
             var listCR = filteredList.Where(agent => agent.Statut == "CR").ToList();
 
             DataTable table = new DataTable();
-            table.Columns.Add("MatriculeP", typeof(string)); 
-            table.Columns.Add("NameP", typeof(string));    
+            table.Columns.Add("MatriculeP", typeof(string));
+            table.Columns.Add("NameP", typeof(string));
+            table.Columns.Add("FirstNameP", typeof(string));
             table.Columns.Add("PosteP", typeof(string));
             table.Columns.Add("StatutP", typeof(string));
-            table.Columns.Add("MatriculeCR", typeof(string)); 
-            table.Columns.Add("NameCR", typeof(string));     
+            table.Columns.Add("MatriculeCR", typeof(string));
+            table.Columns.Add("NameCR", typeof(string));
+            table.Columns.Add("FirstNameCR", typeof(string));
             table.Columns.Add("PosteCR", typeof(string));
             table.Columns.Add("StatutCR", typeof(string));
 
@@ -156,13 +152,15 @@ namespace System_Pointage.Form
                 {
                     row["MatriculeP"] = listP[i].Matricule;
                     row["NameP"] = listP[i].Name;
-                    row["PosteP"] = listP[i].Poste; 
-                         row["StatutP"] = listP[i].Statut;
+                    row["FirstNameP"] = listP[i].FirstName;
+                    row["PosteP"] = listP[i].Poste;
+                    row["StatutP"] = listP[i].Statut;
                 }
                 else
                 {
                     row["MatriculeP"] = string.Empty;
                     row["NameP"] = string.Empty;
+                    row["FirstNameP"] = string.Empty;
                     row["PosteP"] = string.Empty;
                     row["StatutP"] = string.Empty;
                 }
@@ -172,6 +170,7 @@ namespace System_Pointage.Form
                 {
                     row["MatriculeCR"] = listCR[i].Matricule;
                     row["NameCR"] = listCR[i].Name;
+                    row["FirstNameCR"] = listCR[i].FirstName;
                     row["PosteCR"] = listCR[i].Poste;
                     row["StatutCR"] = listCR[i].Statut;
                 }
@@ -179,6 +178,7 @@ namespace System_Pointage.Form
                 {
                     row["MatriculeCR"] = string.Empty;
                     row["NameCR"] = string.Empty;
+                    row["FirstNameCR"] = string.Empty;
                     row["PosteCR"] = string.Empty;
                     row["StatutCR"] = string.Empty;
                 }
@@ -228,32 +228,36 @@ namespace System_Pointage.Form
             gridView1.Columns.Clear();
 
             gridView1.Columns.AddVisible("MatriculeP", "Matricule (P)");
-            gridView1.Columns.AddVisible("NameP", "Nom et prénom (P)");
+            gridView1.Columns.AddVisible("NameP", "Nom (P)");
+            gridView1.Columns.AddVisible("FirstNameP", "Prénom (P)");
             gridView1.Columns.AddVisible("PosteP", "Poste (P)");
             gridView1.Columns.AddVisible("MatriculeCR", "Matricule (CR)");
-            gridView1.Columns.AddVisible("NameCR", "Nom et prénom (CR)");
+            gridView1.Columns.AddVisible("NameCR", "Nom (CR)");
+            gridView1.Columns.AddVisible("FirstNameCR", "Prénom (CR)");
             gridView1.Columns.AddVisible("PosteCR", "Poste (CR)");
 
-            gridView1.Columns["MatriculeP"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#E8F5E9"); 
+            gridView1.Columns["MatriculeP"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#E8F5E9");
             gridView1.Columns["NameP"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#E8F5E9");
+            gridView1.Columns["FirstNameP"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#E8F5E9");
             gridView1.Columns["PosteP"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#E8F5E9");
 
             gridView1.Columns["MatriculeCR"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#FBE9E7");
             gridView1.Columns["NameCR"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#FBE9E7");
+            gridView1.Columns["FirstNameCR"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#FBE9E7");
             gridView1.Columns["PosteCR"].AppearanceCell.BackColor = ColorTranslator.FromHtml("#FBE9E7");
         }
         private void btn_liste_Click(object sender, EventArgs e)
         {
             gridControl1.DataSource = null;
             gridView1.Columns.Clear();
-               RefrecheData();
+            RefrecheData();
         }
 
         private void btn_print_Click(object sender, EventArgs e)
         {
             gridControl1.ShowRibbonPrintPreview();
         }
-       
+
 
 
     }

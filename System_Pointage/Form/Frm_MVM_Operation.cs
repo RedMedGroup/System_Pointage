@@ -293,6 +293,8 @@ namespace System_Pointage.Classe
                 return;
             }
             //
+            if (!Master.ConfirmSave())
+                return;
             var agentService = new AgentDataService();
 
             foreach (var rowIndex in selectedRows)
@@ -341,6 +343,7 @@ namespace System_Pointage.Classe
             }    
 
              DateTime date = dateEdit1.DateTime;
+            #region
             //using (var context = new DAL.DataClasses1DataContext())
             //{
             //    UserLogAction userLogAction = null;
@@ -372,7 +375,7 @@ namespace System_Pointage.Classe
             //            Statut = statut
             //        };
 
-                    // تحديد تفاصيل الحفظ بناءً على النوع
+            // تحديد تفاصيل الحفظ بناءً على النوع
             //        switch (Type)
             //        {
             //            case Master.MVMType.P:
@@ -433,7 +436,7 @@ namespace System_Pointage.Classe
             //        }, actionType);
             //    }
             //}
-
+            #endregion
             using (var context = new DAL.DataClasses1DataContext())
             {
                 UserLogAction userLogAction = null;
@@ -530,16 +533,16 @@ namespace System_Pointage.Classe
                     break;
             }
             context.MVMAgentDetails.InsertOnSubmit(newAgentDetail);
-            //  userLogAction.SaveAction(() => { context.SubmitChanges(); }, actionType);
-        }
+                    //  userLogAction.SaveAction(() => { context.SubmitChanges(); }, actionType);
+                    userLogAction.SaveAction(() =>
+                    {
+                        context.SubmitChanges();
+                       
+                    }, actionType);
+                }
+                Master.MessageBox();
 
-        userLogAction.SaveAction(() =>
-                {
-                    context.SubmitChanges();
-                    XtraMessageBox.Show("Enregistrer succés");
-                }, actionType);
-
-            if (delete == true)
+                if (delete == true)
             {
                 ValiderAgentToListeAttent();
                 #region

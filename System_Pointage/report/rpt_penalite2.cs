@@ -1,10 +1,7 @@
 ﻿using DevExpress.XtraReports.UI;
 using Humanizer;
 using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System_Pointage.Classe;
 
@@ -27,7 +24,7 @@ namespace System_Pointage.report
         }
         public void BindData()
         {
-            
+
             cell_Department.DataBindings.Add("Text", this.DataSource, "Department");
             cell_effc.DataBindings.Add("Text", this.DataSource, "Nembre_Contra");
             cell_Totaljourcontra.DataBindings.Add("Text", this.DataSource, "CalculatedField3");
@@ -108,12 +105,12 @@ namespace System_Pointage.report
 
         private void xrLabel7_AfterPrint(object sender, EventArgs e)
         {
-           
+
         }
 
         private void xrLabel7_PrintOnPage(object sender, PrintOnPageEventArgs e)
         {
-     
+
         }
     }
 }

@@ -35,10 +35,12 @@ namespace System_Pointage.Classe
             Congée,
             PACR,
         }
+
+
         public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
-             new ValueAndID { ID = (int)UserType.Admin, Name = nameof(UserType.Admin) },
-    new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) },
-         new ValueAndID { ID = (int)UserType.Manager, Name = nameof(UserType.Manager) }};
+         new ValueAndID { ID = (int)UserType.Admin, Name = nameof(UserType.Admin) },
+new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) },
+     new ValueAndID { ID = (int)UserType.Manager, Name = nameof(UserType.Manager) }};
         public enum UserType
         {
             Admin = 1,

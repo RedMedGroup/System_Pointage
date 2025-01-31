@@ -11,18 +11,15 @@ namespace System_Pointage.report
 {
     public partial class rpt_pointage2 : DevExpress.XtraReports.UI.XtraReport
     {
-        //public string ReportTitle { get; set; }
-
         public List<DateTime> ListOfDays { get; set; }
+
         public rpt_pointage2()
         {
             InitializeComponent();
             string formattedDate = DateTime.Now.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("fr-FR"));
             //lbl_date.Text = formattedDate;
-          
-
-
         }
+
         private TimeSpan dateRange;
         private int totalDays;
         private XRTable headerTable;
@@ -31,8 +28,7 @@ namespace System_Pointage.report
         private XRTableRow detailRow;
         private float availableWidth;
         private float columnWidth;
-          
-        
+
         public void AddDateColumnsToReport(XtraReport report, DateTime startDate, DateTime endDate)
         {
             dateRange = endDate - startDate;
@@ -49,7 +45,6 @@ namespace System_Pointage.report
 
             availableWidth = PageWidth - Margins.Left - Margins.Right;
             columnWidth = availableWidth / (totalDays + 3);
-
         }
 
         public void BindAttendanceDataToCells(DataTable table)
@@ -61,13 +56,10 @@ namespace System_Pointage.report
                 // ربط POSTE لكل فرد
                 XRControl posteCell = FindControl("cell_sp", true);
                 XRLabel lblBase = (XRLabel)FindControl("lbl_base", true);
-                //if (lblBase != null)
-                //{
-                //    lblBase.Text = this.ReportTitle; // تعيين النص إلى lbl_base
-                //}
+
                 if (posteCell != null)
                 {
-                    posteCell.DataBindings.Add("Text", table, "POSTE"); // ربط POSTE بالبيانات
+                    posteCell.DataBindings.Add("Text", table, "POSTE"); 
                 }
 
                 // ربط البيانات للأيام
@@ -80,7 +72,6 @@ namespace System_Pointage.report
                         cell.DataBindings.Add("Text", table, $"{dayIndex}");
 
                         string cellValue = row[dayIndex].ToString();
-                       
                     }
                 }
 
@@ -105,11 +96,9 @@ namespace System_Pointage.report
 
             cell.Text = cell.Text;
 
-
-
             string nomValue = GetCurrentColumnValue("POSTE")?.ToString();
 
-            if (!string.IsNullOrEmpty(nomValue) && nomValue == "S/TOTAL"|| !string.IsNullOrEmpty(nomValue) && nomValue == "Ecart")
+            if (!string.IsNullOrEmpty(nomValue) && nomValue == "S/TOTAL" || !string.IsNullOrEmpty(nomValue) && nomValue == "Ecart")
             {
                 cell_sp.BackColor = Color.Gainsboro;
                 cell_name.BackColor = Color.Gainsboro;
@@ -202,7 +191,6 @@ namespace System_Pointage.report
 
         private void xrTableDetail_BeforePrint(object sender, CancelEventArgs e)
         {
-            
         }
 
         private void cell_effec_BeforePrint(object sender, CancelEventArgs e)
@@ -248,8 +236,6 @@ namespace System_Pointage.report
             //    }
             //}
 
-
-
             //XRTableCell cell = (XRTableCell)sender;
 
             //// Set text alignment
@@ -283,7 +269,6 @@ namespace System_Pointage.report
             //    cell.Text = string.Empty;
             //}
 
-
             XRTableCell cell = (XRTableCell)sender;
 
             // تعيين محاذاة النص
@@ -306,19 +291,17 @@ namespace System_Pointage.report
             {
                 cell.Text = string.Empty;
                 // إلغاء دمج الخلايا الفارغة
-            //    cell.ProcessDuplicatesMode = ProcessDuplicatesMode.None;
+                //    cell.ProcessDuplicatesMode = ProcessDuplicatesMode.None;
                 cell.Tag = Guid.NewGuid().ToString(); // قيمة فريدة لمنع الدمج
             }
         }
 
         private void cell_name_BeforePrint(object sender, CancelEventArgs e)
         {
-           
         }
 
         private void cell_FirstName_BeforePrint(object sender, CancelEventArgs e)
         {
-            
         }
     }
 }

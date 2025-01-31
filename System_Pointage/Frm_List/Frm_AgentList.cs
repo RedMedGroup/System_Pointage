@@ -1,50 +1,52 @@
 ﻿using DevExpress.Utils;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraGrid.Views.Grid;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System_Pointage.Form;
 using System_Pointage.Classe;
-using DevExpress.XtraGrid.Views.Card;
-using DevExpress.XtraGrid.Views.Card.ViewInfo;
-using DevExpress.ClipboardSource.SpreadsheetML;
-using DevExpress.XtraExport.Helpers;
+using System_Pointage.Form;
 
 namespace System_Pointage.Frm_List
 {
     public partial class Frm_AgentList : DevExpress.XtraEditors.XtraForm
     {
         private AgentDataService _agentDataService;
+
         public Frm_AgentList()
         {
             InitializeComponent();
-
         }
-        StatusStrip statusStrip = new StatusStrip();
-        ToolStripStatusLabel statusLabel = new ToolStripStatusLabel();
+
+        private StatusStrip statusStrip = new StatusStrip();
+        private ToolStripStatusLabel statusLabel = new ToolStripStatusLabel();
 
         private void Frm_AgentList_Load(object sender, EventArgs e)
         {
-            
             statusStrip.Items.Add(statusLabel);
             this.Controls.Add(statusStrip);
 
             gridView1.FocusedRowChanged += GridView1_FocusedRowChanged;
+
             #region paramater gridview     ////////////////
+            ///
+            gridView1.OptionsView.ShowFooter = true;
+            gridView1.FooterPanelHeight = 70;
+
+            Color highPriority = Color.Green;
+            Color normalPriority = Color.Orange;
+            Color lowPriority = Color.Red;
+            int markWidth = 16;
+            ///
             gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
             gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold); 
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
             gridView1.Appearance.HeaderPanel.Options.UseFont = true;
             gridView1.GroupPanelText = " ";
-            #endregion
+
+            #endregion paramater gridview     ////////////////
+
             gridView1.OptionsBehavior.Editable = false;
 
             using (var dbContext = new DAL.DataClasses1DataContext())
@@ -55,7 +57,7 @@ namespace System_Pointage.Frm_List
 
                 int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
-                   var data = _agentDataService.GetAgents(userAccessPosteID, isAdminOrManager);
+                var data = _agentDataService.GetAgents(userAccessPosteID, isAdminOrManager);
 
                 if (data == null || !data.Any())
                 {
@@ -64,6 +66,7 @@ namespace System_Pointage.Frm_List
                     emptyTable.Columns.Add("AgentID", typeof(int));
                     emptyTable.Columns.Add("Matricule", typeof(string));
                     emptyTable.Columns.Add("Name", typeof(string));
+                    emptyTable.Columns.Add("FirstName", typeof(string));
                     emptyTable.Columns.Add("PostName", typeof(string));
                     emptyTable.Columns.Add("Affecter", typeof(bool));
                     emptyTable.Columns.Add("Jour", typeof(string));
@@ -72,16 +75,16 @@ namespace System_Pointage.Frm_List
                     emptyTable.Columns.Add("ScreenPosteD", typeof(int));
                     emptyTable.Columns.Add("AccessPosteID", typeof(int));
                     emptyTable.Columns.Add("NamePosteDetail", typeof(string));
+                    emptyTable.Columns.Add("Statutmvm", typeof(string));
+                    emptyTable.Columns.Add("PostID", typeof(string));
 
-              
                     gridControl1.DataSource = emptyTable;
                 }
                 else
                 {
-                   gridControl1.DataSource = data;
-
+                    gridControl1.DataSource = data;
                 }
-             
+
                 gridView1.Columns["Name"].Caption = "Nom";
                 gridView1.Columns["FirstName"].Caption = "Prénom";
                 gridView1.Columns["Date_Embauche"].Caption = "Date Affectée";
@@ -94,12 +97,38 @@ namespace System_Pointage.Frm_List
                 gridView1.Columns["AccessPosteID"].Visible = false;
                 gridView1.Columns["NamePosteDetail"].Visible = false;
                 gridView1.Columns["PostID"].Visible = false;
+                gridView1.Columns["Statutmvm"].Visible = false;
+
                 gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
             gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
-
+            gridView1.CustomDrawFooter += (s, args) =>
+            { // تغيير e إلى args
+                int offset = 5;
+                args.DefaultDraw();
+                Color color = highPriority;
+                Rectangle markRectangle;
+                string priorityText = " - Pésent";
+                for (int i = 0; i < 3; i++)
+                {
+                    if (i == 1)
+                    {
+                        color = normalPriority;
+                        priorityText = " - Congé";
+                    }
+                    else if (i == 2)
+                    {
+                        color = lowPriority;
+                        priorityText = " - Absent";
+                    }
+                    markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset + (markWidth + offset) * i, markWidth, markWidth);
+                    args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, color);
+                    args.Appearance.TextOptions.HAlignment = HorzAlignment.Near;
+                    args.Appearance.Options.UseTextOptions = true;
+                    args.Appearance.DrawString(args.Cache, priorityText, new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
+                }
+            };
         }
-
         private void GridView1_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             int currentRow = gridView1.FocusedRowHandle >= 0 ? gridView1.FocusedRowHandle + 1 : 0;
@@ -108,9 +137,10 @@ namespace System_Pointage.Frm_List
             statusLabel.Text = $"Enregistrement {currentRow} sur {totalRows}";
             statusLabel.Font = new Font(statusLabel.Font, FontStyle.Bold);
             statusLabel.TextAlign = ContentAlignment.MiddleCenter;
-            statusStrip.Items.Add(new ToolStripStatusLabel() { Spring = true }); 
+            statusStrip.Items.Add(new ToolStripStatusLabel() { Spring = true });
             statusStrip.Items.Add(statusLabel);
         }
+
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
             if (e.RowHandle >= 0 && e.Column.FieldName == "Name")
@@ -121,14 +151,46 @@ namespace System_Pointage.Frm_List
                 {
                     e.Appearance.ForeColor = Color.Red;
 
-                    string arrow = "→"; 
+                    string arrow = "→";
                     e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds);
 
                     e.Handled = true;
                 }
             }
-        }
 
+            e.Appearance.TextOptions.HAlignment = HorzAlignment.Center;
+            e.Appearance.Options.UseTextOptions = true;
+            e.DefaultDraw();
+            if (e.Column.FieldName == "Matricule")
+            {
+                string statutValue = gridView1.GetRowCellValue(e.RowHandle, "Statutmvm")?.ToString(); // جلب قيمة "Statutmvm"
+
+                if (statutValue == "P") // إذا كانت "P"، ارسم نقطة خضراء
+                {
+                    Color color = Color.Green;
+                    int markWidth = 10;
+                    int offset = (e.Bounds.Height - markWidth) / 2; // ضبط الموضع في وسط الخلية
+
+                    e.Cache.FillEllipse(e.Bounds.X + 5, e.Bounds.Y + offset, markWidth, markWidth, color);
+                }
+                else if (statutValue == "CR")
+                {
+                    Color color = Color.Orange;
+                    int markWidth = 10;
+                    int offset = (e.Bounds.Height - markWidth) / 2; // ضبط الموضع في وسط الخلية
+
+                    e.Cache.FillEllipse(e.Bounds.X + 5, e.Bounds.Y + offset, markWidth, markWidth, color);
+                }
+                else if (statutValue == "A")
+                {
+                    Color color = Color.Red;
+                    int markWidth = 10;
+                    int offset = (e.Bounds.Height - markWidth) / 2; // ضبط الموضع في وسط الخلية
+
+                    e.Cache.FillEllipse(e.Bounds.X + 5, e.Bounds.Y + offset, markWidth, markWidth, color);
+                }
+            }
+        }
         //private void GridView1_DoubleClick(object sender, EventArgs e)
         //{
         //    try
@@ -177,7 +239,6 @@ namespace System_Pointage.Frm_List
         //    }
         //}
 
-
         //private void GridView1_DoubleClick(object sender, EventArgs e)
         //{
         //    DXMouseEventArgs ea = e as DXMouseEventArgs;
@@ -202,6 +263,7 @@ namespace System_Pointage.Frm_List
             Frm_Import_XLSX frm = new Frm_Import_XLSX();
             frm.ShowDialog();
         }
+
         private void btn_print_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             gridView1.ShowPrintPreview();

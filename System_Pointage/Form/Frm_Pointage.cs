@@ -608,10 +608,10 @@ namespace System_Pointage.Form
         {
             DataTable table = new DataTable();
 
-            // إضافة الأعمدة
             table.Columns.Add("Department", typeof(string));
             table.Columns.Add("RequiredEmployees", typeof(int));
             table.Columns.Add("WorkerName", typeof(string));
+            table.Columns.Add("FirstName", typeof(string));
             table.Columns.Add("Status", typeof(string));
             table.Columns.Add("PresentCount", typeof(int));
             table.Columns.Add("cell_Ecart", typeof(int));
@@ -637,6 +637,7 @@ namespace System_Pointage.Form
                     .Select(agent => new
                     {
                         WorkerName = agent.Name,
+                        Firstname=agent.FirstName,
                         DepartmentID = agent.ID_Post,
                         LastStatus = context.MVMAgentDetails
                             .Where(detail =>
@@ -672,6 +673,7 @@ namespace System_Pointage.Form
                         row["Department"] = department.DepartmentName;
                         row["RequiredEmployees"] = department.RequiredEmployees;
                         row["WorkerName"] = worker.WorkerName;
+                        row["FirstName"] = worker.Firstname;
 
                         string status = worker.LastStatus ?? "A"; 
                         if (worker.LastStatus == "P" && (worker.NextAbsenceDate == null || worker.NextAbsenceDate > reportDate))
@@ -701,7 +703,8 @@ namespace System_Pointage.Form
                             DataRow row = table.NewRow();
                             row["Department"] = department.DepartmentName;
                             row["RequiredEmployees"] = department.RequiredEmployees;
-                            row["WorkerName"] = DBNull.Value; 
+                            row["WorkerName"] = DBNull.Value;
+                            row["FirstName"] = DBNull.Value;
                             row["Status"] = "No Workers";
                             row["PresentCount"] = 0; 
                             row["cell_Ecart"] = -department.RequiredEmployees;

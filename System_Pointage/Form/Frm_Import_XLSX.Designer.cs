@@ -97,6 +97,9 @@
             this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dt_CR = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.fluentDesignFormContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -160,6 +163,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -529,6 +535,7 @@
             this.layoutControl1.Controls.Add(this.lkp_departement);
             this.layoutControl1.Controls.Add(this.dt_P);
             this.layoutControl1.Controls.Add(this.lkp_FirstName);
+            this.layoutControl1.Controls.Add(this.dt_CR);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -539,7 +546,7 @@
             // 
             // txt_lien
             // 
-            this.txt_lien.Location = new System.Drawing.Point(54, 248);
+            this.txt_lien.Location = new System.Drawing.Point(54, 272);
             this.txt_lien.Margin = new System.Windows.Forms.Padding(2);
             this.txt_lien.Name = "txt_lien";
             this.txt_lien.Properties.ReadOnly = true;
@@ -550,7 +557,7 @@
             // btn_exl
             // 
             this.btn_exl.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_exl.ImageOptions.SvgImage")));
-            this.btn_exl.Location = new System.Drawing.Point(12, 248);
+            this.btn_exl.Location = new System.Drawing.Point(12, 272);
             this.btn_exl.Name = "btn_exl";
             this.btn_exl.Size = new System.Drawing.Size(38, 36);
             this.btn_exl.StyleController = this.layoutControl1;
@@ -725,7 +732,8 @@
             this.layoutControlItem6,
             this.layoutControlItem11,
             this.layoutControlItem1,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem10});
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(285, 350);
             this.Root.TextVisible = false;
@@ -853,18 +861,18 @@
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btn_exl;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 236);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 260);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(42, 94);
+            this.layoutControlItem1.Size = new System.Drawing.Size(42, 70);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.txt_lien;
-            this.layoutControlItem5.Location = new System.Drawing.Point(42, 236);
+            this.layoutControlItem5.Location = new System.Drawing.Point(42, 260);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(223, 94);
+            this.layoutControlItem5.Size = new System.Drawing.Size(223, 70);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -900,6 +908,35 @@
             // fluentFormDefaultManager1
             // 
             this.fluentFormDefaultManager1.Form = this;
+            // 
+            // layoutControlItem10
+            // 
+            this.layoutControlItem10.Control = this.dt_CR;
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 236);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(265, 24);
+            this.layoutControlItem10.Text = "Date CR";
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(98, 13);
+            // 
+            // dt_CR
+            // 
+            this.dt_CR.Location = new System.Drawing.Point(122, 248);
+            this.dt_CR.MenuManager = this.barManager1;
+            this.dt_CR.Name = "dt_CR";
+            this.dt_CR.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dt_CR.Properties.NullText = "";
+            this.dt_CR.Properties.PopupView = this.gridView4;
+            this.dt_CR.Size = new System.Drawing.Size(151, 20);
+            this.dt_CR.StyleController = this.layoutControl1;
+            this.dt_CR.TabIndex = 12;
+            // 
+            // gridView4
+            // 
+            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView4.Name = "gridView4";
+            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView4.OptionsView.ShowGroupPanel = false;
             // 
             // Frm_Import_XLSX
             // 
@@ -982,6 +1019,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1055,5 +1095,8 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraGrid.GridControl gridControl3;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
+        private DevExpress.XtraEditors.GridLookUpEdit dt_CR;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
     }
 }

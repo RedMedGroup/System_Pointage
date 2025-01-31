@@ -1,18 +1,9 @@
-﻿using DevExpress.Pdf.Native.BouncyCastle.Utilities;
-using DevExpress.Utils;
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.XtraReports.Design;
-using DevExpress.XtraRichEdit.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
 
@@ -25,7 +16,7 @@ namespace System_Pointage.Form
         public Frm_Fiche_Ajent()
         {
             InitializeComponent();
-          //  layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //btn_Delete
+            //  layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; //btn_Delete
             this.Size = new System.Drawing.Size(505, 220);
             New();
         }
@@ -75,7 +66,7 @@ namespace System_Pointage.Form
             lkp_post.EditValueChanged += Lkp_post_EditValueChanged;
             GetData();
             gridView1.CustomDrawCell += GridView1_CustomDrawCell;
-            
+
         }
 
         private void Lkp_post_EditValueChanged(object sender, EventArgs e)
@@ -105,13 +96,13 @@ namespace System_Pointage.Form
                     txt_contra.Text = postDetails.Nembre_Contra.ToString();
                 }
 
-                int agentCount = db.Fiche_Agents.Count(x => x.ID_Post == selectedPostId &&x.Statut==true);
+                int agentCount = db.Fiche_Agents.Count(x => x.ID_Post == selectedPostId && x.Statut == true);
                 txt_efectif.Text = agentCount.ToString();
 
                 if (int.TryParse(txt_contra.Text, out int contraValue) &&
               int.TryParse(txt_efectif.Text, out int efectifValue))
                 {
-                    int ecartValue = efectifValue  - contraValue*2;
+                    int ecartValue = efectifValue - contraValue * 2;
 
                     txt_ecart.Text = (ecartValue >= 0 ? "+" : "") + ecartValue.ToString();
                 }
@@ -130,7 +121,7 @@ namespace System_Pointage.Form
                 bool isAdmin = Master.User.UserType == (byte)Master.UserType.Admin;
                 int? userAccessPosteID = isAdmin ? null : Master.User.IDAccessPoste;
 
-                var data = _agentDataService.GetAgents(userAccessPosteID,isAdmin)
+                var data = _agentDataService.GetAgents(userAccessPosteID, isAdmin)
                     .Select(x =>
                     {
                         int agentId = ((dynamic)x).ID;
@@ -139,9 +130,9 @@ namespace System_Pointage.Form
 
                         return new Models.AgentStatus
                         {
-                            screenPosteD=agentId,
+                            screenPosteD = agentId,
                             Name = ((dynamic)x).Name.ToString(),
-                            FirstName= ((dynamic)x).FirstName.ToString(),
+                            FirstName = ((dynamic)x).FirstName.ToString(),
                             Poste = ((dynamic)x).PostID?.ToString() ?? string.Empty,
                             Matricule = ((dynamic)x).Matricule.ToString(),
                             Affecter = ((dynamic)x).Affecter.ToString(),
@@ -151,11 +142,11 @@ namespace System_Pointage.Form
                             Statutmvm = statutmvm
                         };
                     }).Where(x => x.Poste == selectedPostId.ToString()).ToList();
- 
+
                 if (data == null || !data.Any())
                 {
                     XtraMessageBox.Show("Aucune donnée trouvée");
-                    gridControl1.DataSource=null;
+                    gridControl1.DataSource = null;
                 }
                 else
                 {
@@ -178,7 +169,7 @@ namespace System_Pointage.Form
                 gridView1.Columns["CalculatedDate"].Visible = false;
                 gridView1.Columns["DaysCount"].Visible = false;
                 gridView1.Columns["Difference"].Visible = false;
-                gridView1.Columns["Matricule"].VisibleIndex= 1;
+                gridView1.Columns["Matricule"].VisibleIndex = 1;
                 gridView1.Columns["Name"].VisibleIndex = 2;
                 gridView1.Columns["FirstName"].VisibleIndex = 3;
                 gridView1.Columns["Date"].VisibleIndex = 4;
@@ -188,7 +179,7 @@ namespace System_Pointage.Form
         }
         void MasqueColumns()
         {
-           
+
             layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -203,13 +194,13 @@ namespace System_Pointage.Form
         }
         private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
-            string status = gridView1.GetRowCellValue(e.RowHandle, "Statut")?.ToString();          
+            string status = gridView1.GetRowCellValue(e.RowHandle, "Statut")?.ToString();
             if (status == "Inactive")
             {
-                e.Appearance.ForeColor = Color.Red; 
-                string arrow = "→"; 
+                e.Appearance.ForeColor = Color.Red;
+                string arrow = "→";
                 e.Appearance.DrawString(e.Cache, arrow + " " + e.CellValue.ToString(), e.Bounds); // رسم النص مع السهم
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
 
@@ -220,16 +211,16 @@ namespace System_Pointage.Form
         void SetData()
         {
             agent.Name = txt_Name.Text;
-            agent.FirstName=txt_FirstName.Text;
+            agent.FirstName = txt_FirstName.Text;
             agent.ID_Post = Convert.ToInt32(lkp_post.EditValue);
-           // agent.Jour = Convert.ToInt32(spn_jour.EditValue);
+            // agent.Jour = Convert.ToInt32(spn_jour.EditValue);
             agent.Date_Embauche = dt_embouch.DateTime;
             agent.ScreenPosteD = Convert.ToInt32(lkp_ScreanPoste.EditValue);
-            agent.Matricule=txt_matricule.Text;
-            agent.Affecter=cmb_affecte.Text;
-            if (cmb_statut.Text== "Actif")//
+            agent.Matricule = txt_matricule.Text;
+            agent.Affecter = cmb_affecte.Text;
+            if (cmb_statut.Text == "Actif")//
             {
-               agent.Statut = true;
+                agent.Statut = true;
             }
             else
             {
@@ -241,18 +232,18 @@ namespace System_Pointage.Form
             txt_Name.Text = agent.Name;
             txt_FirstName.Text = agent.FirstName;
             lkp_post.EditValue = agent.ID_Post;
-           // spn_jour.EditValue= agent.Jour;
+            // spn_jour.EditValue= agent.Jour;
             dt_embouch.DateTime = agent.Date_Embauche;
             lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
-            txt_matricule.Text=agent.Matricule;
+            txt_matricule.Text = agent.Matricule;
             cmb_affecte.Text = agent.Affecter;
-            if (agent.Statut == true) 
+            if (agent.Statut == true)
             {
-                cmb_statut.Text = "Actif"; 
+                cmb_statut.Text = "Actif";
             }
             else
             {
-                cmb_statut.Text = "Inactif"; 
+                cmb_statut.Text = "Inactif";
             }
         }
         void New()
@@ -278,7 +269,7 @@ namespace System_Pointage.Form
                 lkp_post.ErrorText = ErrorText;
                 return false;
             }
-            if (dt_embouch.DateTime == DateTime.MinValue) 
+            if (dt_embouch.DateTime == DateTime.MinValue)
             {
                 dt_embouch.ErrorText = ErrorText;
                 return false;
@@ -331,13 +322,13 @@ namespace System_Pointage.Form
             };
             userLogAction.SaveAction(() =>
             {
-               
+
                 using (var db = new DAL.DataClasses1DataContext())
                 {
-                    bool VR=false;
+                    bool VR = false;
                     if (agent.ID == 0)
                     {
-                       
+
                         db.Fiche_Agents.InsertOnSubmit(agent);
                         SetData();
                         db.SubmitChanges();
@@ -346,29 +337,29 @@ namespace System_Pointage.Form
                     }
                     else
                     {
-                        db.Fiche_Agents.Attach(agent);VR = true;
+                        db.Fiche_Agents.Attach(agent); VR = true;
                         SetData();
                         db.SubmitChanges();
-                    }                  
-                   
+                    }
+
                     userLogAction.PartID = agent.ID;
                     userLogAction.PartName = actionType == UserLogAction.ActionType.Add
-                 ? $": {agent.Name} Ajouter-" 
+                 ? $": {agent.Name} Ajouter-"
                  : $": {agent.Name} Modifier-";
                 }
                 Master.MessageBox();
                 // New();
                 SaveEmptyTextEdite();
-            },actionType);
-       
+            }, actionType);
+
         }
 
-       void SaveEmptyTextEdite()
+        void SaveEmptyTextEdite()
         {
             agent = new DAL.Fiche_Agent();
             txt_Name.Text = agent.Name;
             txt_FirstName.Text = agent.FirstName;
-           // spn_jour.EditValue = agent.Jour;
+            // spn_jour.EditValue = agent.Jour;
             dt_embouch.DateTime = agent.Date_Embauche;
             lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
             txt_matricule.Text = agent.Matricule;
@@ -399,7 +390,7 @@ namespace System_Pointage.Form
             layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem10.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem11.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-           // layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            // layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;//button ajouter
             layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;// btn update
@@ -431,14 +422,14 @@ namespace System_Pointage.Form
                 txt_Name.Text = agent.Name;
                 txt_FirstName.Text = agent.FirstName;
                 lkp_post.EditValue = agent.ID_Post;
-               // spn_jour.EditValue = agent.Jour;
+                // spn_jour.EditValue = agent.Jour;
                 dt_embouch.DateTime = agent.Date_Embauche;
                 lkp_ScreanPoste.EditValue = agent.ScreenPosteD;
                 txt_matricule.Text = agent.Matricule;
                 cmb_affecte.Text = agent.Affecter;
                 cmb_statut.Text = agent.Statut ? "Actif" : "Inactif";
 
-              //  cmb_statut.Text = agent.Statut.GetValueOrDefault(false) ? "Actif" : "Inactif";
+                //  cmb_statut.Text = agent.Statut.GetValueOrDefault(false) ? "Actif" : "Inactif";
 
             }
         }
@@ -485,7 +476,7 @@ namespace System_Pointage.Form
         }
         void SavePrésent()
         {
-            
+
             XtraForm dialog = new XtraForm
             {
                 Text = "Sélectionnez la date de présence",
@@ -496,15 +487,15 @@ namespace System_Pointage.Form
                 MinimizeBox = false,
             };
 
-          
+
 
             DateEdit dateEdit = new DateEdit
             {
                 Text = "Date Présent",
                 Location = new System.Drawing.Point(20, 50),
-                AutoSize = true               
+                AutoSize = true
             };
-            dateEdit.DateTime=DateTime.Now;
+            dateEdit.DateTime = DateTime.Now;
             dialog.Controls.Add(dateEdit);
 
             Button button = new Button
@@ -517,7 +508,7 @@ namespace System_Pointage.Form
                 if (dateEdit.DateTime == DateTime.MinValue)
                 {
                     dateEdit.ErrorText = ErrorText;
-                    return ;
+                    return;
                 }
                 using (var db = new DAL.DataClasses1DataContext())
                 {
@@ -529,7 +520,7 @@ namespace System_Pointage.Form
                     };
                     db.MVMAgentDetails.InsertOnSubmit(mvm);
                     db.SubmitChanges();
-                }                   
+                }
                 dialog.Close();
             };
             dialog.Controls.Add(button);

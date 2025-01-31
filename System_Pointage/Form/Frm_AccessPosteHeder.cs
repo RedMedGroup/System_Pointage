@@ -44,12 +44,12 @@ namespace System_Pointage.Form
         {
             var db = new DAL.DataClasses1DataContext();
             var data = from us in db.Fiche_Postes
-                       join c in db.UserAccessProfilePostes on us.Departement equals c.ID
+                    //   join c in db.UserAccessProfilePostes on us.Departement equals c.ID
                        select new
                        {
                            us.ID,
                            us.Name,                         
-                           Département = c.Name,
+                          // Département = c.Name,
                        };
             gridControl1.DataSource = data;
             gridView1.Columns["Name"].Caption = "Poste";

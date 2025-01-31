@@ -215,7 +215,8 @@ namespace System_Pointage.report
         {
             cell_Department.DataBindings.Add("Text", this.DataSource, "Department");
             cell_ncontra.DataBindings.Add("Text", this.DataSource, "RequiredEmployees");
-            cell_M_Penalite.DataBindings.Add("Text", this.DataSource, "WorkerName");
+            cell_name.DataBindings.Add("Text", this.DataSource, "WorkerName");
+            cell_firstname.DataBindings.Add("Text", this.DataSource, "FirstName");
             cell_TotalPenalties.DataBindings.Add("Text", this.DataSource, "Status");
             Cell_PresentCount.DataBindings.Add("Text", this.DataSource, "PresentCount");
             cell_Ecart.DataBindings.Add("Text", this.DataSource, "cell_Ecart");

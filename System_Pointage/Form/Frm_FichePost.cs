@@ -66,11 +66,11 @@ namespace System_Pointage.Form
                 txt_name.ErrorText = ErrorText;
                 return false;
             }
-            if (lkp_ScreanPoste.Text.Trim() == string.Empty)
-            {
-                lkp_ScreanPoste.ErrorText = ErrorText;
-                return false;
-            }
+            //if (lkp_ScreanPoste.Text.Trim() == string.Empty)
+            //{
+            //    lkp_ScreanPoste.ErrorText = ErrorText;
+            //    return false;
+            //}
             var db = new DAL.DataClasses1DataContext();
             var OL = db.Fiche_Postes.Where(x => x.Name.Trim() == txt_name.Text.Trim() && x.ID != un.ID);
             if (OL.Count() > 0)
