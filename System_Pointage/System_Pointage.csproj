@@ -80,6 +80,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
@@ -126,6 +127,12 @@
     </Compile>
     <Compile Include="Form\frm_AccessProfile.Designer.cs">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_Active_PRG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_Active_PRG.Designer.cs">
+      <DependentUpon>Frm_Active_PRG.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_Config_Generale.cs">
       <SubType>Form</SubType>
@@ -198,6 +205,12 @@
     </Compile>
     <Compile Include="Form\Frm_MVMAgentDetails.Designer.cs">
       <DependentUpon>Frm_MVMAgentDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Frm_MVM_Import_XLSX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Frm_MVM_Import_XLSX.Designer.cs">
+      <DependentUpon>Frm_MVM_Import_XLSX.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Frm_MVM_Operation.cs">
       <SubType>Form</SubType>
@@ -276,6 +289,12 @@
     </Compile>
     <Compile Include="Form\SQL_Server_Config.Designer.cs">
       <DependentUpon>SQL_Server_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frm_List\Frm_Activation_List.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_List\Frm_Activation_List.Designer.cs">
+      <DependentUpon>Frm_Activation_List.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_List\Frm_AgentList.cs">
       <SubType>Form</SubType>
@@ -386,6 +405,9 @@
     <EmbeddedResource Include="Form\frm_AccessProfile.resx">
       <DependentUpon>frm_AccessProfile.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_Active_PRG.resx">
+      <DependentUpon>Frm_Active_PRG.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_Config_Generale.resx">
       <DependentUpon>Frm_Config_Generale.cs</DependentUpon>
     </EmbeddedResource>
@@ -422,6 +444,9 @@
     <EmbeddedResource Include="Form\Frm_MVMAgentDetails.resx">
       <DependentUpon>Frm_MVMAgentDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Frm_MVM_Import_XLSX.resx">
+      <DependentUpon>Frm_MVM_Import_XLSX.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\Frm_MVM_Operation.resx">
       <DependentUpon>Frm_MVM_Operation.cs</DependentUpon>
     </EmbeddedResource>
@@ -457,6 +482,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\SQL_Server_Config.resx">
       <DependentUpon>SQL_Server_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_List\Frm_Activation_List.resx">
+      <DependentUpon>Frm_Activation_List.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_List\Frm_AgentList.resx">
       <DependentUpon>Frm_AgentList.cs</DependentUpon>

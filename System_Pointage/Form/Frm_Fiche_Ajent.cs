@@ -68,11 +68,14 @@ namespace System_Pointage.Form
             gridView1.CustomDrawCell += GridView1_CustomDrawCell;
 
         }
-
+        bool change;
         private void Lkp_post_EditValueChanged(object sender, EventArgs e)
         {
             var selectedPost = lkp_post.GetSelectedDataRow();
+            if(change==false)
+            {
 
+          
             if (selectedPost != null)
             {
                 var postData = (dynamic)selectedPost;
@@ -176,13 +179,14 @@ namespace System_Pointage.Form
                 gridView1.Columns["Jour"].VisibleIndex = 5;
                 gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
+            }
         }
         void MasqueColumns()
         {
 
             layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -274,11 +278,11 @@ namespace System_Pointage.Form
                 dt_embouch.ErrorText = ErrorText;
                 return false;
             }
-            if (spn_jour.Text.Trim() == string.Empty)
-            {
-                spn_jour.ErrorText = ErrorText;
-                return false;
-            }
+            //if (spn_jour.Text.Trim() == string.Empty)
+            //{
+            //    spn_jour.ErrorText = ErrorText;
+            //    return false;
+            //}
             if (lkp_ScreanPoste.Text.Trim() == string.Empty)
             {
                 lkp_ScreanPoste.ErrorText = ErrorText;
@@ -307,6 +311,7 @@ namespace System_Pointage.Form
         int AgentID;
         private void Save()
         {
+            change = false;
             if (IsValidit() == false)
                 return;
             if (!Master.ConfirmSave())
@@ -384,7 +389,7 @@ namespace System_Pointage.Form
             //layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-            layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            //layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -399,6 +404,7 @@ namespace System_Pointage.Form
         }
         private void btn_Update_Click(object sender, EventArgs e)
         {
+            change = true;
             var selectedRows = gridView1.GetSelectedRows();
 
             if (selectedRows.Length != 1)

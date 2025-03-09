@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraReports.Design;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraRichEdit.Model;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System_Pointage.Classe;
 using System_Pointage.DAL;
+using System_Pointage.Form;
 
 namespace System_Pointage.report
 {
@@ -50,6 +52,54 @@ namespace System_Pointage.report
         {
             var reportManager = new EtatPénalitesReportManager();
             reportManager.OpenReportDesigner();
+        }
+
+        private void defult_EtatJournal_Click(object sender, EventArgs e)
+        {
+            Frm_Pointage pointageForm = new Frm_Pointage();
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var reportManager = new LoadModifiedReportClass(context, pointageForm);
+
+                reportManager.DeleteReport("rpt_DailyReport");
+            }
+        }
+
+        private void defult_rpt_pointage_Click(object sender, EventArgs e)
+        {
+            Frm_Pointage pointageForm = new Frm_Pointage();
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var reportManager = new LoadModifiedReportClass(context, pointageForm);
+
+                reportManager.DeleteReport("rpt_pointage2");
+            }
+        }
+
+        private void simpleButton3_Click(object sender, EventArgs e)
+        {
+            Frm_Pointage pointageForm = new Frm_Pointage();
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var reportManager = new LoadModifiedReportClass(context, pointageForm);
+
+                reportManager.DeleteReport("rpt_penalite2");
+            }
+        }
+
+        private void simpleButton7_Click(object sender, EventArgs e)
+        {
+            Frm_Pointage pointageForm = new Frm_Pointage();
+
+            using (var context = new DAL.DataClasses1DataContext())
+            {
+                var reportManager = new LoadModifiedReportClass(context, pointageForm);
+
+                reportManager.DeleteReport("rpt_WorkDay");
+            }
         }
     }
 }

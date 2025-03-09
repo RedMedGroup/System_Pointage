@@ -150,16 +150,14 @@ namespace System_Pointage.Form
             IsOk_ = true;
             if (ComboBoxEdit1.Text == "")
             {
-                MessageBox.Show("يجب إختيار اسم السيرفر\nمن فضلك أعد المحاولة مرة أخرى", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ComboBoxEdit1.Focus();
+                MessageBox.Show("Vous devez sélectionner le nom du serveur\nVeuillez réessayer", "Message d'avertissement", MessageBoxButtons.OK, MessageBoxIcon.Error); ComboBoxEdit1.Focus();
                 IsOk_ = false;
                 return;
             }
 
             if (ComboBoxEdit2.SelectedIndex == -1)
             {
-                MessageBox.Show("يجب إختيار طريقة الولوج للسيرفر\nمن فضلك أعد المحاولة مرة أخرى", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ComboBoxEdit2.Focus();
+                MessageBox.Show("Vous devez sélectionner le nom du serveur\nVeuillez réessayer", "Message d'avertissement", MessageBoxButtons.OK, MessageBoxIcon.Error); ComboBoxEdit2.Focus();
                 IsOk_ = false;
                 return;
             }
@@ -168,16 +166,14 @@ namespace System_Pointage.Form
             {
                 if (TextEdit1.Text.Length == 0)
                 {
-                    MessageBox.Show("يجب كتابة اسم المستخدم\nمن فضلك أعد المحاولة مرة أخرى", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    TextEdit1.Focus();
+                    MessageBox.Show("Vous devez entrer un nom d'utilisateur\nVeuillez réessayer", "Message d'avertissement", MessageBoxButtons.OK, MessageBoxIcon.Error); TextEdit1.Focus();
                     IsOk_ = false;
                     return;
                 }
 
                 if (TextEdit2.Text.Length == 0)
                 {
-                    MessageBox.Show("يجب كتابة  كلمة المرور\nمن فضلك أعد المحاولة مرة أخرى", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    TextEdit2.Focus();
+                    MessageBox.Show("Vous devez entrer un mot de passe\nVeuillez réessayer", "Message d'avertissement", MessageBoxButtons.OK, MessageBoxIcon.Error); TextEdit2.Focus();
                     IsOk_ = false;
                     return;
                 }
@@ -273,7 +269,9 @@ namespace System_Pointage.Form
             Properties.Settings.Default.CON_STRING = txtCon_Setring.Text;
             Properties.Settings.Default.Save();
 
-            XtraMessageBox.Show("Serveur = " + Properties.Settings.Default.Server_Globale + " Base de données = " + Properties.Settings.Default.Database_Globale + " Nom d'utilisateur = " + Properties.Settings.Default.Utilisateur_Globale + " Mot de passe = " + Properties.Settings.Default.Password_Globale); XtraMessageBox.Show("تمت بنجاح عملية حفظ بيانات الإتصال بإعدادات المشروع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            XtraMessageBox.Show("Serveur = " + Properties.Settings.Default.Server_Globale + " Base de données = " + Properties.Settings.Default.Database_Globale +
+                " Nom d'utilisateur = " + Properties.Settings.Default.Utilisateur_Globale + " Mot de passe = " + Properties.Settings.Default.Password_Globale);
+            XtraMessageBox.Show("Les données de connexion ont été enregistrées avec succès dans les paramètres du projet", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Information); 
 
             Application.Restart();
         }

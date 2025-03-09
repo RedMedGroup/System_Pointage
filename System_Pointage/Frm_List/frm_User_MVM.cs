@@ -62,35 +62,22 @@ namespace System_Pointage.Frm_List
             if (e.Column.FieldName == "Action")
             {
                 if (action.ToString() == "Ajouter")
-                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
-            }
-            if (e.Column.FieldName == "Action")
-            {
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;            
+          
                 if (action.ToString() == "Supprimer")
-                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
-            }
-            if (e.Column.FieldName == "Action")
-            {
+                    e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+           
                 if (action.ToString() == "Modifier")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
-            }
-            if (e.Column.FieldName == "Action")
-            {
+         
                 if (action.ToString() == "Imprimer")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
-            }
-            if (e.Column.FieldName == "Action")
-            {
+
                 if (action.ToString() == "Rentrée")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            }
-            if (e.Column.FieldName == "Action")
-            {
                 if (action.ToString() == "Sortie")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
-            }
-            if (e.Column.FieldName == "Action")
-            {
+
                 if (action.ToString() == "Absent")
                     e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             }
@@ -99,6 +86,36 @@ namespace System_Pointage.Frm_List
         private void dateEdit1_EditValueChanged(object sender, EventArgs e)
         {
             GetHistory();
+        }
+
+        private void btn_All_Click(object sender, EventArgs e)
+        {
+            using (var db = new DAL.DataClasses1DataContext())
+            {
+                var data = db.UserLogs;
+                gridControl1.DataSource = (from d in data
+                                           join u in db.Users on d.UserID equals u.ID
+                                           select new
+                                           {
+                                               u.Name,
+                                               d.ActionDate,
+                                               Action = (d.ActionType == (byte)Classe.UserLogAction.ActionType.Add) ? "Ajouter" :
+                                           (d.ActionType == (byte)Classe.UserLogAction.ActionType.Delete) ? "Supprimer" :
+                                           (d.ActionType == (byte)Classe.UserLogAction.ActionType.Edit) ? "Modifier" :
+                                           (d.ActionType == (byte)Classe.UserLogAction.ActionType.Print) ? "Imprimer" :
+                                               (d.ActionType == (byte)Classe.UserLogAction.ActionType.Entrée) ? "Rentrée" :
+                                                 (d.ActionType == (byte)Classe.UserLogAction.ActionType.Sortie) ? "Sortie" :
+                                               (d.ActionType == (byte)Classe.UserLogAction.ActionType.Absent) ? "Absent" : "",
+                                               d.PartName,
+                                           }).ToList();
+            }
+            gridView1.Columns["Name"].Caption = "Nom d'utilisateur";
+            gridView1.Columns["ActionDate"].Caption = "Date de l'action";
+            gridView1.Columns["Action"].Caption = "Type d'action";
+            gridView1.Columns["PartName"].Caption = "Rapport";
+            gridView1.Columns["ActionDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            gridView1.Columns["ActionDate"].DisplayFormat.FormatString = "yyyy-MM-dd hh:mm:ss";
+            gridView1.RowCellStyle += GridView1_RowCellStyle;
         }
     }
     

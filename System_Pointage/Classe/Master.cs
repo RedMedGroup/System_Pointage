@@ -39,13 +39,15 @@ namespace System_Pointage.Classe
 
         public static List<ValueAndID> UserTypeList = new List<ValueAndID>() {
          new ValueAndID { ID = (int)UserType.Admin, Name = nameof(UserType.Admin) },
-new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) },
-     new ValueAndID { ID = (int)UserType.Manager, Name = nameof(UserType.Manager) }};
+         new ValueAndID { ID = (int)UserType.User, Name = nameof(UserType.User) },
+         new ValueAndID { ID = (int)UserType.Manager, Name = nameof(UserType.Manager)},
+          new ValueAndID { ID = (int)UserType.Guest, Name = nameof(UserType.Guest)}};
         public enum UserType
         {
             Admin = 1,
             User,
-            Manager
+            Manager,
+            Guest
         }
         public enum Actions
         {

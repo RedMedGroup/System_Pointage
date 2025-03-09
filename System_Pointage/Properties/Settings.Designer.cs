@@ -108,8 +108,8 @@ namespace System_Pointage.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SQL9001.site4now.net;Initial Catalog=db_ab02dc_systempointage;User Id" +
-            "=db_ab02dc_systempointage_admin;Password=aze12345")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SQL1002.site4now.net;Initial Catalog=db_ab25ba_roddik1;User Id=db_ab2" +
+            "5ba_roddik1_admin;Password=aze12345\r\n")]
         public string test {
             get {
                 return ((string)(this["test"]));
@@ -127,6 +127,19 @@ namespace System_Pointage.Properties {
         public string System_PointageConnectionString1 {
             get {
                 return ((string)(this["System_PointageConnectionString1"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source= 10.255.2.1,1433;Initial Catalog=System_Pointage;User ID=sa;Password=" +
+            "123;Encrypt=False;TrustServerCertificate=True")]
+        public string test2 {
+            get {
+                return ((string)(this["test2"]));
+            }
+            set {
+                this["test2"] = value;
             }
         }
     }

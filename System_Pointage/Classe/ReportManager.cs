@@ -158,7 +158,25 @@ namespace System_Pointage.Classe
             _context = context;
             _parentForm = parentForm;
         }
+        /// <summary>يث
+        public void DeleteReport(string reportName)
+        {
+            var reportEntity = _context.Reports
+                .OrderByDescending(r => r.ModifiedDate)
+                .FirstOrDefault(r => r.ReportName == reportName);
 
+            if (reportEntity != null)
+            {
+                _context.Reports.DeleteOnSubmit(reportEntity);
+                _context.SubmitChanges();
+                MessageBox.Show("Les paramètres par défaut ont été restaurés.");
+            }
+            else
+            {
+                MessageBox.Show("Le rapport  n'a pas été trouvé.");
+            }
+        }
+        /// <returns></returns>
         public T LoadModifiedReport<T>(string reportName) where T : XtraReport, new()
         {
             var reportEntity = _context.Reports
@@ -187,7 +205,5 @@ namespace System_Pointage.Classe
             }
         }
     }
-
-
 
 }

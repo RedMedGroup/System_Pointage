@@ -45,7 +45,6 @@
             this.cell_TotalPenalties = new DevExpress.XtraReports.UI.XRTableCell();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrRichText2 = new DevExpress.XtraReports.UI.XRRichText();
-            this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.lbl_mois = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -214,7 +213,7 @@
             this.cell_TotalPenalties.StylePriority.UseForeColor = false;
             this.cell_TotalPenalties.StylePriority.UseTextAlignment = false;
             this.cell_TotalPenalties.Text = "cell_TotalPenalties";
-            this.cell_TotalPenalties.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.cell_TotalPenalties.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.cell_TotalPenalties.TextFormatString = "{0:N2}";
             this.cell_TotalPenalties.Weight = 4.5891350113531386D;
             // 
@@ -222,7 +221,6 @@
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrRichText2,
-            this.xrLabel4,
             this.lbl_mois,
             this.xrPictureBox1,
             this.xrLabel1,
@@ -238,17 +236,6 @@
             this.xrRichText2.SerializableRtfString = resources.GetString("xrRichText2.SerializableRtfString");
             this.xrRichText2.SizeF = new System.Drawing.SizeF(208.2386F, 66.66667F);
             this.xrRichText2.StylePriority.UseFont = false;
-            // 
-            // xrLabel4
-            // 
-            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(7.293892F, 267.3612F);
-            this.xrLabel4.Multiline = true;
-            this.xrLabel4.Name = "xrLabel4";
-            this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(460.6191F, 23F);
-            this.xrLabel4.StylePriority.UseFont = false;
-            this.xrLabel4.Text = "personnel d\'hbergement et de maintenence général";
             // 
             // lbl_mois
             // 
@@ -509,7 +496,9 @@
             this.xrTableCell9.Multiline = true;
             this.xrTableCell9.Name = "xrTableCell9";
             this.xrTableCell9.StylePriority.UseFont = false;
+            this.xrTableCell9.StylePriority.UseTextAlignment = false;
             this.xrTableCell9.Text = "Montant global des pénalités relatives au manque de personnel présent sur Site";
+            this.xrTableCell9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             this.xrTableCell9.Weight = 4.7615145249768149D;
             // 
             // xrTableCell10
@@ -523,9 +512,11 @@
             this.xrTableCell10.Name = "xrTableCell10";
             this.xrTableCell10.StylePriority.UseBackColor = false;
             this.xrTableCell10.StylePriority.UseFont = false;
+            this.xrTableCell10.StylePriority.UseTextAlignment = false;
             xrSummary1.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
             this.xrTableCell10.Summary = xrSummary1;
             this.xrTableCell10.Text = "xrTableCell";
+            this.xrTableCell10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             this.xrTableCell10.TextFormatString = "{0:N2}";
             this.xrTableCell10.Weight = 0.73703137967616106D;
             // 
@@ -591,7 +582,6 @@
         public DevExpress.XtraReports.UI.XRLabel lbl_mois;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel7;
         private DevExpress.XtraReports.UI.XRLabel xrLabel8;
         private DevExpress.XtraReports.UI.XRRichText xrRichText2;

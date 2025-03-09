@@ -49,11 +49,11 @@ namespace System_Pointage.Frm_List
         void RefrechData()
         {
             var db = new DAL.DataClasses1DataContext();
-            gridControl1.DataSource = db.Fiche_materiels;
+            gridControl1.DataSource = db.Fiche_Matricules;
             gridView1.Columns["ID"].Visible = false;
-            gridView1.Columns["Name"].Caption = "Materiels";
-            gridView1.Columns["Nembre_Contra"].Caption = "CONTRAT";
-            gridView1.Columns["M_Penalite"].Caption = "Montant de pénalité";
+            //gridView1.Columns["Name"].Caption = "Materiels";
+            //gridView1.Columns["Nembre_Contra"].Caption = "CONTRAT";
+            //gridView1.Columns["M_Penalite"].Caption = "Montant de pénalité";
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DevExpress.Utils;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using System;
 using System.Data;
@@ -37,7 +38,7 @@ namespace System_Pointage.Frm_List
             Color highPriority = Color.Green;
             Color normalPriority = Color.Orange;
             Color lowPriority = Color.Red;
-            int markWidth = 16;
+            //int markWidth = 16;
             ///
             gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
             gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -53,7 +54,7 @@ namespace System_Pointage.Frm_List
             {
                 _agentDataService = new AgentDataService(dbContext);
 
-                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
                 int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -102,31 +103,80 @@ namespace System_Pointage.Frm_List
                 gridView1.CustomDrawCell += GridView1_CustomDrawCell;
             }
             gridView1.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
+            //gridView1.CustomDrawFooter += (s, args) =>
+            //{ 
+            //    int offset = 5;
+            //    args.DefaultDraw();
+            //    Color color = highPriority;
+            //    Rectangle markRectangle;
+            //    string priorityText = " - Pésent";
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        if (i == 1)
+            //        {
+            //            color = normalPriority;
+            //            priorityText = " - Congé";
+            //        }
+            //        else if (i == 2)
+            //        {
+            //            color = lowPriority;
+            //            priorityText = " - Absent";
+            //        }
+            //        markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset + (markWidth + offset) * i, markWidth, markWidth);
+            //        args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, color);
+            //        args.Appearance.TextOptions.HAlignment = HorzAlignment.Near;
+            //        args.Appearance.Options.UseTextOptions = true;
+            //        args.Appearance.DrawString(args.Cache, priorityText, new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
+            //    }
+            //};
+            int presentCount = 0;
+            int absentCount = 0;  
+            int leaveCount = 0;   
+
+            // حساب عدد النقاط
+            for (int i = 0; i < gridView1.RowCount; i++)
+            {
+                string statutValue = gridView1.GetRowCellValue(i, "Statutmvm")?.ToString(); 
+
+                if (statutValue == "P") // الحضور
+                    presentCount++;
+                else if (statutValue == "A") // الغياب
+                    absentCount++;
+                else if (statutValue == "CR") // العطل
+                    leaveCount++;
+            }
+
+            // رسم الفوتر
             gridView1.CustomDrawFooter += (s, args) =>
-            { // تغيير e إلى args
+            {
                 int offset = 5;
+                int markWidth= 10; // عرض النقطة
                 args.DefaultDraw();
-                Color color = highPriority;
+
+                // تعريف الألوان
+                Color presentColor = Color.Green;   
+                Color absentColor = Color.Red;      
+                Color leaveColor = Color.Orange;    
+
+                // رسم النقاط والنصوص
                 Rectangle markRectangle;
-                string priorityText = " - Pésent";
-                for (int i = 0; i < 3; i++)
-                {
-                    if (i == 1)
-                    {
-                        color = normalPriority;
-                        priorityText = " - Congé";
-                    }
-                    else if (i == 2)
-                    {
-                        color = lowPriority;
-                        priorityText = " - Absent";
-                    }
-                    markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset + (markWidth + offset) * i, markWidth, markWidth);
-                    args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, color);
-                    args.Appearance.TextOptions.HAlignment = HorzAlignment.Near;
-                    args.Appearance.Options.UseTextOptions = true;
-                    args.Appearance.DrawString(args.Cache, priorityText, new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
-                }
+
+                // الحضور
+                markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset, markWidth, markWidth);
+                args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, presentColor);
+                args.Appearance.TextOptions.HAlignment = HorzAlignment.Near;
+                args.Appearance.Options.UseTextOptions = true;
+                args.Appearance.DrawString(args.Cache, $" - Présent : {presentCount}", new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
+
+                // العطل
+                markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset + (markWidth + offset) * 1, markWidth, markWidth);
+                args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, leaveColor);
+                args.Appearance.DrawString(args.Cache, $" - Congé : {leaveCount}", new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
+
+                // الغياب
+                markRectangle = new Rectangle(args.Bounds.X + offset, args.Bounds.Y + offset + (markWidth + offset) * 2, markWidth, markWidth);
+                args.Cache.FillEllipse(markRectangle.X, markRectangle.Y, markRectangle.Width, markRectangle.Height, absentColor);
+                args.Appearance.DrawString(args.Cache, $" - Absent : {absentCount}", new Rectangle(markRectangle.Right + offset, markRectangle.Y, args.Bounds.Width, markRectangle.Height));
             };
         }
         private void GridView1_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
@@ -260,6 +310,15 @@ namespace System_Pointage.Frm_List
 
         private void btn_import_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (Master.User.UserType == (byte)Master.UserType.Guest|| Master.User.UserType == (byte)Master.UserType.Manager|| Master.User.UserType == (byte)Master.UserType.User)
+            {
+                XtraMessageBox.Show("Vous n'avez pas l'autorisation d'accéder à ce rapport.",
+                     "Autorisations insuffisantes",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Warning);
+
+                return;
+            }
             Frm_Import_XLSX frm = new Frm_Import_XLSX();
             frm.ShowDialog();
         }

@@ -83,6 +83,8 @@
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lkp_FirstName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView21111 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.dt_CR = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -94,12 +96,10 @@
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
-            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dt_CR = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.fluentDesignFormContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -150,6 +150,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_FirstName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView21111)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
@@ -161,11 +163,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -718,6 +718,26 @@
             this.gridView21111.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView21111.OptionsView.ShowGroupPanel = false;
             // 
+            // dt_CR
+            // 
+            this.dt_CR.Location = new System.Drawing.Point(122, 248);
+            this.dt_CR.MenuManager = this.barManager1;
+            this.dt_CR.Name = "dt_CR";
+            this.dt_CR.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dt_CR.Properties.NullText = "";
+            this.dt_CR.Properties.PopupView = this.gridView4;
+            this.dt_CR.Size = new System.Drawing.Size(151, 20);
+            this.dt_CR.StyleController = this.layoutControl1;
+            this.dt_CR.TabIndex = 12;
+            // 
+            // gridView4
+            // 
+            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView4.Name = "gridView4";
+            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView4.OptionsView.ShowGroupPanel = false;
+            // 
             // Root
             // 
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -876,6 +896,15 @@
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
+            // layoutControlItem10
+            // 
+            this.layoutControlItem10.Control = this.dt_CR;
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 236);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(265, 24);
+            this.layoutControlItem10.Text = "Date CR";
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(98, 13);
+            // 
             // accordionControlElement1
             // 
             this.accordionControlElement1.Appearance.Default.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -908,35 +937,6 @@
             // fluentFormDefaultManager1
             // 
             this.fluentFormDefaultManager1.Form = this;
-            // 
-            // layoutControlItem10
-            // 
-            this.layoutControlItem10.Control = this.dt_CR;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 236);
-            this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(265, 24);
-            this.layoutControlItem10.Text = "Date CR";
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(98, 13);
-            // 
-            // dt_CR
-            // 
-            this.dt_CR.Location = new System.Drawing.Point(122, 248);
-            this.dt_CR.MenuManager = this.barManager1;
-            this.dt_CR.Name = "dt_CR";
-            this.dt_CR.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dt_CR.Properties.NullText = "";
-            this.dt_CR.Properties.PopupView = this.gridView4;
-            this.dt_CR.Size = new System.Drawing.Size(151, 20);
-            this.dt_CR.StyleController = this.layoutControl1;
-            this.dt_CR.TabIndex = 12;
-            // 
-            // gridView4
-            // 
-            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView4.Name = "gridView4";
-            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView4.OptionsView.ShowGroupPanel = false;
             // 
             // Frm_Import_XLSX
             // 
@@ -1006,6 +1006,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lkp_FirstName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView21111)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
@@ -1017,11 +1019,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dt_CR.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1033,39 +1033,9 @@
         private DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl fluentDesignFormControl1;
         private DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager fluentFormDefaultManager1;
         private DevExpress.XtraBars.Navigation.AccordionContentContainer accordionContentContainer1;
-        private DevExpress.XtraLayout.LayoutControl layoutControl1;
-        private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement1;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_Name;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2111;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_date;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView21131;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_Matricule;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView211;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_Poste;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2113;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_affecter;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView211311;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_departement;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2113111;
-        private DevExpress.XtraEditors.GridLookUpEdit dt_P;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
-        private DevExpress.XtraEditors.GridLookUpEdit lkp_FirstName;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView21111;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
-        private DevExpress.XtraEditors.SimpleButton btn_exl;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
-        private DevExpress.XtraEditors.TextEdit txt_lien;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
@@ -1095,8 +1065,38 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraGrid.GridControl gridControl3;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
+        private DevExpress.XtraLayout.LayoutControl layoutControl1;
+        private DevExpress.XtraEditors.TextEdit txt_lien;
+        private DevExpress.XtraEditors.SimpleButton btn_exl;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_Name;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2111;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_date;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView21131;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_Matricule;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView211;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_Poste;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2113;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_affecter;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView211311;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_departement;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2113111;
+        private DevExpress.XtraEditors.GridLookUpEdit dt_P;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private DevExpress.XtraEditors.GridLookUpEdit lkp_FirstName;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView21111;
         private DevExpress.XtraEditors.GridLookUpEdit dt_CR;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraLayout.LayoutControlGroup Root;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
     }
 }

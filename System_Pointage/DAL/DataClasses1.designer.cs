@@ -75,10 +75,13 @@ namespace System_Pointage.DAL
     partial void InsertFiche_Agent(Fiche_Agent instance);
     partial void UpdateFiche_Agent(Fiche_Agent instance);
     partial void DeleteFiche_Agent(Fiche_Agent instance);
+    partial void Insertactivation(activation instance);
+    partial void Updateactivation(activation instance);
+    partial void Deleteactivation(activation instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System_Pointage.Properties.Settings.Default.CON_STRING, mappingSource)
+				base(global::System_Pointage.Properties.Settings.Default.System_PointageConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -224,6 +227,14 @@ namespace System_Pointage.DAL
 			get
 			{
 				return this.GetTable<Fiche_Agent>();
+			}
+		}
+		
+		public System.Data.Linq.Table<activation> activations
+		{
+			get
+			{
+				return this.GetTable<activation>();
 			}
 		}
 	}
@@ -2597,6 +2608,236 @@ namespace System_Pointage.DAL
 					this._FirstName = value;
 					this.SendPropertyChanged("FirstName");
 					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.activations")]
+	public partial class activation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Poste;
+		
+		private string _ComputerName;
+		
+		private string _NetworkName;
+		
+		private string _CpuName;
+		
+		private string _DISCK_HD;
+		
+		private System.DateTime _Date;
+		
+		private bool _Statut;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnPosteChanging(string value);
+    partial void OnPosteChanged();
+    partial void OnComputerNameChanging(string value);
+    partial void OnComputerNameChanged();
+    partial void OnNetworkNameChanging(string value);
+    partial void OnNetworkNameChanged();
+    partial void OnCpuNameChanging(string value);
+    partial void OnCpuNameChanged();
+    partial void OnDISCK_HDChanging(string value);
+    partial void OnDISCK_HDChanged();
+    partial void OnDateChanging(System.DateTime value);
+    partial void OnDateChanged();
+    partial void OnStatutChanging(bool value);
+    partial void OnStatutChanged();
+    #endregion
+		
+		public activation()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Poste", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string Poste
+		{
+			get
+			{
+				return this._Poste;
+			}
+			set
+			{
+				if ((this._Poste != value))
+				{
+					this.OnPosteChanging(value);
+					this.SendPropertyChanging();
+					this._Poste = value;
+					this.SendPropertyChanged("Poste");
+					this.OnPosteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ComputerName", DbType="NVarChar(MAX)")]
+		public string ComputerName
+		{
+			get
+			{
+				return this._ComputerName;
+			}
+			set
+			{
+				if ((this._ComputerName != value))
+				{
+					this.OnComputerNameChanging(value);
+					this.SendPropertyChanging();
+					this._ComputerName = value;
+					this.SendPropertyChanged("ComputerName");
+					this.OnComputerNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetworkName", DbType="NVarChar(MAX)")]
+		public string NetworkName
+		{
+			get
+			{
+				return this._NetworkName;
+			}
+			set
+			{
+				if ((this._NetworkName != value))
+				{
+					this.OnNetworkNameChanging(value);
+					this.SendPropertyChanging();
+					this._NetworkName = value;
+					this.SendPropertyChanged("NetworkName");
+					this.OnNetworkNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CpuName", DbType="NVarChar(MAX)")]
+		public string CpuName
+		{
+			get
+			{
+				return this._CpuName;
+			}
+			set
+			{
+				if ((this._CpuName != value))
+				{
+					this.OnCpuNameChanging(value);
+					this.SendPropertyChanging();
+					this._CpuName = value;
+					this.SendPropertyChanged("CpuName");
+					this.OnCpuNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DISCK_HD", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string DISCK_HD
+		{
+			get
+			{
+				return this._DISCK_HD;
+			}
+			set
+			{
+				if ((this._DISCK_HD != value))
+				{
+					this.OnDISCK_HDChanging(value);
+					this.SendPropertyChanging();
+					this._DISCK_HD = value;
+					this.SendPropertyChanged("DISCK_HD");
+					this.OnDISCK_HDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="Date NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this.OnDateChanging(value);
+					this.SendPropertyChanging();
+					this._Date = value;
+					this.SendPropertyChanged("Date");
+					this.OnDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Statut", DbType="Bit NOT NULL")]
+		public bool Statut
+		{
+			get
+			{
+				return this._Statut;
+			}
+			set
+			{
+				if ((this._Statut != value))
+				{
+					this.OnStatutChanging(value);
+					this.SendPropertyChanging();
+					this._Statut = value;
+					this.SendPropertyChanged("Statut");
+					this.OnStatutChanged();
 				}
 			}
 		}

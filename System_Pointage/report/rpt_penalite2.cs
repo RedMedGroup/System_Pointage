@@ -51,22 +51,22 @@ namespace System_Pointage.report
 
             int? userAccessPosteID = isAdmin ? null : (int?)Master.User.IDAccessPoste;
 
-            if (isAdmin)
-            {
-                xrLabel4.Text = "Personnel(restauration/hébergement):";
-            }
-            else
-            {
-                if (userAccessPosteID == 1)
-                {
-                    xrLabel4.Text = "Personnel d'hébergement et de maintenance générale:";
-                }
-                else if (userAccessPosteID == 2)
-                {
-                    xrLabel4.Text = "Personnel de restauration:";
-                }
+            //if (isAdmin)
+            //{
+            //    xrLabel4.Text = "Personnel(restauration/hébergement):";
+            //}
+            //else
+            //{
+            //    if (userAccessPosteID == 1)
+            //    {
+            //        xrLabel4.Text = "Personnel d'hébergement et de maintenance générale:";
+            //    }
+            //    else if (userAccessPosteID == 2)
+            //    {
+            //        xrLabel4.Text = "Personnel de restauration:";
+            //    }
 
-            }
+            //}
         }
 
         private void xrLabel7_BeforePrint(object sender, CancelEventArgs e)

@@ -353,7 +353,7 @@ namespace System_Pointage.Form
             table.Columns.Add("TotalPenalties", typeof(float));
             table.Columns.Add("Nombre du personnel absent", typeof(int));
 
-            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -450,7 +450,8 @@ namespace System_Pointage.Form
 
                     if (totalAbsences > 0)
                     {
-
+                        int distinctAbsentCount = absentAgents.Count;
+                        distinctAbsentCount = Math.Min(distinctAbsentCount, totalAbsences);
                         float totalPenalties = (float)(totalAbsences * (
                              department.M_Penalite));
                          
@@ -459,7 +460,7 @@ namespace System_Pointage.Form
                         row["TotalAbsences"] = totalAbsences;
                         row["M_Penalite"] =  department.M_Penalite ;
                         row["TotalPenalties"] = totalPenalties;
-                        row["Nombre du personnel absent"] = absentAgents.Count; 
+                        row["Nombre du personnel absent"] = distinctAbsentCount; 
 
                         totalSum += totalPenalties;
                         Sum = (decimal)totalSum;
@@ -618,7 +619,7 @@ namespace System_Pointage.Form
 
             using (var context = new DAL.DataClasses1DataContext())
             {
-                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
                 int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -835,7 +836,7 @@ namespace System_Pointage.Form
 
             var context = new DAL.DataClasses1DataContext();
 
-                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+                bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
                 int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -999,6 +1000,15 @@ namespace System_Pointage.Form
 
         private void btn_print_mensuel_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (Master.User.UserType == (byte)Master.UserType.Guest)
+            {
+                XtraMessageBox.Show("Vous n'avez pas l'autorisation d'accéder à ce rapport.",
+                     "Autorisations insuffisantes",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Warning);
+
+                return;
+            }
             LoadData();
             report.rpt_pointage_mensuel report = new report.rpt_pointage_mensuel();
            
@@ -1103,22 +1113,38 @@ namespace System_Pointage.Form
             table.Columns.Add("S/TOTAL", typeof(int));
 
            
-            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
             var context = new DAL.DataClasses1DataContext();
-            var groups = FicheAgentList
-                .Where(x => x.Statut == true ) 
-                .GroupBy(agent => agent.ID_Post)
-                .Where(g => isAdminOrManager || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
-                .Select(g => new
-                {
-                    Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
-                    RequiredQuantity =  context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+            //var groups = FicheAgentList
+            //    .Where(x => x.Statut == true ) 
+            //    .GroupBy(agent => agent.ID_Post)
+            //    .Where(g => isAdminOrManager || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
+            //    .Select(g => new
+            //    {
+            //        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+            //        RequiredQuantity =  context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
                        
-                    Agents = g.ToList()
-                });
+            //        Agents = g.ToList()
+            //    });
+
+            var groups = FicheAgentList
+    .Where(x => x.Statut == true)
+    .GroupBy(agent => agent.ID_Post)
+    .Where(g => isAdminOrManager || g.Any(agent => agent.ScreenPosteD == userAccessPosteID))
+    .Select(g => new
+    {
+        PostID = g.Key,
+        Specialization = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Name,
+        RequiredQuantity = context.Fiche_Postes.FirstOrDefault(sp => sp.ID == g.Key)?.Nembre_Contra ?? 0,
+        Agents = g.ToList()
+    })
+    .OrderBy(g => g.PostID) // ترتيب المجموعات حسب ID_Post
+    .ToList();
+
+
 
             foreach (var group in groups)
             {
@@ -1206,7 +1232,8 @@ namespace System_Pointage.Form
                 {
                     int ecartValue = (int)group.RequiredQuantity - presentCountPerDay[i];
                     ecartRow[$"{startDate.AddDays(i).Day}"] = ecartValue < 0 ? 0 : ecartValue;
-                    totalEcart += ecartValue;
+                //    totalEcart += ecartValue;
+                    totalEcart += (ecartValue < 0 ? 0 : ecartValue); // اجمع القيم المعدلة (السلبية = 0)
                 }
                 ecartRow["S/TOTAL"] = Math.Max(totalEcart, 0);
                 table.Rows.Add(ecartRow);
@@ -1390,13 +1417,30 @@ namespace System_Pointage.Form
        
         private void btn_penality2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-         
+            if (Master.User.UserType == (byte)Master.UserType.Guest)
+            {
+                XtraMessageBox.Show("Vous n'avez pas l'autorisation d'accéder à ce rapport.",
+                     "Autorisations insuffisantes",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Warning);
+
+                return;
+            }
 
             GenerateReport3(); 
         }
 
         private void btn_print_pinalite2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (Master.User.UserType == (byte)Master.UserType.Guest)
+            {
+                XtraMessageBox.Show("Vous n'avez pas l'autorisation d'accéder à ce rapport.",
+                     "Autorisations insuffisantes",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Warning);
+
+                return;
+            }
             GenerateReport();
         }
         private void GenerateReport3() // pénalité
@@ -1464,7 +1508,7 @@ namespace System_Pointage.Form
             table.Columns.Add("M_Penalite", typeof(float)); 
             table.Columns.Add("TotalPenalties", typeof(float)); 
 
-            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -1514,19 +1558,22 @@ namespace System_Pointage.Form
                     {
                         totalPenalties = 0;
                     }
+                    if (calculatedField5 > 0)
+                    {
+                        DataRow row = table.NewRow();
+                        row["Department"] = department.DepartmentName;
+                        row["Nembre_Contra"] = totalNembreContra;
+                        row["CalculatedField3"] = calculatedField3;
+                        row["AttendanceDays"] = totalAttendanceDays;
+                        row["CalculatedField5"] = calculatedField5;
+                        row["M_Penalite"] = department.M_Penalite;
+                        row["TotalPenalties"] = totalPenalties;
 
-                    DataRow row = table.NewRow();
-                    row["Department"] = department.DepartmentName;
-                    row["Nembre_Contra"] = totalNembreContra; 
-                    row["CalculatedField3"] = calculatedField3;
-                    row["AttendanceDays"] = totalAttendanceDays;
-                    row["CalculatedField5"] = calculatedField5;
-                    row["M_Penalite"] = department.M_Penalite;
-                    row["TotalPenalties"] = totalPenalties;
-
-                    totalSum += totalPenalties;
-                    Sum = (decimal)totalSum;
-                    table.Rows.Add(row);
+                        totalSum += totalPenalties;
+                        Sum = (decimal)totalSum;
+                        table.Rows.Add(row);
+                    }
+                     
                 }
             }
 

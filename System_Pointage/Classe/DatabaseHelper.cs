@@ -31,8 +31,7 @@ namespace System_Pointage.Classe
                 }
                 catch (Exception ex)
                 {
-                    // يمكنك إضافة معالجة الأخطاء هنا إذا لزم الأمر
-                    throw new Exception("فشل في جلب أسماء قواعد البيانات: " + ex.Message);
+                    throw new Exception($"Échec de la récupération des noms des bases de données : {ex.Message}");
                 }
             }
 

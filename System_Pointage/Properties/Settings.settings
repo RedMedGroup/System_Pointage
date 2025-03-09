@@ -29,7 +29,8 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="test" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=SQL9001.site4now.net;Initial Catalog=db_ab02dc_systempointage;User Id=db_ab02dc_systempointage_admin;Password=aze12345</Value>
+      <Value Profile="(Default)">Data Source=SQL1002.site4now.net;Initial Catalog=db_ab25ba_roddik1;User Id=db_ab25ba_roddik1_admin;Password=aze12345
+</Value>
     </Setting>
     <Setting Name="System_PointageConnectionString1" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -38,6 +39,9 @@
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=DESKTOP-G2HKEA1;Initial Catalog=System_Pointage;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True</Value>
+    </Setting>
+    <Setting Name="test2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source= 10.255.2.1,1433;Initial Catalog=System_Pointage;User ID=sa;Password=123;Encrypt=False;TrustServerCertificate=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

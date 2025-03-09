@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System_Pointage.Form;
+using System_Pointage.Frm_List;
 
 namespace System_Pointage
 {
@@ -21,8 +22,8 @@ namespace System_Pointage
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-          Application.Run(new Frm_LogIn());
-         //   Application.Run(new Form1());
+            //Application.Run(new Frm_LogIn());
+            Application.Run(new Frm_Active_PRG());
 
         }
     }

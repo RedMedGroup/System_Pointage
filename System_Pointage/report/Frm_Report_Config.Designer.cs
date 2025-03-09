@@ -35,8 +35,8 @@
             this.btn_EtatJournal = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.btn_rpt_pointage = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.defult_EtatJournal = new DevExpress.XtraEditors.SimpleButton();
+            this.defult_rpt_pointage = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.simpleButton4 = new DevExpress.XtraEditors.SimpleButton();
@@ -46,14 +46,14 @@
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
+            this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            this.simpleButton7 = new DevExpress.XtraEditors.SimpleButton();
+            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
             this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
+            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
             this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
-            this.simpleButton7 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
@@ -126,23 +126,25 @@
             this.btn_rpt_pointage.TabIndex = 4;
             this.btn_rpt_pointage.Click += new System.EventHandler(this.btn_rpt_pointage_Click);
             // 
-            // simpleButton1
+            // defult_EtatJournal
             // 
-            this.simpleButton1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
-            this.simpleButton1.Location = new System.Drawing.Point(293, 7);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.simpleButton1.Size = new System.Drawing.Size(38, 32);
-            this.simpleButton1.TabIndex = 6;
+            this.defult_EtatJournal.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
+            this.defult_EtatJournal.Location = new System.Drawing.Point(293, 7);
+            this.defult_EtatJournal.Name = "defult_EtatJournal";
+            this.defult_EtatJournal.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.defult_EtatJournal.Size = new System.Drawing.Size(38, 32);
+            this.defult_EtatJournal.TabIndex = 6;
+            this.defult_EtatJournal.Click += new System.EventHandler(this.defult_EtatJournal_Click);
             // 
-            // simpleButton2
+            // defult_rpt_pointage
             // 
-            this.simpleButton2.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton2.ImageOptions.Image")));
-            this.simpleButton2.Location = new System.Drawing.Point(281, 8);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.simpleButton2.Size = new System.Drawing.Size(38, 32);
-            this.simpleButton2.TabIndex = 7;
+            this.defult_rpt_pointage.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton2.ImageOptions.Image")));
+            this.defult_rpt_pointage.Location = new System.Drawing.Point(281, 8);
+            this.defult_rpt_pointage.Name = "defult_rpt_pointage";
+            this.defult_rpt_pointage.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.defult_rpt_pointage.Size = new System.Drawing.Size(38, 32);
+            this.defult_rpt_pointage.TabIndex = 7;
+            this.defult_rpt_pointage.Click += new System.EventHandler(this.defult_rpt_pointage_Click);
             // 
             // simpleButton3
             // 
@@ -152,6 +154,7 @@
             this.simpleButton3.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
             this.simpleButton3.Size = new System.Drawing.Size(38, 32);
             this.simpleButton3.TabIndex = 10;
+            this.simpleButton3.Click += new System.EventHandler(this.simpleButton3_Click);
             // 
             // labelControl4
             // 
@@ -215,7 +218,7 @@
             // 
             this.groupControl1.Appearance.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             this.groupControl1.Appearance.Options.UseBorderColor = true;
-            this.groupControl1.Controls.Add(this.simpleButton1);
+            this.groupControl1.Controls.Add(this.defult_EtatJournal);
             this.groupControl1.Controls.Add(this.labelControl6);
             this.groupControl1.Controls.Add(this.btn_EtatJournal);
             this.groupControl1.Controls.Add(this.labelControl2);
@@ -231,7 +234,7 @@
             this.groupControl2.Appearance.BorderColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             this.groupControl2.Appearance.Options.UseBorderColor = true;
             this.groupControl2.Controls.Add(this.labelControl7);
-            this.groupControl2.Controls.Add(this.simpleButton2);
+            this.groupControl2.Controls.Add(this.defult_rpt_pointage);
             this.groupControl2.Controls.Add(this.labelControl3);
             this.groupControl2.Controls.Add(this.btn_rpt_pointage);
             this.groupControl2.Location = new System.Drawing.Point(38, 80);
@@ -240,6 +243,16 @@
             this.groupControl2.Size = new System.Drawing.Size(336, 47);
             this.groupControl2.TabIndex = 16;
             this.groupControl2.Text = "groupControl2";
+            // 
+            // labelControl7
+            // 
+            this.labelControl7.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl7.Appearance.Options.UseFont = true;
+            this.labelControl7.Location = new System.Drawing.Point(205, 18);
+            this.labelControl7.Name = "labelControl7";
+            this.labelControl7.Size = new System.Drawing.Size(67, 14);
+            this.labelControl7.TabIndex = 18;
+            this.labelControl7.Text = "Rénitialiser";
             // 
             // groupControl3
             // 
@@ -256,15 +269,25 @@
             this.groupControl3.TabIndex = 17;
             this.groupControl3.Text = "groupControl3";
             // 
-            // labelControl7
+            // simpleButton7
             // 
-            this.labelControl7.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl7.Appearance.Options.UseFont = true;
-            this.labelControl7.Location = new System.Drawing.Point(205, 18);
-            this.labelControl7.Name = "labelControl7";
-            this.labelControl7.Size = new System.Drawing.Size(67, 14);
-            this.labelControl7.TabIndex = 18;
-            this.labelControl7.Text = "Rénitialiser";
+            this.simpleButton7.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton7.ImageOptions.Image")));
+            this.simpleButton7.Location = new System.Drawing.Point(496, 10);
+            this.simpleButton7.Name = "simpleButton7";
+            this.simpleButton7.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.simpleButton7.Size = new System.Drawing.Size(38, 32);
+            this.simpleButton7.TabIndex = 23;
+            this.simpleButton7.Click += new System.EventHandler(this.simpleButton7_Click);
+            // 
+            // labelControl10
+            // 
+            this.labelControl10.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl10.Appearance.Options.UseFont = true;
+            this.labelControl10.Location = new System.Drawing.Point(404, 18);
+            this.labelControl10.Name = "labelControl10";
+            this.labelControl10.Size = new System.Drawing.Size(67, 14);
+            this.labelControl10.TabIndex = 22;
+            this.labelControl10.Text = "Rénitialiser";
             // 
             // groupControl4
             // 
@@ -280,6 +303,16 @@
             this.groupControl4.Size = new System.Drawing.Size(371, 55);
             this.groupControl4.TabIndex = 18;
             this.groupControl4.Text = "groupControl4";
+            // 
+            // labelControl9
+            // 
+            this.labelControl9.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl9.Appearance.Options.UseFont = true;
+            this.labelControl9.Location = new System.Drawing.Point(262, 17);
+            this.labelControl9.Name = "labelControl9";
+            this.labelControl9.Size = new System.Drawing.Size(67, 14);
+            this.labelControl9.TabIndex = 21;
+            this.labelControl9.Text = "Rénitialiser";
             // 
             // groupControl5
             // 
@@ -305,35 +338,6 @@
             this.labelControl8.Size = new System.Drawing.Size(67, 14);
             this.labelControl8.TabIndex = 20;
             this.labelControl8.Text = "Rénitialiser";
-            // 
-            // labelControl9
-            // 
-            this.labelControl9.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl9.Appearance.Options.UseFont = true;
-            this.labelControl9.Location = new System.Drawing.Point(262, 17);
-            this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(67, 14);
-            this.labelControl9.TabIndex = 21;
-            this.labelControl9.Text = "Rénitialiser";
-            // 
-            // labelControl10
-            // 
-            this.labelControl10.Appearance.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl10.Appearance.Options.UseFont = true;
-            this.labelControl10.Location = new System.Drawing.Point(404, 18);
-            this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(67, 14);
-            this.labelControl10.TabIndex = 22;
-            this.labelControl10.Text = "Rénitialiser";
-            // 
-            // simpleButton7
-            // 
-            this.simpleButton7.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton7.ImageOptions.Image")));
-            this.simpleButton7.Location = new System.Drawing.Point(496, 10);
-            this.simpleButton7.Name = "simpleButton7";
-            this.simpleButton7.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.simpleButton7.Size = new System.Drawing.Size(38, 32);
-            this.simpleButton7.TabIndex = 23;
             // 
             // Frm_Report_Config
             // 
@@ -379,8 +383,8 @@
         private DevExpress.XtraEditors.SimpleButton btn_EtatJournal;
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.SimpleButton btn_rpt_pointage;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
-        private DevExpress.XtraEditors.SimpleButton simpleButton2;
+        private DevExpress.XtraEditors.SimpleButton defult_EtatJournal;
+        private DevExpress.XtraEditors.SimpleButton defult_rpt_pointage;
         private DevExpress.XtraEditors.SimpleButton simpleButton3;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.SimpleButton simpleButton4;

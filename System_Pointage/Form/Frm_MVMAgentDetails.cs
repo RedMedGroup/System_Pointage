@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System_Pointage.Classe;
 
 namespace System_Pointage.Form
 {
@@ -36,7 +38,7 @@ namespace System_Pointage.Form
                        {mvm.ID,
                           /* mvm.ItemID,*/ // تأكد من أن هذا هو العمود الصحيح
                            //ID = agent != null ? agent.ID : (int?)null, // تأكد من أن هذا هو العمود الصحيح
-                           Name = agent != null ? agent.Name : "N/A", // اسم افتراضي إذا لم يوجد تطابق
+                           Name = agent != null ? agent.Name+" "+agent.FirstName : "N/A", // اسم افتراضي إذا لم يوجد تطابق
                            mvm.Date,
                            mvm.Statut,
                        };
@@ -56,8 +58,7 @@ namespace System_Pointage.Form
 
             int selectedRowHandle = selectedRows[0];
 
-            // احصل على البيانات من الصف المحدد
-            var rowData = gridView1.GetRow(selectedRowHandle) as dynamic; // استخدم dynamic إذا كنت تعمل مع مصادر غير معرّفة بدقة
+            var rowData = gridView1.GetRow(selectedRowHandle) as dynamic; 
 
             if (rowData != null)
             {
@@ -65,20 +66,27 @@ namespace System_Pointage.Form
                 int id = rowData.ID;
                 DateTime date = rowData.Date;
                 string name = rowData.Name;
-                // تأكيد الحذف
                 DialogResult result = MessageBox.Show($"Voulez-vous vraiment supprimer la ligne sélectionnée ?\nNom : {name}\nDate : {date}", "Confirmation de suppression", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     using (var db = new DAL.DataClasses1DataContext())
                     {
-                        // حذف السجل من قاعدة البيانات
                         var recordToDelete = db.MVMAgentDetails.FirstOrDefault(mvm => mvm.Date == date && mvm.ID == id);
                         if (recordToDelete != null)
                         {
+                            var agent = db.Fiche_Agents.FirstOrDefault(a => a.ID == recordToDelete.ItemID);
+                            string agentName = agent != null ? $"{agent.Name} {agent.FirstName}" : recordToDelete.ItemID.ToString();
+
                             db.MVMAgentDetails.DeleteOnSubmit(recordToDelete);
                             db.SubmitChanges();
 
-                            // تحديث البيانات
+                            UserLogAction userLogAction = new UserLogAction
+                            {
+                                PartID = recordToDelete.ID,
+                                PartName = $"Suppression de l'agent: {agentName} -Sup",
+                                Name = "Frm_MVMAgentDetails"
+                            };
+                            userLogAction.InsertUserAction(UserLogAction.ActionType.Delete);
                             RefrechData();
                             MessageBox.Show("La suppression a été effectuée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }

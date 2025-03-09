@@ -40,7 +40,7 @@
             // 
             // ribbon
             // 
-            this.ribbon.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(30, 31, 30, 31);
+            this.ribbon.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(20, 21, 20, 21);
             this.ribbon.ExpandCollapseItem.Id = 0;
             this.ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbon.ExpandCollapseItem,
@@ -49,9 +49,11 @@
             this.barButtonItem2,
             this.barButtonItem3});
             this.ribbon.Location = new System.Drawing.Point(0, 0);
+            this.ribbon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ribbon.MaxItemId = 4;
             this.ribbon.Name = "ribbon";
-            this.ribbon.Size = new System.Drawing.Size(1384, 86);
+            this.ribbon.OptionsMenuMinWidth = 220;
+            this.ribbon.Size = new System.Drawing.Size(923, 58);
             // 
             // barButtonItem1
             // 
@@ -77,21 +79,22 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(523, 298);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(349, 204);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(338, 121);
+            this.pictureBox1.Size = new System.Drawing.Size(225, 83);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
             // Frm_Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1384, 692);
+            this.ClientSize = new System.Drawing.Size(923, 473);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.ribbon);
+            this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("Frm_Main.IconOptions.SvgImage")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Frm_Main";
             this.Ribbon = this.ribbon;
             this.Text = "Système de pointageg";

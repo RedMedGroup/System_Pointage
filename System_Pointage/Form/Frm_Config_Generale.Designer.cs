@@ -36,8 +36,10 @@
             this.accordionControl1 = new DevExpress.XtraBars.Navigation.AccordionControl();
             this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement2 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement3 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
+            this.accordionControlElement4 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -78,7 +80,9 @@
             this.accordionControl1.Dock = System.Windows.Forms.DockStyle.Left;
             this.accordionControl1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
             this.accordionControlElement1,
-            this.accordionControlElement2});
+            this.accordionControlElement2,
+            this.accordionControlElement3,
+            this.accordionControlElement4});
             this.accordionControl1.Location = new System.Drawing.Point(0, 31);
             this.accordionControl1.Name = "accordionControl1";
             this.accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Touch;
@@ -104,6 +108,15 @@
             this.accordionControlElement2.Text = "Paramétres de systéme de travail";
             this.accordionControlElement2.Click += new System.EventHandler(this.accordionControlElement2_Click);
             // 
+            // accordionControlElement3
+            // 
+            this.accordionControlElement3.Appearance.Normal.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.accordionControlElement3.Appearance.Normal.Options.UseFont = true;
+            this.accordionControlElement3.Name = "accordionControlElement3";
+            this.accordionControlElement3.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement3.Text = "Restaurer la sauvegarde";
+            this.accordionControlElement3.Click += new System.EventHandler(this.accordionControlElement3_Click);
+            // 
             // fluentDesignFormControl1
             // 
             this.fluentDesignFormControl1.FluentDesignForm = this;
@@ -117,6 +130,15 @@
             // fluentFormDefaultManager1
             // 
             this.fluentFormDefaultManager1.Form = this;
+            // 
+            // accordionControlElement4
+            // 
+            this.accordionControlElement4.Appearance.Default.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.accordionControlElement4.Appearance.Default.Options.UseFont = true;
+            this.accordionControlElement4.Name = "accordionControlElement4";
+            this.accordionControlElement4.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement4.Text = "Gérer les activations";
+            this.accordionControlElement4.Click += new System.EventHandler(this.accordionControlElement4_Click);
             // 
             // Frm_Config_Generale
             // 
@@ -133,6 +155,7 @@
             this.NavigationControl = this.accordionControl1;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frm_Config_Generale";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.fluentDesignFormContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -152,5 +175,7 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement2;
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement3;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement4;
     }
 }

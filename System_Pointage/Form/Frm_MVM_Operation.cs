@@ -214,7 +214,7 @@ namespace System_Pointage.Classe
       void  GridRefrechAgent()
         {
             var agentDataService = new AgentDataService();
-            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
@@ -479,7 +479,7 @@ namespace System_Pointage.Classe
                     userLogAction = new UserLogAction
                     {
                         PartID = newAgentDetail.ItemID,
-                        PartName = $"Rentrée la Agent: {agent.Name} P-",
+                        PartName = $"Rentrée la Agent: {agent.Name} {agent.FirstName} P-",
                         Name = "Frm_MVM_Operation_P",
                         //    IsNew = true 
                     };
@@ -491,7 +491,7 @@ namespace System_Pointage.Classe
                         userLogAction = new UserLogAction
                         {
                             PartID = newAgentDetail.ItemID,
-                            PartName = $"Absence la Agent: {agent.Name} A-",
+                            PartName = $"Absence la Agent: {agent.Name}  {agent.FirstName}A-",
                             Name = "Frm_MVM_Operation_A",
                         };
                     }
@@ -501,7 +501,7 @@ namespace System_Pointage.Classe
                         userLogAction = new UserLogAction
                         {
                             PartID = newAgentDetail.ItemID,
-                            PartName = $"Maladie la Agent: {agent.Name} M-",
+                            PartName = $"Maladie la Agent: {agent.Name}  {agent.FirstName}M-",
                             Name = "Frm_MVM_Operation_A",
                         };
                     }
@@ -511,7 +511,7 @@ namespace System_Pointage.Classe
                         userLogAction = new UserLogAction
                         {
                             PartID = newAgentDetail.ItemID,
-                            PartName = $"Absence autorisée la Agent: {agent.Name} AA-",
+                            PartName = $"Absence autorisée la Agent: {agent.Name}  {agent.FirstName}AA-",
                             Name = "Frm_MVM_Operation_A",
                         };
                     }
@@ -523,7 +523,7 @@ namespace System_Pointage.Classe
                     userLogAction = new UserLogAction
                     {
                         PartID = newAgentDetail.ItemID,
-                        PartName = $"Sortant la Agent: {agent.Name} CR-",
+                        PartName = $"Sortant la Agent: {agent.Name}  {agent.FirstName} CR-",
                         Name = "Frm_MVM_Operation_CR",
                         //    IsNew = true
                     };
@@ -936,7 +936,7 @@ namespace System_Pointage.Classe
         //}
         void FilterGrid()
         {
-            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager;
+            bool isAdminOrManager = Master.User.UserType == (byte)Master.UserType.Admin || Master.User.UserType == (byte)Master.UserType.Manager || Master.User.UserType == (byte)Master.UserType.Guest;
 
             int? userAccessPosteID = isAdminOrManager ? null : (int?)Master.User.IDAccessPoste;
 
