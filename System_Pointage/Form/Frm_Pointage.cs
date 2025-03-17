@@ -1629,6 +1629,11 @@ namespace System_Pointage.Form
 
             return attendanceDays;
         }
-      
+
+        private void btn_Import_xlsx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Frm_MVM_Import_XLSX frm =new Frm_MVM_Import_XLSX();
+            frm.ShowDialog();
+        }
     }
 }

@@ -176,6 +176,12 @@ namespace System_Pointage.Form
         }
         private void pictureEdit1_EditValueChanged(object sender, EventArgs e)
         {
+           
+        }
+
+        private void pictureEdit1_Click(object sender, EventArgs e)
+        {
+
             SQL_Server_Config frm = new SQL_Server_Config();
             frm.ShowDialog();
         }

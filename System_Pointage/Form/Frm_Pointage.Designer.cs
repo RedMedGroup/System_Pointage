@@ -69,6 +69,7 @@
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            this.btn_Import_xlsx = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -358,9 +359,10 @@
             this.btn_print_personell_monsuelle,
             this.btn_penality2,
             this.btn_print_pinalite2,
-            this.barButtonItem3});
+            this.barButtonItem3,
+            this.btn_Import_xlsx});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 7;
+            this.barManager1.MaxItemId = 8;
             this.barManager1.StatusBar = this.bar3;
             // 
             // bar1
@@ -375,7 +377,8 @@
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_personell_monsuelle),
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_penality2),
             new DevExpress.XtraBars.LinkPersistInfo(this.btn_print_pinalite2),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_print2),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_Import_xlsx)});
             this.bar1.Text = "Tools";
             // 
             // btn_print
@@ -514,6 +517,15 @@
             this.barButtonItem2.Name = "barButtonItem2";
             this.barButtonItem2.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
+            // btn_Import_xlsx
+            // 
+            this.btn_Import_xlsx.Caption = "Importer le pointage";
+            this.btn_Import_xlsx.Id = 7;
+            this.btn_Import_xlsx.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem4.ImageOptions.SvgImage")));
+            this.btn_Import_xlsx.Name = "btn_Import_xlsx";
+            this.btn_Import_xlsx.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btn_Import_xlsx.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_Import_xlsx_ItemClick);
+            // 
             // Frm_Pointage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -595,5 +607,6 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private DevExpress.XtraBars.BarButtonItem btn_Import_xlsx;
     }
 }

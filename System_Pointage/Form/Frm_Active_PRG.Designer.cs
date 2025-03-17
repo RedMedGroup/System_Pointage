@@ -102,6 +102,7 @@
             this.pictureEdit1.Size = new System.Drawing.Size(40, 37);
             this.pictureEdit1.TabIndex = 5;
             this.pictureEdit1.EditValueChanged += new System.EventHandler(this.pictureEdit1_EditValueChanged);
+            this.pictureEdit1.Click += new System.EventHandler(this.pictureEdit1_Click);
             // 
             // Frm_Active_PRG
             // 
