@@ -155,6 +155,7 @@
     <Compile Include="Classe\AgentDataService.cs" />
     <Compile Include="Classe\DatabaseHelper.cs" />
     <Compile Include="Classe\DataCorrection.cs" />
+    <Compile Include="Classe\DataCorrectionHelper.cs" />
     <Compile Include="Classe\Models.cs" />
     <Compile Include="Classe\ReportManager.cs" />
     <Compile Include="Classe\ScreensAccessProfile.cs" />
