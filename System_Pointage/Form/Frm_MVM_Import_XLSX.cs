@@ -22,6 +22,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Columns;
 using System.Collections;
+using DevExpress.XtraSplashScreen;
 
 namespace System_Pointage.Form
 {
@@ -88,10 +89,11 @@ namespace System_Pointage.Form
             DataTable updatedTable = table.Clone();
             updatedTable.Columns.Add("Observation", typeof(string));
 
-            DataTable tableError = (DataTable)gridControl1.DataSource;
+          //  DataTable tableError = new DataTable();
+           DataTable tableError = (DataTable)gridControl1.DataSource;
             DataTable errorTable = tableError.Clone();
             errorTable.Columns.Add("Observation", typeof(string));
-
+         
             using (var db = new DAL.DataClasses1DataContext())
             {
                 var allPostes = db.Fiche_Postes.Select(p => p.Name).ToList();
@@ -369,13 +371,14 @@ namespace System_Pointage.Form
                         correctCount++;
                     }
                 }
+               
             }
 
             gridControl16.DataSource = correctedDataTable;
             gridControl16.RefreshDataSource();
 
             gridControl4.DataSource = errorTable;
-
+            gridView4.Columns["(1-P)"].Visible = gridView4.Columns["(2)"].Visible = gridView4.Columns["(3)"].Visible = gridView4.Columns["(4)"].Visible = false; 
             //gridControl6.DataSource = updatedTable;
             //gridControl6.RefreshDataSource();
 
@@ -705,6 +708,7 @@ namespace System_Pointage.Form
                     string matriculeColumn = lkp_Matricule.Text;
                     string nameColumn = lkp_Name.Text;
                     string firstnameColumn = lkp_FirstName.Text;
+                    string datepremicr=dt_CR1.Text;
                     string datePresence = dt_P.Text;
                     string dateConger = dt_CR.Text;
 
@@ -721,24 +725,28 @@ namespace System_Pointage.Form
                         string firstname = row[firstnameColumn]?.ToString() ?? string.Empty;
                         string posteName = row[posteColumn]?.ToString() ?? string.Empty;
 
+                        string dateCR1 = row[datepremicr]?.ToString() ?? string.Empty;
                         string datePresent = row[datePresence]?.ToString() ?? string.Empty;
                         string dateCongert = row[dateConger]?.ToString()?.Trim() ?? string.Empty;
                         string datePresent2 = row[datePresence2]?.ToString() ?? string.Empty;
                         string dateCongert2 = row[dateConger2]?.ToString()?.Trim() ?? string.Empty;
 
+                        DateTime dateCR01;
                         DateTime dateP;
                         DateTime dateCR;
                         DateTime dateP2;
                         DateTime dateCR2;
 
+                        bool isValidDateCR = DateTime.TryParse(dateCR1, out dateCR01);
+                        bool isValidDateP = DateTime.TryParse(datePresent, out dateP);
                         bool isValidDate = DateTime.TryParse(dateCongert, out dateCR);
                         bool isValidDate2 = DateTime.TryParse(datePresent2, out dateP2);
                         bool isValidDate3 = DateTime.TryParse(dateCongert2, out dateCR2);
 
-                        if (!DateTime.TryParse(datePresent, out dateP))
-                        {
-                            dateP = DateTime.MinValue; // تعيين تاريخ افتراضي
-                        }
+                        //if (!DateTime.TryParse(datePresent, out dateP))
+                        //{
+                        //    dateP = DateTime.MinValue; // تعيين تاريخ افتراضي
+                        //}
 
 
 
@@ -746,18 +754,62 @@ namespace System_Pointage.Form
                         var agent = db.Fiche_Agents.FirstOrDefault(x => x.Matricule == matricule && x.Name == name && x.FirstName == firstname);
 
                         // ✅ تجاوز السجل إذا كان datePresent فارغًا
-                        if (dateP == DateTime.MinValue)
+                        //if (dateP == DateTime.MinValue)
+                        //{
+                        //    continue;
+                        //}
+                        if (!string.IsNullOrWhiteSpace(dateCR1) && isValidDateCR)
                         {
-                            continue;
+                            // التحقق من آخر حركة للشخص
+                            var lastAction = db.MVMAgentDetails
+                                               .Where(a => a.ItemID == agent.ID)
+                                               .OrderByDescending(a => a.Date)
+                                               .FirstOrDefault();
+
+                            // إذا كانت آخر حركة هي "CR" (غياب) والتاريخ الجديد يبدأ من اليوم الأول، لا تحفظ
+                            if (lastAction != null && lastAction.Statut == "CR" && dateCR01.Day == 1)
+                            {
+                                // تخطي حفظ الحركة الجديدة فقط لهذا التاريخ
+                            }
+                            else
+                            {
+                                var agentDetail2 = new DAL.MVMAgentDetail
+                                {
+                                    ItemID = agent.ID,
+                                    Date = dateCR01, // تم تصحيح المتغير هنا إلى dateCR01
+                                    Statut = "CR",
+                                };
+                                db.MVMAgentDetails.InsertOnSubmit(agentDetail2);
+                                db.SubmitChanges();
+                            }
                         }
-                        var agentDetail = new DAL.MVMAgentDetail
+
+                        if (!string.IsNullOrWhiteSpace(datePresent) && isValidDateP)
                         {
-                            ItemID = agent.ID,
-                            Date = dateP,
-                            Statut = "P",
-                        };
-                        db.MVMAgentDetails.InsertOnSubmit(agentDetail);
-                        db.SubmitChanges();
+                            // التحقق من آخر حركة للشخص
+                            var lastAction = db.MVMAgentDetails
+                                               .Where(a => a.ItemID == agent.ID)
+                                               .OrderByDescending(a => a.Date)
+                                               .FirstOrDefault();
+
+                            // إذا كانت آخر حركة هي "P" (حضور) والتاريخ الجديد يبدأ من اليوم الأول، لا تحفظ
+                            if (lastAction != null && lastAction.Statut == "P" && dateP.Day == 1)
+                            {
+                                // تخطي حفظ الحركة الجديدة فقط لهذا التاريخ
+                            }
+                            else
+                            {
+                                var agentDetail = new DAL.MVMAgentDetail
+                                {
+                                    ItemID = agent.ID,
+                                    Date = dateP,
+                                    Statut = "P",
+                                };
+                                db.MVMAgentDetails.InsertOnSubmit(agentDetail);
+                                db.SubmitChanges();
+                            }
+                        }
+                      
                         if (!string.IsNullOrWhiteSpace(dateCongert) && isValidDate)
                         {
                             var agentDetail2 = new DAL.MVMAgentDetail
@@ -793,6 +845,83 @@ namespace System_Pointage.Form
                         }
                     }
                 }
+                // الحصول على مصدر البيانات من gridControl1
+                var dataSource1 = gridControl1.DataSource;
+
+                List<string> existingMatricules;
+
+                if (dataSource1 is DataTable dataTable)
+                {
+                    // إذا كان DataSource من نوع DataTable
+                    existingMatricules = dataTable.AsEnumerable()
+                        .Select(row => row["Matricule"]?.ToString())
+                        .ToList();
+                }
+                else if (dataSource1 is IList<Agent> agentList)
+                {
+                    // إذا كان DataSource من نوع IList<Agent>
+                    existingMatricules = agentList
+                        .Select(agent => agent.Matricule)
+                        .ToList();
+                }
+                else
+                {
+                    MessageBox.Show("نوع DataSource غير مدعوم.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // التحقق من وجود بيانات
+                if (existingMatricules == null || existingMatricules.Count == 0)
+                {
+                    MessageBox.Show("لا توجد بيانات في gridControl1.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                using (var dbc = new DAL.DataClasses1DataContext())
+                {
+                    // التحقق من اتصال قاعدة البيانات
+                    if (dbc == null || dbc.Fiche_Agents == null)
+                    {
+                        MessageBox.Show("خطأ في الاتصال بقاعدة البيانات.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // إضافة الأشخاص غير الموجودين في gridControl1
+                    var allAgents = dbc.Fiche_Agents.ToList();
+                    foreach (var agent in allAgents)
+                    {
+                        if (!existingMatricules.Contains(agent.Matricule))
+                        {
+                            // إنشاء تاريخ أول يوم من الشهر الموجود في dateEdit
+                            DateTime firstDayOfMonth = new DateTime(dateEdit1.DateTime.Year, dateEdit1.DateTime.Month, 1);
+
+                            // التحقق من آخر حركة للشخص
+                            var lastAction = dbc.MVMAgentDetails
+                                .Where(a => a.ItemID == agent.ID)
+                                .OrderByDescending(a => a.Date)
+                                .FirstOrDefault();
+
+                            // إذا كانت آخر حركة هي "CR" (غياب) والتاريخ الجديد يبدأ من اليوم الأول، لا تحفظ
+                            if (lastAction != null && lastAction.Statut == "CR" && firstDayOfMonth.Day == 1)
+                            {
+                                // تخطي حفظ الحركة الجديدة فقط لهذا التاريخ
+                            }
+                            else
+                            {
+                                // إضافة الحركة الجديدة
+                                var agentDetail = new DAL.MVMAgentDetail
+                                {
+                                    ItemID = agent.ID,
+                                    Date = firstDayOfMonth,
+                                    Statut = "CR",
+                                };
+                                dbc.MVMAgentDetails.InsertOnSubmit(agentDetail);
+                                dbc.SubmitChanges();
+                            }
+                        }
+                    }
+                }
+
             }
            // gridControl4.DataSource = errorTable;
             string message =
@@ -801,7 +930,7 @@ namespace System_Pointage.Form
             MessageBox.Show(message, "Résultat du traitement", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
         }
-        
+      
 
         private DataTable ReadFromGridControl()
         {
@@ -853,11 +982,12 @@ namespace System_Pointage.Form
                         summaryTable.Columns.Add("Nom", typeof(string));
                         summaryTable.Columns.Add("Prénom", typeof(string));
                         summaryTable.Columns.Add("Poste", typeof(string));
-                        summaryTable.Columns.Add("(1)", typeof(string));
+                        summaryTable.Columns.Add("(1-CR)", typeof(string));
+                        summaryTable.Columns.Add("(1-P)", typeof(string));
                         summaryTable.Columns.Add("(2)", typeof(string));
                         summaryTable.Columns.Add("(3)", typeof(string));
                         summaryTable.Columns.Add("(4)", typeof(string)); // عمود جديد
-                        summaryTable.Columns.Add("Selectionné", typeof(bool));
+                     //   summaryTable.Columns.Add("Selectionné", typeof(bool));
 
                         var rows = worksheet.RowsUsed().Skip(1); // تخطي الصف الأول (العناوين)
                         string lastValidPoste = ""; // حفظ آخر قيمة غير فارغة للـ Poste
@@ -890,6 +1020,8 @@ namespace System_Pointage.Form
                             // معالجة أيام الحضور والغياب
                             string premierJourPresence = "";
                             string premierJourAbsence = "";
+                            string premierJourAbsence01 = "";
+
                             string retourConge = "";
                             string premierJourAbsenceApresPresence = "";
                             bool estPresent = false; // حالة أول حضور
@@ -905,12 +1037,25 @@ namespace System_Pointage.Form
                             // تحديد العمود الذي تبدأ منه الأيام (6)
                             int startColumn = 6;
 
+                            // فحص اليوم الأول بشكل منفصل
+                            string firstDayValue = row.Cell(startColumn).Value.ToString();
+                            string firstDayDate = $"01/{selectedMonth:00}/{selectedYear}"; // تاريخ اليوم الأول
+
+                            if (firstDayValue == "0")
+                            {
+                                premierJourAbsence01 = firstDayDate; // إذا كان اليوم الأول عطلة (0)، قم بتسجيل التاريخ
+                            }
+                            else
+                            {
+                                premierJourAbsence01 = ""; // إذا كان اليوم الأول حضور (1)، اتركه فارغًا
+                            }
 
                             for (int col = startColumn; col < startColumn + daysInMonth; col++)  // الأعمدة من 6 إلى 33 تمثل أيام الشهر
                             {
                                 string valeur = row.Cell(col).Value.ToString();
                                 string dateCorrespondante = $"{col - (startColumn - 1):00}/{selectedMonth:00}/{selectedYear}";
 
+                               
                                 if (valeur == "1" && !estPresent)
                                 {
                                     premierJourPresence = dateCorrespondante;
@@ -933,8 +1078,8 @@ namespace System_Pointage.Form
                                     break; // بمجرد العثور على أول غياب بعد العودة، نخرج من اللوب
                                 }
                             }
-
-                            dataRow["(1)"] = premierJourPresence;
+                            dataRow["(1-CR)"] = premierJourAbsence01;
+                            dataRow["(1-P)"] = premierJourPresence;
                             dataRow["(2)"] = premierJourAbsence;
                             dataRow["(3)"] = retourConge;
                             dataRow["(4)"] = premierJourAbsenceApresPresence;
@@ -947,11 +1092,11 @@ namespace System_Pointage.Form
                         gridView1.BestFitColumns();
 
                         // إنشاء محرر CheckEdit وربطه بالعمود
-                        RepositoryItemCheckEdit checkEdit = new RepositoryItemCheckEdit();
-                        gridControl1.RepositoryItems.Add(checkEdit);
-                        gridView1.Columns["Selectionné"].ColumnEdit = checkEdit;
-                        gridView1.Columns["Selectionné"].Caption = "Sélectionné";
-                        gridView1.Columns["Selectionné"].Width = 50;
+                        //RepositoryItemCheckEdit checkEdit = new RepositoryItemCheckEdit();
+                        //gridControl1.RepositoryItems.Add(checkEdit);
+                        //gridView1.Columns["Selectionné"].ColumnEdit = checkEdit;
+                        //gridView1.Columns["Selectionné"].Caption = "Sélectionné";
+                        //gridView1.Columns["Selectionné"].Width = 50;
 
                         excelData = ReadFromGridControl();
 
@@ -1019,6 +1164,7 @@ namespace System_Pointage.Form
             lkp_Name.Properties.DataSource = columnNames;
             lkp_FirstName.Properties.DataSource = columnNames;
             lkp_Poste.Properties.DataSource = columnNames;
+            dt_CR1.Properties.DataSource = columnNames;
             dt_P.Properties.DataSource = columnNames;
             dt_CR.Properties.DataSource = columnNames;
             dt_P2.Properties.DataSource = columnNames;
@@ -1066,7 +1212,7 @@ namespace System_Pointage.Form
                     DataTable duplicateDataTable = duplicateRows.CopyToDataTable();
                    // duplicateDataTable.Columns.Add("Selectionné", typeof(bool));
                     gridControl2.DataSource = duplicateDataTable;
-                    ConfigureCheckEdit(gridView2, gridControl2, "Selectionné");
+                  //  ConfigureCheckEdit(gridView2, gridControl2, "Selectionné");
                     AddColumnsIfNotExist(duplicateDataTable, "Supprimer");
                     ConfigureDeleteButton(gridView2, gridControl2, gridView1, "Supprimer");
                     gridView2.CellValueChanged += GridView_CellValueChanged;
@@ -1081,7 +1227,7 @@ namespace System_Pointage.Form
                     DataTable duplicateDataTableMat = duplicateRowsMat.CopyToDataTable();
                  //   duplicateDataTableMat.Columns.Add("Selectionné", typeof(bool));
                     gridControl3.DataSource = duplicateDataTableMat;
-                    ConfigureCheckEdit(gridView3, gridControl3, "Selectionné");
+                   // ConfigureCheckEdit(gridView3, gridControl3, "Selectionné");
                     AddColumnsIfNotExist(duplicateDataTableMat, "Supprimer");
                     ConfigureDeleteButton(gridView3, gridControl3, gridView1, "Supprimer");
                     gridView3.CellValueChanged += GridView_CellValueChanged;
@@ -1095,14 +1241,14 @@ namespace System_Pointage.Form
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void ConfigureCheckEdit(GridView gridView, GridControl gridControl, string columnName)
-        {
-            RepositoryItemCheckEdit checkEdit = new RepositoryItemCheckEdit();
-            gridControl.RepositoryItems.Add(checkEdit);
-            gridView.Columns[columnName].ColumnEdit = checkEdit;
-            gridView.Columns[columnName].Caption = "Sélectionné";
-            gridView.Columns[columnName].Width = 50;
-        }
+        //private void ConfigureCheckEdit(GridView gridView, GridControl gridControl, string columnName)
+        //{
+        //    RepositoryItemCheckEdit checkEdit = new RepositoryItemCheckEdit();
+        //    gridControl.RepositoryItems.Add(checkEdit);
+        //    gridView.Columns[columnName].ColumnEdit = checkEdit;
+        //    gridView.Columns[columnName].Caption = "Sélectionné";
+        //    gridView.Columns[columnName].Width = 50;
+        //}
         private void GridView_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
             GridView currentGridView = sender as GridView;
@@ -1187,132 +1333,11 @@ namespace System_Pointage.Form
                     table.Columns.Add(columnName, typeof(string));
             }
         }
-        //private DataTable ReadExcelFile(string filePath)
-        //{
-        //    try
-        //    {
-        //        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
-        //        using (var package = new ExcelPackage(new System.IO.FileInfo(filePath)))
-        //        {
-        //            var worksheet = package.Workbook.Worksheets[0]; // اختر الورقة الأولى
-        //            DataTable dataTable = new DataTable();
-
-        //            // قراءة الأعمدة (العناوين)
-        //            for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
-        //            {
-        //                dataTable.Columns.Add(worksheet.Cells[1, col].Text);
-        //            }
-
-        //            // قراءة البيانات (الأسطر)
-        //            for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-        //            {
-        //                DataRow dataRow = dataTable.NewRow();
-        //                for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
-        //                {
-        //                    dataRow[col - 1] = worksheet.Cells[row, col].Text;
-        //                }
-        //                dataTable.Rows.Add(dataRow);
-        //            }
-
-        //            return dataTable;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Error reading Excel file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return null;
-        //    }
-        //}
-        #endregion
-
-        private void btn_exl_Click_1(object sender, EventArgs e)
-        {
-            #region
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                   
-
-                    txt_lien.Text = openFileDialog.FileName;
-                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
-                    {
-                        using (var reader = ExcelReaderFactory.CreateReader(stream))
-                        {
-
-                            bool validRowFound = false;
-                            DataTable dataTable = new DataTable();
-                            var columnNames = new List<string>();
-
-                            while (!validRowFound && reader.Read())
-                            {
-                                // التحقق من وجود قيمة غير فارغة في أي عمود من السطر
-                                for (int i = 0; i < reader.FieldCount; i++)
-                                {
-                                    if (reader.GetValue(i) != null && !string.IsNullOrWhiteSpace(reader.GetValue(i).ToString()))
-                                    {
-                                        validRowFound = true;
-                                        break;
-                                    }
-                                }
-
-                                // إذا كان الصف صالحًا، قم بإعداد أسماء الأعمدة
-                                if (validRowFound)
-                                {
-                                    for (int i = 0; i < reader.FieldCount; i++)
-                                    {
-                                        columnNames.Add(reader.GetValue(i)?.ToString() ?? $"Column{i + 1}");
-                                        dataTable.Columns.Add(columnNames[i]);
-                                    }
-                                }
-                            }
-
-                            // Set the data source for lookups
-                            lkp_Matricule.Properties.DataSource = columnNames;
-                            lkp_Name.Properties.DataSource = columnNames;
-                            lkp_FirstName.Properties.DataSource = columnNames;
-                            lkp_Poste.Properties.DataSource = columnNames;
-                            dt_P.Properties.DataSource = columnNames;
-                            dt_CR.Properties.DataSource = columnNames;
-                            dt_P2.Properties.DataSource = columnNames;
-                            dt_CR2.Properties.DataSource = columnNames;
-                            while (reader.Read())
-                            {
-                                DataRow dataRow = dataTable.NewRow();
-                                for (int i = 0; i < reader.FieldCount; i++)
-                                {
-                                    object value = reader.GetValue(i);
-                                    dataRow[i] = value != null ? value.ToString() : ""; // تعيين القيمة الفارغة كـ ""
-                                }
-                                dataTable.Rows.Add(dataRow);
-                            }
-
-                            gridControl6.DataSource = dataTable;
-
-                            //  gridView1.OptionsView.AllowCellMerge = true;
-
-                            // تحديد الأعمدة التي يجب دمجها بناءً على أسماء الأعمدة
-                            //for (int i = 0; i < columnNames.Count; i++)
-                            //{
-                            //    if (i < dataTable.Columns.Count)
-                            //    {
-                            //        gridView1.Columns[i].OptionsColumn.AllowMerge = DevExpress.Utils.DefaultBoolean.True;
-                            //    }
-                            //}
-                            gridView6.BestFitColumns();
-                        }
-                    }
-                }
-            }
-            #endregion
-        }
-
+ 
+        #endregion 
         private void btn_Correct_Click(object sender, EventArgs e)
         {
+            SplashScreenManager.ShowDefaultWaitForm("Corection en cours", "Veuillez patienter...");
             //if (!IsDataValide())
             //{
             //    return;
@@ -1320,6 +1345,57 @@ namespace System_Pointage.Form
             btn_save.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             btn_Correction.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             Coreger();
+            SplashScreenManager.CloseDefaultWaitForm();
+        }
+
+        private void Frm_MVM_Import_XLSX_Load(object sender, EventArgs e)
+        {
+            #region paramater gridview     ////////////////           
+            gridView1.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView1.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView1.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView1.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView1.GroupPanelText = " ";
+
+            gridView2.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView2.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView2.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView2.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView2.GroupPanelText = " ";
+
+            gridView3.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView3.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView3.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView3.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView3.GroupPanelText = " ";
+
+            gridView4.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView4.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView4.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView4.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView4.GroupPanelText = " ";
+
+
+            gridView6.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView6.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView6.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView6.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView6.GroupPanelText = " ";
+
+            gridView16.Appearance.HeaderPanel.ForeColor = Color.Black;
+            gridView16.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridView16.Appearance.HeaderPanel.Font = new Font(gridView1.Appearance.HeaderPanel.Font, FontStyle.Bold);
+            gridView16.Appearance.HeaderPanel.Options.UseFont = true;
+            gridView16.GroupPanelText = " ";
+
+            #endregion paramater gridview     ////////////////
+        }
+        public class Agent
+        {
+            public string Matricule { get; set; }
+            public string Nom { get; set; }
+            public string Prénom { get; set; }
+            public string Poste { get; set; }
         }
     }
 }
